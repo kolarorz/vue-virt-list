@@ -1,0 +1,9 @@
+dist
+lib
+scripts
+__tests__
+*.js
+*.d.ts
+**/*.json
+vite.config.ts
+examples/

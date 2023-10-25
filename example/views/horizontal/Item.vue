@@ -1,0 +1,22 @@
+<template>
+  <div
+    class="demo-col"
+    :style="`height: 100px; min-width: ${itemData.width}px;`"
+  >
+    <div>{{ itemData.id }}</div>
+    <div>{{ itemData.width }} px</div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    itemData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+};
+</script>
