@@ -1,10 +1,12 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.app.json",
 
   "compilerOptions": {
-    "emitDeclarationOnly": true,
-    "declaration": true,
-    "outDir": "lib"
-  },
-  "include": ["src"]
+    "emitDeclarationOnly": true, // 只输出声明文件(ts 产物)
+    "declaration": true, // 自动生成声明文件
+    "outDir": "lib",
+    "rootDir": "./src",
+    "jsx": "preserve",
+    "jsxFactory": "h"
+  }
 }
