@@ -20,6 +20,8 @@ To check out docs, visit <a href="https://keno-lee.github.io/vue-virt-list/" tar
 npm install vue-virt-list -S
 ```
 
+### Options API
+
 ```html
 <template>
   <div style="width: 500px; height: 400px">
@@ -41,5 +43,25 @@ npm install vue-virt-list -S
       };
     },
   };
+</script>
+```
+
+### Composition API
+
+```html
+<template>
+  <div style="width: 500px; height: 400px">
+    <VirtList itemKey="id" :list="list" :minSize="20">
+      <template #default="{ itemData, index }">
+        <div>{{ index }} - {{ itemData.id }} - {{ itemData.text }}</div>
+      </template>
+    </VirtList>
+  </div>
+</template>
+
+<script setup lang="ts">
+  import { VirtList } from 'vue-virt-list';
+
+  const list = [{ id: 0, text: 'text' }];
 </script>
 ```
