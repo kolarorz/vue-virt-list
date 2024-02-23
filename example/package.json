@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "vitepress dev",
+    "dev": "vitepress dev --host",
     "build:docs": "vitepress build",
     "docs:preview": "vitepress preview"
   },
