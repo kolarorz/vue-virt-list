@@ -58,7 +58,7 @@ export default defineConfig({
                 { text: '高阶用法', link: '/examples/advanced/' },
                 {
                   text: '分页-虚拟列表',
-                  link: '/examples/pagination-virtual/',
+                  link: '/examples/pagination-virt/',
                 },
                 { text: '分页-真实列表', link: '/examples/pagination-real/' },
               ],
