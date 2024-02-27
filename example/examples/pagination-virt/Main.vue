@@ -20,6 +20,7 @@
         :list="list"
         itemKey="index"
         :minSize="60"
+        :buffer="2"
         @toTop="toTop"
         @toBottom="toBottom"
         @itemResize="itemResize"

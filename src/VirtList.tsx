@@ -542,7 +542,7 @@ function useVirtList<T extends Record<string, any>>(
 
   const updateTotalVirtualSize = () => {
     let offset = 0;
-    const currentFirst = reactiveData.inViewBegin;
+    const currentFirst = reactiveData.renderBegin;
     for (let i = 0; i < currentFirst; i++) {
       offset += getItemSize(props.list[i]?.[props.itemKey]);
     }
