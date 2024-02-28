@@ -16,13 +16,7 @@
     </div>
 
     <div class="demo-operate" v-show="visible">
-      <VirtList
-        ref="virtListRef"
-        :buffer="2"
-        :list="list"
-        itemKey="id"
-        :minSize="40"
-      >
+      <VirtList ref="virtListRef" :list="list" itemKey="id" :minSize="40">
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />
         </template>

@@ -1,6 +1,6 @@
 # API 文档
 
-## Table 属性
+## 属性
 
 | 参数         | 说明                                                                              | 类型             | 默认值  | 是否必须 |
 | ------------ | --------------------------------------------------------------------------------- | ---------------- | ------- | -------- |
@@ -29,10 +29,13 @@
 | -------- | ---------- | -------------- |
 | toTop    | 触顶的回调 | 列表中第一项   |
 | toBottom | 触底的回调 | 列表中最后一项 |
+| scroll   | 滚动的回调 | event          |
 
 ## 暴露方法
 
-| 方法名         | 说明             | 参数 |
-| -------------- | ---------------- | ---- |
-| scrollToTop    | scroll to top    | -    |
-| scrollToBottom | scroll to bottom | -    |
+| 方法名         | 说明                                        | 参数 |
+| -------------- | ------------------------------------------- | ---- |
+| scrollToTop    | scroll to top                               | -    |
+| scrollToBottom | scroll to bottom                            | -    |
+| scrollToIndex  | scroll to index                             | -    |
+| scrollInToView | scroll to index if needed（不在可视范围内） | -    |

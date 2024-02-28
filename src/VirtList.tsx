@@ -540,6 +540,7 @@ function useVirtList<T extends Record<string, any>>(
         scrollToOffset(reactiveData.offset + diff);
         // console.log('纠正误差', reactiveData.offset, diff);
       }
+      abortFixOffset = false;
     });
   }
 
