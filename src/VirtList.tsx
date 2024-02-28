@@ -461,8 +461,6 @@ function useVirtList<T extends Record<string, any>>(
     });
     updateTotalVirtualSize();
     scrollToOffset(reactiveData.offset - deletedListSize);
-    forceFixOffset = true;
-    abortFixOffset = false;
     calcRange();
   }
   // expose only
