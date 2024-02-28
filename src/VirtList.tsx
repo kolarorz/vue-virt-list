@@ -72,6 +72,7 @@ function useVirtList<T extends Record<string, any>>(
   // 一个手动设置滚动的标志位，用来判断是否需要纠正滚动位置
   let fixOffset = false;
   let forceFixOffset = false;
+  let abortFixOffset = false;
 
   const slotSize: ShallowReactive<SlotSize> = shallowReactive({
     clientSize: 0,
@@ -161,10 +162,8 @@ function useVirtList<T extends Record<string, any>>(
     };
   }
 
-  function scrollToOffset(offset: number, needForceFixOffset = false) {
-    if (needForceFixOffset) {
-      forceFixOffset = true;
-    }
+  function scrollToOffset(offset: number) {
+    abortFixOffset = true;
     const directionKey = props.horizontal ? 'scrollLeft' : 'scrollTop';
     if (clientRefEl.value) clientRefEl.value[directionKey] = offset;
   }
@@ -461,7 +460,9 @@ function useVirtList<T extends Record<string, any>>(
       deletedListSize += getItemSize(item[props.itemKey]);
     });
     updateTotalVirtualSize();
-    scrollToOffset(reactiveData.offset - deletedListSize, true);
+    scrollToOffset(reactiveData.offset - deletedListSize);
+    forceFixOffset = true;
+    abortFixOffset = false;
     calcRange();
   }
   // expose only
@@ -472,7 +473,9 @@ function useVirtList<T extends Record<string, any>>(
       addedListSize += getItemSize(item[props.itemKey]);
     });
     updateTotalVirtualSize();
-    scrollToOffset(reactiveData.offset + addedListSize, true);
+    scrollToOffset(reactiveData.offset + addedListSize);
+    forceFixOffset = true;
+    abortFixOffset = false;
     calcRange();
   }
 
@@ -531,7 +534,7 @@ function useVirtList<T extends Record<string, any>>(
       reactiveData.listTotalSize += diff;
       // console.log(fixOffset, forceFixOffset, diff);
       // 向上滚动纠正误差 - 当没有顶部buffer的时候是需要的
-      if ((fixOffset || forceFixOffset) && diff !== 0) {
+      if ((fixOffset || forceFixOffset) && diff !== 0 && !abortFixOffset) {
         fixOffset = false;
         forceFixOffset = false;
         scrollToOffset(reactiveData.offset + diff);
