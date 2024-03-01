@@ -264,7 +264,7 @@ function useVirtList<T extends Record<string, any>>(
       ) {
         scrollToBottom();
       }
-    }, 0);
+    }, 3);
   }
 
   // 修复vue2-diff的bug导致的selection问题
@@ -403,10 +403,13 @@ function useVirtList<T extends Record<string, any>>(
       emitFunction?.toTop?.(props.list[0]);
     }
     // 到达底部 - 放在这里是为了渲染完成拿到真是高度了，再判断是否是真的到达底部
+    // 使用一个 Math.round 来解决小数点的误差问题
     if (
       direction === 'backward' &&
-      reactiveData.offset + props.scrollDistance >=
-        reactiveData.listTotalSize + getSlotSize() - slotSize.clientSize
+      Math.round(reactiveData.offset + props.scrollDistance) >=
+        Math.round(
+          reactiveData.listTotalSize + getSlotSize() - slotSize.clientSize,
+        )
     ) {
       console.log('[VirtList] 到达底部');
       emitFunction?.toBottom?.(props.list[props.list.length - 1]);
