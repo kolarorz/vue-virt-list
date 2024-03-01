@@ -65,8 +65,7 @@
   },
   "homepage": "https://github.com/keno-lee/vue-virt-list#readme",
   "directories": {
-    "doc": "docs",
-    "example": "example",
+    "docs": "docs",
     "lib": "lib"
   }
 }
