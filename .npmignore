@@ -1,6 +1,6 @@
+.github
 .vscode
 docs
-example
 node_modules/
 scripts/
 .eslintignore

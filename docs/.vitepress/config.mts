@@ -11,13 +11,12 @@ export default defineConfig({
 
   base: '/vue-virt-list/',
 
-  outDir: fileURLToPath(new URL('../../docs', import.meta.url)),
-
   assetsDir: '/public',
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
+      { text: 'Guide', link: '/guide/start/' },
       { text: 'Examples', link: '/examples/base/' },
       { text: 'API', link: '/api/' },
       // { text: 'Playground', link: '/playground/' },
@@ -31,38 +30,35 @@ export default defineConfig({
     ],
 
     sidebar: {
+      '/guide/': [
+        { text: '开始使用', link: '/guide/start/' },
+        { text: '特殊说明', link: '/guide/instructions/' },
+      ],
+
       '/examples/': [
+        { text: '基础示例', link: '/examples/base/' },
+        // { text: '高性能', link: '/examples/performance/' },
+        { text: '固定高度', link: '/examples/fixed/' },
+        { text: '水平滚动', link: '/examples/horizontal/' },
+        { text: '插槽', link: '/examples/slot/' },
+        { text: '各类操作', link: '/examples/operate/' },
+        { text: '可变窗口大小', link: '/examples/resize/' },
+
+        { text: '可变高度', link: '/examples/dynamic/' },
+        { text: '表格', link: '/examples/table/' },
+        { text: '无限加载', link: '/examples/infinity/' },
+        { text: '聊天室', link: '/examples/chat/' },
+
         {
-          text: 'Guide',
+          text: 'Advance',
+          collapsed: false,
           items: [
-            { text: '开始使用', link: '/examples/start/' },
-            { text: '特殊说明', link: '/examples/instructions/' },
-            // { text: '主题', link: '/examples/theme/' },
-            { text: '基础示例', link: '/examples/base/' },
-            // { text: '高性能', link: '/examples/performance/' },
-            { text: '固定高度', link: '/examples/fixed/' },
-            { text: '水平滚动', link: '/examples/horizontal/' },
-            { text: '插槽', link: '/examples/slot/' },
-            { text: '各类操作', link: '/examples/operate/' },
-            { text: '可变窗口大小', link: '/examples/resize/' },
-
-            { text: '可变高度', link: '/examples/dynamic/' },
-            { text: '表格', link: '/examples/table/' },
-            { text: '无限加载', link: '/examples/infinity/' },
-            { text: '聊天室', link: '/examples/chat/' },
-
+            { text: '高阶用法', link: '/examples/advanced/' },
             {
-              text: 'Advance',
-              collapsed: false,
-              items: [
-                { text: '高阶用法', link: '/examples/advanced/' },
-                {
-                  text: '分页-虚拟列表',
-                  link: '/examples/pagination-virt/',
-                },
-                { text: '分页-真实列表', link: '/examples/pagination-real/' },
-              ],
+              text: '分页-虚拟列表',
+              link: '/examples/pagination-virt/',
             },
+            { text: '分页-真实列表', link: '/examples/pagination-real/' },
           ],
         },
       ],

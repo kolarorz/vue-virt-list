@@ -3,7 +3,7 @@
 ## 本地运行
 
 ```shell
-pnpm i - r
+pnpm i
 ```
 
 ```shell
