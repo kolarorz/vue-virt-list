@@ -12,6 +12,7 @@
 | bufferTop     | 顶部 buffer 个数                                                                  | `Number`                                                           | `0`     | -        |
 | bufferBottom  | 底部 buffer 个数                                                                  | `Number`                                                           | `0`     | -        |
 | horizontal    | 是否水平滚动                                                                      | `Boolean`                                                          | `false` | -        |
+| fixSelection  | 是否需要修复滚动丢失selection问题(仅vue2下需要和生效)                             | `Boolean`                                                          | `false` | -        |
 | start         | 起始渲染下标                                                                      | `Number`                                                           | `0`     | -        |
 | offset        | 起始渲染顶部高度                                                                  | `Number`                                                           | `0`     | -        |
 | listStyle     | 列表容器样式                                                                      | `String`                                                           | `''`    | -        |

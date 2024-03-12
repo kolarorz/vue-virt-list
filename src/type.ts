@@ -65,6 +65,7 @@ export interface VirtListProps<T extends Record<string, string>>
   bufferTop?: number;
   bufferBottom?: number;
   horizontal?: boolean;
+  fixSelection?: boolean;
   start?: number;
   offset?: number;
   listStyle?: string;

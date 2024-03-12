@@ -53,6 +53,10 @@ export default {
     this.virtListRef = this.$refs.virtListRef as typeof VirtList;
     this.reactiveData = (this.$refs.virtListRef as any).reactiveData;
     this.list = getList(2000);
+
+    // setTimeout(() => {
+    //   this.list = getList(1000);
+    // }, 3000);
   },
 };
 </script>

@@ -33,6 +33,7 @@ const defaultProps = {
   bufferBottom: 0,
   scrollDistance: 0,
   horizontal: false,
+  fixSelection: false,
   start: 0,
   offset: 0,
   listStyle: '',
@@ -301,11 +302,11 @@ function useVirtList<T extends Record<string, any>>(
 
   function updateRange(start: number) {
     // 修复vue2-diff的bug
-    if (isVue2 && direction === 'backward') {
+    if (isVue2 && props.fixSelection && direction === 'backward') {
       fixSelection();
     }
-    reactiveData.inViewBegin = start;
 
+    reactiveData.inViewBegin = start;
     reactiveData.inViewEnd = Math.min(
       start + reactiveData.views,
       props.list.length - 1,
@@ -714,7 +715,9 @@ function useVirtList<T extends Record<string, any>>(
       calcListTotalSize();
       // [require] 因为list长度变化，所以重新计算起始结束位置
       updateRange(reactiveData.inViewBegin);
-      // [require] 起始位置可能不变，但列表元素发生变化，所以强制渲染一次
+      // [require] 如果顶部列表数据发生变更需要更正顶部高度
+      updateTotalVirtualSize();
+      // [require] 列表长度切内容发生变化，如果起始位置没变，则需要强制更新一下页面
       forceUpdate();
     },
     {
