@@ -1,11 +1,11 @@
 <template>
   <div class="main">
-    <!-- <div>高性能、动态高度、增删</div> -->
+    <!-- <div>High performance, dynamic height, addition and deletion</div> -->
 
-    <button @click="onLoadData">加载30w数据</button>
+    <button @click="onLoadData">Load 300000 data</button>
     <span>&nbsp;</span>
     <span>&nbsp;</span>
-    <span v-show="loading">数据生成中，请稍等</span>
+    <span v-show="loading">Data generation in progress, please wait</span>
 
     <div style="padding: 10px 0">
       <span>Total: {{ list.length }} </span>

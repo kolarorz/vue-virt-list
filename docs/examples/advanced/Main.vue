@@ -1,12 +1,20 @@
 <template>
   <div class="main">
-    <div>高阶用法，使用前需要掌握虚拟列表的基本原理</div>
-    <div>通过 useVirtList() 函数，</div>
     <div>
-      传入3个基本的参数，返回dom的结构，自定义布局页面，下面给出合并单元格的`&lt;table>&lt;/table>`布局示例:
+      Advanced usage requires mastering the basic principles of virtual lists
+      before use
+    </div>
+    <div>By using the useVirtList() function,</div>
+    <div>
+      Pass in three basic parameters, return the structure of the DOM, customize
+      the layout page, and provide an example of `&lt;table>&lt;/table>` for
+      merging cells below:
     </div>
     <div>
-      这里只是简单的合并单元格表格示例，有需要的可以作为参考，并自己做好性能处理。后续计划中会在一个高性能的独立表格组件提供出来
+      This is just a simple example of merging cells and tables. If necessary,
+      you can refer to it and handle the performance yourself. In the follow-up
+      plan, it will be provided in a high-performance independent table
+      component
     </div>
 
     <div style="padding: 10px 0">
@@ -23,7 +31,7 @@
         data-id="client"
         style="width: 100%; height: 100%; overflow: overlay"
       >
-        <!-- 滚动条骨架 -->
+        <!-- Scroll bar skeleton -->
         <div :style="`float: left; ${dynamicListStyle}`"></div>
         <table cellspacing="0" cellpadding="0" :style="`width: ${fullWidth}px`">
           <thead
@@ -127,7 +135,7 @@ for (let i = 0; i < 100; i += 1) {
   });
 }
 
-// 通过 渲染控制器(renderControl) 来完成合并单元格计算
+// Using renderControl to perform merged cell calculations
 function renderControl(begin: number, end: number) {
   if (begin === 0 || begin === 1) {
     return {

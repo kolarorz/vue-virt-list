@@ -38,7 +38,7 @@
                 background-color: cyan;
               "
             >
-              操作
+              operate
             </div>
           </div>
         </template>

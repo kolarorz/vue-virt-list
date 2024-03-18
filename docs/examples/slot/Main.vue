@@ -23,7 +23,7 @@
           <Item :itemData="itemData" :index="index" />
         </template>
         <template #stickyHeader>
-          <div>悬浮header</div>
+          <div>float header</div>
         </template>
         <template #header>
           <div>header</div>
@@ -32,7 +32,7 @@
           <div>footer</div>
         </template>
         <template #stickyFooter>
-          <div>悬浮footer</div>
+          <div>float footer</div>
         </template>
       </VirtList>
     </div>

@@ -1,5 +1,5 @@
-# 插槽
+# Slot
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

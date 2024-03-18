@@ -14,7 +14,7 @@
       <span>&nbsp;&nbsp;&nbsp;</span>
     </div>
     <div class="demo">
-      <!-- 触头触底 -->
+      <!-- Touching the bottom Touching the top -->
       <RealList
         ref="realListRef"
         :minSize="44"
@@ -37,7 +37,7 @@
               background-color: chocolate;
             "
           >
-            加载中...
+            loading...
           </div>
         </template>
         <template #default="{ itemData }">
@@ -54,8 +54,8 @@
               background-color: chocolate;
             "
           >
-            <div v-if="page + pageCached <= maxPage - 1">加载中...</div>
-            <div v-else>到底了....</div>
+            <div v-if="page + pageCached <= maxPage - 1">loading...</div>
+            <div v-else>Touching the bottom....</div>
           </div>
         </template>
       </RealList>
@@ -106,7 +106,7 @@ const onToBottom = async () => {
     return;
   }
   if (page.value + pageCached >= maxPage) {
-    console.warn('已到最大页码', page.value);
+    console.warn('Reached maximum page number', page.value);
     return;
   }
   isLoading.value = true;
@@ -116,9 +116,9 @@ const onToBottom = async () => {
     (page.value - 1) * pageSize,
     1000,
   );
-  // 1. 先删除前面的
+  // 1. Delete the previous ones first
   const deleteRows = list.value.splice(0, pageSize);
-  // 2. 加上新增的
+  // 2. Plus newly added
   list.value = list.value.concat(nextRows);
 
   nextTick(() => {

@@ -1,7 +1,7 @@
-# 高阶用法
+# Advanced
 
-<!-- ## 推荐应用 -->
+<!-- ## Recommended -->
 
-## 基础示例
+## Basic Examples
 
 <!<< ./Main.vue

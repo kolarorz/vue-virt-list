@@ -17,7 +17,7 @@
       <span>&nbsp;</span>
       <span>&nbsp;</span>
       <span>&nbsp;</span>
-      <span v-show="loading">数据生成中，请稍等</span>
+      <span v-show="loading">Data generation in progress, please wait</span>
     </div>
 
     <div style="padding: 10px 0">

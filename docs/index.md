@@ -9,18 +9,18 @@ hero:
   actions:
 
 features:
-  - title: 轻量
+  - title: Light weight
     details: 8K(gzipped 3k)
-  - title: 打破壁垒
-    details: 支持 vue2.x 和 vue3.x (power by vue-demi)
-  - title: 高性能
-    details: 百万级数据、满帧率渲染、O(1) 复杂度的滚动增量计算
-  - title: 类型支持
-    details: typescript 支持
-  - title: 平滑滚动
-    details: 支持向上平滑滚动
-  - title: 异常处理
-    details: vue2.x下修复selection丢失问题
-  - title: 高扩展
-    details: 4个插槽供选择：支持表格、无限滚动、聊天室、合并单元格等
+  - title: Breaking down barriers
+    details: Support vue2.x 和 vue3.x (power by vue-demi)
+  - title: High performance
+    details: Million level data, full frame rate rendering, scrolling increment calculation of O (1) complexity
+  - title: Type support
+    details: Typescript support
+  - title: Smooth scrolling
+    details: Supports smooth upward scrolling
+  - title: Exception handling
+    details: Fix selection loss issue under Vue2. x
+  - title: High scalability
+    details: 4 slots for selection： supports tables, infinite scrolling, chat rooms, merging cells, etc
 ---

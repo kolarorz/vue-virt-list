@@ -1,5 +1,5 @@
-# 无线滚动
+# Infinite scroll
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

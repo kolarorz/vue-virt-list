@@ -1,6 +1,6 @@
-# 开始使用
+# Start using
 
-## 安装
+## Install
 
 ::: code-group
 
@@ -18,11 +18,11 @@
 
 :::
 
-## 依赖
+## Dependent
 
 - `"vue": "^2.0.0 || >=3.0.0"`
 
-## 引入
+## Import
 
 ```html
 <template>

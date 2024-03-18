@@ -1,5 +1,5 @@
-# 基础
+# Base
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

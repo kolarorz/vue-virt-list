@@ -1,5 +1,5 @@
-# 表格
+# Table
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

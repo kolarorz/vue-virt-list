@@ -1,16 +1,16 @@
-# 特殊说明
+# Special Instructions
 
-## 百万级数据
+## Million level data
 
-目前受限于浏览器最高高度限制，导致滚动条超出一定高度后无法继续滚动。在示例中，大约上线为38万行数据。后续作者计划通过自己模拟滚动条来实现百万级数据的展示
+Currently, due to the browser's maximum height limit, the scrollbar cannot continue scrolling beyond a certain height. In the example, there are approximately 380000 rows of data online. The follow-up author plans to achieve the display of million level data by simulating the scrollbar themselves
 
-## 滚动性能
+## Scrolling performance
 
-本虚拟列表支持满帧渲染，但在大数据或复杂dom场景下应当由使用者自行避免2个问题：
+This virtual list supports full frame rendering, but in big data or complex dom scenes, users should avoid two issues themselves:
 
-1. 列表数据应当使用非响应式数据 ShallowRef 替换 响应式数据 Ref
-2. 复杂dom应当使渲染层和交互层分离，渲染层dom要极简。
+1. List data should use non responsive data ShallowRef instead of responsive data Ref
+2. Complex DOM should separate the rendering layer and interaction layer, and the rendering layer DOM should be minimalist.
 
-## 修复滚动selection问题
+## Fix scrolling selection issue
 
-仅修复vue2下diff算法的bug(列表在向下滚动过程中，vue2-diff算法会导致整个列表重新挂载)
+Fix only the bug in the diff algorithm under vue2 (during the scrolling down process of the list, the vue2 diff algorithm will cause the entire list to be re mounted)

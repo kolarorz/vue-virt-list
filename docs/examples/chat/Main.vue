@@ -101,10 +101,10 @@ export default {
       // console.log(list);
       this.list = list.concat(this.list);
 
-      // 滚动到正确位置
+      // Scroll to the correct position
       this.$nextTick(() => {
         this.virtListRef?.addedList2Top(list);
-        // 数据更新后再更新page，这样上面的loading消失时机才能正确
+        // Update the page after updating the data, so that the timing for the disappearance of loading on it can be correct
         this.page -= 1;
         this.loading = false;
       });

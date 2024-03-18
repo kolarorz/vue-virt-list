@@ -1,8 +1,9 @@
-# 分页-虚拟列表 VirtList
+# Pagination VirtList
 
-- 分页: 列表数据采用上下分页的形式，永远只缓存当前页数据和缓冲数据（例如：pageSize为20时，缓存数据为40）
-- 虚拟列表 VirtList : 缓存的数据渲染仍然采取虚拟列表渲染
+- Pagination: The list data is divided into upper and lower pages, always caching only the current page data and buffered data (for example, when pageSize is 20, the cached data is 40)
 
-## 基础示例
+- VirtList: Cached data rendering still adopts virtual list rendering
+
+## Basic examples
 
 <!<< ./Main.vue

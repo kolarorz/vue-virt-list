@@ -4,67 +4,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'vue-virt-list',
-  description: 'vue-virt-list',
-
-  // head: [['link', { rel: 'icon', href: '/vue-virt-list/favicon.ico' }]],
-
-  base: '/vue-virt-list/',
-
-  assetsDir: '/public',
-
-  themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Guide', link: '/guide/start/' },
-      { text: 'Examples', link: '/examples/base/' },
-      { text: 'API', link: '/api/' },
-      // { text: 'Playground', link: '/playground/' },
-    ],
-
-    socialLinks: [
-      {
-        icon: 'github',
-        link: 'https://github.com/keno-lee/vue-virt-list',
-      },
-    ],
-
-    sidebar: {
-      '/guide/': [
-        { text: '开始使用', link: '/guide/start/' },
-        { text: '特殊说明', link: '/guide/instructions/' },
-      ],
-
-      '/examples/': [
-        { text: '基础示例', link: '/examples/base/' },
-        // { text: '高性能', link: '/examples/performance/' },
-        { text: '固定高度', link: '/examples/fixed/' },
-        { text: '水平滚动', link: '/examples/horizontal/' },
-        { text: '插槽', link: '/examples/slot/' },
-        { text: '各类操作', link: '/examples/operate/' },
-        { text: '可变窗口大小', link: '/examples/resize/' },
-
-        { text: '可变高度', link: '/examples/dynamic/' },
-        { text: '表格', link: '/examples/table/' },
-        { text: '无限加载', link: '/examples/infinity/' },
-        { text: '聊天室', link: '/examples/chat/' },
-
-        {
-          text: 'Advance',
-          collapsed: false,
-          items: [
-            { text: '高阶用法', link: '/examples/advanced/' },
-            {
-              text: '分页-虚拟列表',
-              link: '/examples/pagination-virt/',
-            },
-            { text: '分页-真实列表', link: '/examples/pagination-real/' },
-          ],
-        },
-      ],
-    },
-  },
-
   markdown: {
     container: {
       detailsLabel: '源码',
@@ -133,13 +72,13 @@ export default defineConfig({
     },
   },
   vite: {
-    // configFile: path.resolve(__dirname, '../../scripts/dev.ts'),
+    // configFile: path.resolve(__dirname, '../../../scripts/dev.ts'),
     plugins: [vueJsx()],
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('../../', import.meta.url)),
+        '@': fileURLToPath(new URL('../../../', import.meta.url)),
         'vue-virt-list': fileURLToPath(
-          new URL('../../src/index.ts', import.meta.url),
+          new URL('../../../src/index.ts', import.meta.url),
         ),
       },
     },

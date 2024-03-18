@@ -1,5 +1,5 @@
-# 聊天室
+# Chat room
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

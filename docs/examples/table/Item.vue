@@ -16,9 +16,14 @@
     <div class="table-cell" style="width: 600px">{{ itemData.text }}</div>
     <div
       class="table-cell"
-      style="width: 100px; position: sticky; right: 0; background-color: var(--vp-sidebar-bg-color)"
+      style="
+        width: 100px;
+        position: sticky;
+        right: 0;
+        background-color: var(--vp-sidebar-bg-color);
+      "
     >
-      操作
+      operate
     </div>
   </div>
 </template>

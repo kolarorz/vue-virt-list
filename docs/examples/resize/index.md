@@ -1,5 +1,5 @@
-# 可变窗口大小
+# Resize window
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

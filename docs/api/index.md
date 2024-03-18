@@ -1,85 +1,85 @@
-# API 文档
+# API Document
 
-## 属性
+## Attribute
 
-| 参数          | 说明                                                                              | 类型                                                               | 默认值  | 是否必须 |
-| ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------- | -------- |
-| list          | 数据                                                                              | `Array`                                                            | -       | `是`     |
-| itemKey       | 项的 id，必须唯一                                                                 | `String  Number`                                                   | -       | `是`     |
-| minSize       | **最小尺寸**，会根据这个尺寸来计算可视区域内个数                                  | `Number`                                                           | `20`    | `是`     |
-| fixed         | 是否为固定高度，可以提升性能<br />**注意：动态高度模式下，请勿使用**              | `Number`                                                           | `false` | -        |
-| buffer        | 当渲染量大，滚动白屏严重时，可以给定数值，bufferTop 和 bufferBottom 会等于 buffer | `Number`                                                           | `0`     | -        |
-| bufferTop     | 顶部 buffer 个数                                                                  | `Number`                                                           | `0`     | -        |
-| bufferBottom  | 底部 buffer 个数                                                                  | `Number`                                                           | `0`     | -        |
-| horizontal    | 是否水平滚动                                                                      | `Boolean`                                                          | `false` | -        |
-| fixSelection  | 是否需要修复滚动丢失selection问题(仅vue2下需要和生效)                             | `Boolean`                                                          | `false` | -        |
-| start         | 起始渲染下标                                                                      | `Number`                                                           | `0`     | -        |
-| offset        | 起始渲染顶部高度                                                                  | `Number`                                                           | `0`     | -        |
-| listStyle     | 列表容器样式                                                                      | `String`                                                           | `''`    | -        |
-| listClass     | 列表容器类名                                                                      | `String`                                                           | `''`    | -        |
-| itemStyle     | item容器样式                                                                      | `String`                                                           | `''`    | -        |
-| itemClass     | item容器类名                                                                      | `String`                                                           | `''`    | -        |
-| renderControl | 渲染控制器                                                                        | `(begin: number, end: number ) => { begin: number; end: number };` | -       | -        |
+| Attribute     | Description                                                                                                                                                         | Type                                                               | Default | Required |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------- | -------- |
+| list          | Data                                                                                                                                                                | `Array`                                                            | -       | `Yes`    |
+| itemKey       | id，Must be unique                                                                                                                                                  | `String  Number`                                                   | -       | `Yes`    |
+| minSize       | **minimum size**，will calculate the number of visible areas based on this size                                                                                     | `Number`                                                           | `20`    | `Yes`    |
+| fixed         | Is it a fixed height that can improve performance<br />**Warning：Do not use in dynamic height mode**                                                               | `Number`                                                           | `false` | -        |
+| buffer        | When the rendering volume is large and the scrolling white screen is severe, a numerical value can be given, and bufferTop and bufferBottom will be equal to buffer | `Number`                                                           | `0`     | -        |
+| bufferTop     | Top buffer numbers                                                                                                                                                  | `Number`                                                           | `0`     | -        |
+| bufferBottom  | Bottom buffer numbers                                                                                                                                               | `Number`                                                           | `0`     | -        |
+| horizontal    | Whether to scroll horizontally                                                                                                                                      | `Boolean`                                                          | `false` | -        |
+| fixSelection  | Is it need to fix the scrolling loss selection issue (only required and effective under Vue2)                                                                       | `Boolean`                                                          | `false` | -        |
+| start         | Start rendering index                                                                                                                                               | `Number`                                                           | `0`     | -        |
+| offset        | Start rendering top height                                                                                                                                          | `Number`                                                           | `0`     | -        |
+| listStyle     | List Container Style                                                                                                                                                | `String`                                                           | `''`    | -        |
+| listClass     | List container class name                                                                                                                                           | `String`                                                           | `''`    | -        |
+| itemStyle     | item Container Style                                                                                                                                                | `String`                                                           | `''`    | -        |
+| itemClass     | item container class name                                                                                                                                           | `String`                                                           | `''`    | -        |
+| renderControl | Rendering controller                                                                                                                                                | `(begin: number, end: number ) => { begin: number; end: number };` | -       | -        |
 
-## 插槽
+## Slots
 
-| name          | 说明                                           |
-| ------------- | ---------------------------------------------- |
-| header        | 顶部插槽                                       |
-| footer        | 底部插槽                                       |
-| sticky-header | 顶部悬浮插槽                                   |
-| sticky-footer | 底部悬浮插槽                                   |
-| default       | item 内容， `作用域参数为 { itemData, index }` |
+| name          | Description                                                |
+| ------------- | ---------------------------------------------------------- |
+| header        | Top slot                                                   |
+| footer        | Bottom slot                                                |
+| sticky-header | Top floating slot                                          |
+| sticky-footer | Bottom floating slot                                       |
+| default       | item content, `The scope parameter is { itemData, index }` |
 
-## 事件
+## Events
 
-| 方法名     | 说明              | 参数                              |
-| ---------- | ----------------- | --------------------------------- |
-| toTop      | 触顶的回调        | 列表中第一项                      |
-| toBottom   | 触底的回调        | 列表中最后一项                    |
-| scroll     | 滚动的回调        | event                             |
-| itemResize | Item 尺寸发生变化 | `{ id: string, newSize: number }` |
+| Event Name | Description            | Parameters                        |
+| ---------- | ---------------------- | --------------------------------- |
+| toTop      | Topping callback       | First item in the list            |
+| toBottom   | bottoming out callback | Last item in the list             |
+| scroll     | scrolling callback     | event                             |
+| itemResize | Item Size changes      | `{ id: string, newSize: number }` |
 
-## 暴露方法
+## Exposure methods
 
-| 方法名            | 说明                                                                       | 参数   |
-| ----------------- | -------------------------------------------------------------------------- | ------ |
-| reset             | 重置列表                                                                   | -      |
-| getOffset         | 获取滚动高度                                                               | -      |
-| scrollToTop       | scroll to top                                                              | -      |
-| scrollToBottom    | scroll to bottom                                                           | -      |
-| scrollToIndex     | scroll to index                                                            | index  |
-| scrollInToView    | scroll to index if needed（不在可视范围内）                                | index  |
-| scrollToOffset    | scroll to px                                                               | px     |
-| getItemSize       | 获取指定item尺寸                                                           | index  |
-| getItemPosByIndex | 获取指定item的位置信息: `{ top: number; current: number; bottom: number;}` | index  |
-| forceUpdate       | 强制更新                                                                   | -      |
-| deletedList2Top   | 删除顶部list（仅在分页模式下使用，具体参考demo）                           | list[] |
-| addedList2Top     | 删除顶部list（仅在分页模式下使用，具体参考demo）                           | list[] |
+| Method            | Description                                                                               | Parameters |
+| ----------------- | ----------------------------------------------------------------------------------------- | ---------- |
+| reset             | Reset List                                                                                | -          |
+| getOffset         | Get scrolling height                                                                      | -          |
+| scrollToTop       | scroll to top                                                                             | -          |
+| scrollToBottom    | scroll to bottom                                                                          | -          |
+| scrollToIndex     | scroll to index                                                                           | index      |
+| scrollInToView    | scroll to index if needed（Not within visible range）                                     | index      |
+| scrollToOffset    | scroll to px                                                                              | px         |
+| getItemSize       | get appoint item size                                                                     | index      |
+| getItemPosByIndex | get appoint item position information: `{ top: number; current: number; bottom: number;}` | index      |
+| forceUpdate       | force updates                                                                             | -          |
+| deletedList2Top   | Delete the top list (only used in pagination mode, please refer to the demo for details)  | list[]     |
+| addedList2Top     | Delete the top list (only used in pagination mode, please refer to the demo for details)  | list[]     |
 
-## 额外参数
+## Additional parameters
 
 ### reactive:ReactiveData
 
-| 属性          | 类型   | 说明                                   |
-| ------------- | ------ | -------------------------------------- |
-| views         | number | 可视区域渲染个数                       |
-| offset        | number | 滚动距离                               |
-| listTotalSize | number | 不包含插槽的高度                       |
-| virtualSize   | number | 虚拟占位尺寸，是从0到renderBegin的尺寸 |
-| inViewBegin   | number | 可视区的起始下标                       |
-| inViewEnd     | number | 可视区的结束下标                       |
-| renderBegin   | number | 实际渲染的起始下标                     |
-| renderEnd     | number | 实际渲染的结束下标                     |
-| bufferTop     | number | 顶部buffer个数                         |
-| bufferBottom  | number | 底部buffer个数                         |
+| Attribute     | Type   | Description                                                       |
+| ------------- | ------ | ----------------------------------------------------------------- |
+| views         | number | Number of visible area renderings                                 |
+| offset        | number | Scrolling distance                                                |
+| listTotalSize | number | Height without slots                                              |
+| virtualSize   | number | Virtual placeholder size, which is the size from 0 to renderBegin |
+| inViewBegin   | number | Starting index of visible area                                    |
+| inViewEnd     | number | End index of visible area                                         |
+| renderBegin   | number | The starting index of the actual rendering                        |
+| renderEnd     | number | Actual rendering end index                                        |
+| bufferTop     | number | Number of top buffers                                             |
+| bufferBottom  | number | Number of bottom buffers                                          |
 
 ### slotSize:SlotSize
 
-| 属性             | 类型   | 说明                 |
-| ---------------- | ------ | -------------------- |
-| clientSize       | number | 可视区容器高度       |
-| headerSize       | number | header插槽高度       |
-| footerSize       | number | footer插槽高度       |
-| stickyHeaderSize | number | stickyHeader插槽高度 |
-| stickyFooterSize | number | stickyFooter插槽高度 |
+| Attribute        | Type   | Description                      |
+| ---------------- | ------ | -------------------------------- |
+| clientSize       | number | Height of visible area container |
+| headerSize       | number | Header slot height               |
+| footerSize       | number | Footer slot height               |
+| stickyHeaderSize | number | StickyHeader slot height         |
+| stickyFooterSize | number | StickyFooter slot height         |

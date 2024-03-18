@@ -100,7 +100,7 @@ export default {
       this.pageSize,
       (this.page - 1) * this.pageSize,
     );
-    // 多请求一页缓存
+    // Request one more page of cache
     const pageListCache = await asyncGetList(
       this.pageSize,
       this.page * this.pageSize,
@@ -139,10 +139,10 @@ export default {
       this.list = list.concat(this.list.slice(0, this.pageSize));
       this.abortBottom = false;
 
-      // 滚动到正确位置
+      // Scroll to the correct position
       this.$nextTick(() => {
         this.virtListRef?.addedList2Top(list);
-        // 数据更新后再更新page，这样上面的loading消失时机才能正确
+        // Update the page after updating the data, so that the timing for the disappearance of loading on it can be correct
         this.page -= 1;
         this.loading = false;
       });
@@ -161,7 +161,7 @@ export default {
         (this.page + 1) * this.pageSize,
         1000,
       );
-      // 如果滚动到即将要删除的页面，中断操作
+      // If scrolling to the page that is about to be deleted, interrupt the operation
       if (this.reactiveData.renderBegin < this.pageSize) {
         this.loading = false;
         if (this.abortBottom) {

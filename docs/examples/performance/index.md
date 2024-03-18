@@ -1,5 +1,5 @@
-# 基础使用
+# Basic usage
 
-## 基础使用
+## Basic usage
 
 <!<< ./Main.vue

@@ -1,5 +1,5 @@
-# 水平滚动
+# Horizontal scroll
 
-## 基础示例
+## Basic examples
 
 <!<< ./Main.vue

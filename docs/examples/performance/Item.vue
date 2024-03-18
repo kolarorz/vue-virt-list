@@ -1,7 +1,11 @@
 <template>
   <div class="row-item">
-    <div style="flex: 1">{{ index }} - {{ itemData.id }} - {{ itemData.text }}</div>
-    <button style="height: 20px" @click="deleteItem(itemData.id)">删除</button>
+    <div style="flex: 1">
+      {{ index }} - {{ itemData.id }} - {{ itemData.text }}
+    </div>
+    <button style="height: 20px" @click="deleteItem(itemData.id)">
+      Delete
+    </button>
   </div>
 </template>
 
