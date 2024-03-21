@@ -12,7 +12,7 @@
 
 ## Documentation
 
-To check out docs, visit <a href="https://keno-lee.github.io/vue-virt-list/" target="_blank">vue-virt-list</a>
+To check out docs, visit <a href="https://keno-lee.github.io/vue-virt-list/zh/" target="_blank">vue-virt-list</a>
 
 ## Quick Start
 
