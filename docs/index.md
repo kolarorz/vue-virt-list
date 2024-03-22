@@ -12,7 +12,7 @@ features:
   - title: 轻量
     details: 8K(gzipped 3k)
   - title: 打破壁垒
-    details: 支持 vue2.x 和 vue3.x (power by vue-demi)
+    details: 支持 vue2.x 和 vue3.x (powered by vue-demi)
   - title: 高性能
     details: 百万级数据、满帧率渲染、O(1) 复杂度的滚动增量计算
   - title: 类型支持
