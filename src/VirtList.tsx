@@ -75,6 +75,8 @@ function useVirtList<T extends Record<string, any>>(
   let forceFixOffset = false;
   let abortFixOffset = false;
 
+  let fixTaskFn: null | (() => void) = null;
+
   const slotSize: ShallowReactive<SlotSize> = shallowReactive({
     clientSize: 0,
     headerSize: 0,
@@ -183,20 +185,20 @@ function useVirtList<T extends Record<string, any>>(
     }
 
     let { top: lastOffset } = getItemPosByIndex(index);
-    const recursion = async () => {
-      scrollToOffset(lastOffset);
 
-      setTimeout(() => {
-        // 第二次看一下有没有需要修正的情况
-        const { top: offset } = getItemPosByIndex(index);
-        // 查看位置是否有修正，有修正就递归自己
-        if (lastOffset !== offset) {
-          lastOffset = offset;
-          recursion();
-        }
-      }, 3);
+    scrollToOffset(lastOffset);
+    const fixToIndex = () => {
+      const { top: offset } = getItemPosByIndex(index);
+      scrollToOffset(offset);
+      if (lastOffset !== offset) {
+        lastOffset = offset;
+        fixTaskFn = fixToIndex;
+        return;
+      }
+      // 重置后如果不需要修正，将修正函数置空
+      fixTaskFn = null;
     };
-    recursion();
+    fixTaskFn = fixToIndex;
   }
   // expose 滚动到可视区域
   async function scrollIntoView(index: number) {
@@ -243,20 +245,20 @@ function useVirtList<T extends Record<string, any>>(
   async function scrollToTop() {
     scrollToOffset(0);
 
-    setTimeout(() => {
+    const fixToTop = () => {
       const directionKey = props.horizontal ? 'scrollLeft' : 'scrollTop';
-      // 因为纠正滚动条会有误差，所以这里需要再次纠正
       if (clientRefEl?.value?.[directionKey] !== 0) {
         scrollToTop();
       }
-    }, 3);
+      fixTaskFn = null;
+    };
+    fixTaskFn = fixToTop;
   }
   // expose 滚动到底部
   async function scrollToBottom() {
     scrollToOffset(getTotalSize());
 
-    setTimeout(() => {
-      // 修复底部误差，因为缩放屏幕的时候，获取的尺寸都是小数，精度会有问题，这里把误差调整为2px
+    const fixToBottom = () => {
       if (
         Math.abs(
           Math.round(reactiveData.offset + slotSize.clientSize) -
@@ -265,7 +267,9 @@ function useVirtList<T extends Record<string, any>>(
       ) {
         scrollToBottom();
       }
-    }, 3);
+      fixTaskFn = null;
+    };
+    fixTaskFn = fixToBottom;
   }
 
   // 修复vue2-diff的bug导致的selection问题
@@ -534,6 +538,11 @@ function useVirtList<T extends Record<string, any>>(
         }
       }
       reactiveData.listTotalSize += diff;
+
+      // 如果有需要修正的方法进行修正
+      if (fixTaskFn) {
+        fixTaskFn();
+      }
       // console.log(fixOffset, forceFixOffset, diff);
       // 向上滚动纠正误差 - 当没有顶部buffer的时候是需要的
       if ((fixOffset || forceFixOffset) && diff !== 0 && !abortFixOffset) {
