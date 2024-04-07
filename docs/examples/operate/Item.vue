@@ -1,5 +1,7 @@
 <template>
-  <div class="row-item">{{ index }} - {{ itemData.id }} - {{ itemData.text }}</div>
+  <div class="row-item">
+    {{ index }} - {{ itemData.id }} - {{ itemData.text }}
+  </div>
 </template>
 
 <script lang="ts">

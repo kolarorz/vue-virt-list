@@ -57,14 +57,13 @@
           <tbody>
             <tr :style="`height: ${reactiveData.virtualSize}px;`"></tr>
 
-            <template v-for="row in renderList">
-              <Item
-                :resizeObserver="resizeObserver"
-                :row="row"
-                :columns="columns"
-                :data-id="`${row.id}`"
-              ></Item>
-            </template>
+            <Item
+              v-for="row in renderList"
+              :resizeObserver="resizeObserver"
+              :row="row"
+              :columns="columns"
+              :data-id="`${row.id}`"
+            ></Item>
           </tbody>
         </table>
       </div>

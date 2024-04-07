@@ -37,7 +37,7 @@ export default defineConfig({
 
       '/examples/': [
         { text: '基础示例', link: '/examples/base/' },
-        // { text: '高性能', link: '/examples/performance/' },
+        { text: '海量数据', link: '/examples/huge-data/' },
         { text: '固定高度', link: '/examples/fixed/' },
         { text: '水平滚动', link: '/examples/horizontal/' },
         { text: '插槽', link: '/examples/slot/' },
@@ -48,7 +48,7 @@ export default defineConfig({
         { text: '表格', link: '/examples/table/' },
         { text: '无限加载', link: '/examples/infinity/' },
         { text: '聊天室', link: '/examples/chat/' },
-
+        // { text: '树形', link: '/examples/tree/' },
         {
           text: 'Advance',
           collapsed: false,

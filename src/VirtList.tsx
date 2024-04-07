@@ -661,7 +661,7 @@ function useVirtList<T extends Record<string, any>>(
         _newRenderBegin = Math.max(0, _newRenderBegin - reactiveData.bufferTop);
         _newRenderEnd = Math.min(
           _newRenderEnd + reactiveData.bufferBottom,
-          props.list.length - 1,
+          props.list.length - 1 > 0 ? props.list.length - 1 : 0,
         );
 
         // 控制层渲染，等于说要覆盖掉buffer
