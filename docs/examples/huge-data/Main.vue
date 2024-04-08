@@ -1,11 +1,6 @@
 <template>
   <div class="main">
-    <!-- <div>高性能、动态高度、增删</div> -->
-
     <button class="demo-btn" @click="onLoadData">解压30w数据</button>
-    <span>&nbsp;</span>
-    <span>&nbsp;</span>
-    <span v-show="loading">解压中...</span>
 
     <div style="padding: 10px 0">
       <span>Total: {{ list.length }} </span>
@@ -15,8 +10,13 @@
       <span>RenderEnd: {{ reactiveData?.renderEnd }} </span>
     </div>
 
-    <div class="demo-dynamic">
+    <div class="demo-huge">
+      <div class="empty" v-if="list.length === 0">
+        {{ loading ? '数据解压中...' : '空空如也' }}
+      </div>
+
       <VirtList
+        v-else
         ref="virtListRef"
         :buffer="5"
         :list="list"
@@ -82,12 +82,20 @@ async function onLoadData() {
 </script>
 
 <style lang="scss" scoped>
-.demo-dynamic {
+.demo-huge {
   width: 100%;
   height: 500px;
   background-color: var(--vp-sidebar-bg-color);
   overflow: hidden;
   border: 1px solid var(--vp-c-border);
+
+  .empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .row-item {
     display: flex;
