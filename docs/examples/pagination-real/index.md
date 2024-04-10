@@ -1,6 +1,6 @@
 # 分页-真实列表 RealList
 
-RealList 由 [apathia1220](https://github.com/apathia1220) 贡献代码：
+RealList 由 [apathiaX](https://github.com/apathiaX) 贡献代码：
 
 - 分页: 列表数据采用上下分页的形式，永远只缓存当前页数据和缓冲数据（例如：pageSize为20时，缓存数据为40）
 - 真实列表 RealList : 缓存的数据全部真实渲染出来

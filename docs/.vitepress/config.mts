@@ -61,6 +61,15 @@ export default defineConfig({
             { text: '分页-真实列表', link: '/examples/pagination-real/' },
           ],
         },
+        {
+          text: '虚拟滚动条(Beta)',
+          collapsed: false,
+          items: [
+            { text: '基础用法', link: '/examples/base-virt-scroll/' },
+            { text: '高阶用法', link: '/examples/advance-virt-scroll/' },
+            { text: '百万数据', link: '/examples/huge-virt-scroll/' },
+          ],
+        },
       ],
     },
   },
