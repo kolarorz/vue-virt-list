@@ -9,7 +9,7 @@
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "dev": "vitepress dev docs --host",
+    "dev": "vitepress dev docs --host --port=5111",
     "build:docs": "vitepress build docs",
     "build": "vite build -c ./scripts/build.ts && vue-tsc -p tsconfig.build.json",
     "lint": "eslint ./example --ext .vue,.ts,.tsx,.js,.jsx --fix"

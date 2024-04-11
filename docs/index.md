@@ -4,15 +4,13 @@ layout: home
 
 hero:
   name: 'vue-virt-list'
-  # text: '一个vue3表格组件'
-  # tagline: '同时支持: 横向虚拟列表渲染、纵向虚拟列表渲染、合并单元格 [如有vue2.x需求，请找@hao.li]'
-  actions:
+  tagline: 一个支持vue2&vue3的高性能虚拟(滚动)列表组件
 
 features:
   - title: 轻量
     details: 8K(gzipped 3k)
   - title: 打破壁垒
-    details: 支持 vue2.x 和 vue3.x (power by vue-demi)
+    details: 支持 vue2.x 和 vue3.x (powered by vue-demi)
   - title: 高性能
     details: 百万级数据、满帧率渲染、O(1) 复杂度的滚动增量计算
   - title: 类型支持

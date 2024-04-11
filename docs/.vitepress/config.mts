@@ -1,13 +1,15 @@
 import { defineConfig } from 'vitepress';
 import { fileURLToPath } from 'node:url';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import pkg from '../../package.json';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'vue-virt-list',
+
   description: 'vue-virt-list',
 
-  // head: [['link', { rel: 'icon', href: '/vue-virt-list/favicon.ico' }]],
+  head: [['link', { rel: 'icon', href: '/vue-virt-list/favicon.ico' }]],
 
   base: '/vue-virt-list/',
 
@@ -19,6 +21,20 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/start/' },
       { text: 'Examples', link: '/examples/base/' },
       { text: 'API', link: '/api/' },
+      {
+        text: pkg.version,
+        items: [
+          {
+            text: '更新日志',
+            link: 'https://github.com/keno-lee/vue-virt-list/releases',
+          },
+          {
+            text: '参与贡献',
+            link: 'https://github.com/keno-lee/vue-virt-list/blob/master/CONTRIBUTING.md',
+          },
+        ],
+      },
+      // 开发中
       // { text: 'Playground', link: '/playground/' },
     ],
 
@@ -133,7 +149,6 @@ export default defineConfig({
     },
   },
   vite: {
-    // configFile: path.resolve(__dirname, '../../scripts/dev.ts'),
     plugins: [vueJsx()],
     resolve: {
       alias: {
@@ -146,21 +161,5 @@ export default defineConfig({
     ssr: {
       noExternal: ['@vue/repl'],
     },
-    // build: {
-    //   rollupOptions: {
-    //     output: {
-    //       manualChunks: {
-    //         'vue-virt-list': ['vue-virt-list'],
-    //       },
-    //       chunkFileNames(chunkInfo) {
-    //         if (chunkInfo.name === 'vue-virt-list') {
-    //           return 'public/[name].js';
-    //         }
-    //         return 'public/[name].[hash].js'
-    //       },
-    //       minifyInternalExports: false,
-    //     }
-    // },
-    // }
   },
 });
