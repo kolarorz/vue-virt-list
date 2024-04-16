@@ -111,6 +111,11 @@ function deleteItem(id: number) {
   const targetIndex = list.value.findIndex((row) => row.id === id);
   list.value.splice(targetIndex, 1);
 }
+
+// setTimeout(() => {
+//   console.log(111);
+//   list.value = [];
+// }, 3000);
 </script>
 
 <style lang="scss" scoped>

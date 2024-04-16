@@ -459,6 +459,9 @@ function useVirtList<T extends Record<string, any>>(
     reactiveData.renderBegin = 0;
     reactiveData.renderEnd = 0;
     sizesMap.clear();
+
+    // [require] 当列表为空时，需要重新渲染，否则会残留渲染
+    forceUpdate();
   }
   // expose only
   function deletedList2Top(deletedList: T[]) {
