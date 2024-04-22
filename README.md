@@ -60,8 +60,12 @@ npm install vue-virt-list -S
 </template>
 
 <script setup lang="ts">
+  import { ref, shallowRef } from 'vue';
   import { VirtList } from 'vue-virt-list';
+  const list = ref([{ id: 0, text: 'text' }]);
 
-  const list = [{ id: 0, text: 'text' }];
+  // 大数据建议使用 shallowRef，自行使用renderKey控制响应式，具体参考demo文档:
+  // https://keno-lee.github.io/vue-virt-list/examples/huge-data/
+  // const list = shallowRef([{ id: 0, text: 'text' }])
 </script>
 ```

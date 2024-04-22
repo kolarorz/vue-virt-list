@@ -187,6 +187,8 @@ function useVirtList<T extends Record<string, any>>(
     let { top: lastOffset } = getItemPosByIndex(index);
 
     scrollToOffset(lastOffset);
+
+    // 这里不适用settimeout，因为无法准确把控延迟时间，3ms有可能页面还拿不到高度。
     const fixToIndex = () => {
       const { top: offset } = getItemPosByIndex(index);
       scrollToOffset(offset);
@@ -245,20 +247,20 @@ function useVirtList<T extends Record<string, any>>(
   async function scrollToTop() {
     scrollToOffset(0);
 
-    const fixToTop = () => {
+    setTimeout(() => {
       const directionKey = props.horizontal ? 'scrollLeft' : 'scrollTop';
+      // 因为纠正滚动条会有误差，所以这里需要再次纠正
       if (clientRefEl?.value?.[directionKey] !== 0) {
         scrollToTop();
       }
-      fixTaskFn = null;
-    };
-    fixTaskFn = fixToTop;
+    }, 3);
   }
   // expose 滚动到底部
   async function scrollToBottom() {
     scrollToOffset(getTotalSize());
 
-    const fixToBottom = () => {
+    setTimeout(() => {
+      // 修复底部误差，因为缩放屏幕的时候，获取的尺寸都是小数，精度会有问题，这里把误差调整为2px
       if (
         Math.abs(
           Math.round(reactiveData.offset + slotSize.clientSize) -
@@ -267,9 +269,7 @@ function useVirtList<T extends Record<string, any>>(
       ) {
         scrollToBottom();
       }
-      fixTaskFn = null;
-    };
-    fixTaskFn = fixToBottom;
+    }, 3);
   }
 
   // 修复vue2-diff的bug导致的selection问题
