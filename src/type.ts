@@ -11,8 +11,6 @@ export type RawChildren =
     };
 
 export type ReactiveData = {
-  views: number;
-
   // 滚动距离
   offset: number;
   // 不包含插槽的高度

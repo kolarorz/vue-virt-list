@@ -87,9 +87,6 @@ function useVirtList<T extends Record<string, any>>(
 
   // 全局需要响应式的数据
   const reactiveData: ShallowReactive<ReactiveData> = shallowReactive({
-    // 可视区域的个数，不算buffer，只和clientSize和minSize有关
-    views: 0,
-
     // 滚动距离
     offset: 0,
     // 不包含插槽的高度
@@ -304,21 +301,17 @@ function useVirtList<T extends Record<string, any>>(
     }
   }
 
-  function updateRange(start: number) {
+  function updateInViewBegin(start: number) {
     // 修复vue2-diff的bug
     if (isVue2 && props.fixSelection && direction === 'backward') {
       fixSelection();
     }
 
     reactiveData.inViewBegin = start;
-    reactiveData.inViewEnd = Math.min(
-      start + reactiveData.views,
-      props.list.length - 1,
-    );
   }
 
-  function calcRange() {
-    const { views, offset, inViewBegin } = reactiveData;
+  function calcViewBegin() {
+    const { offset, inViewBegin } = reactiveData;
     const { itemKey } = props;
 
     const offsetWithNoHeader = offset - slotSize.headerSize;
@@ -327,7 +320,7 @@ function useVirtList<T extends Record<string, any>>(
 
     // 当有顶部插槽的时候，快速滚动到顶部，则需要判断，并直接修正
     if (offsetWithNoHeader < 0) {
-      updateRange(0);
+      updateInViewBegin(0);
       return;
     }
 
@@ -382,7 +375,7 @@ function useVirtList<T extends Record<string, any>>(
 
     // 节流
     if (start !== reactiveData.inViewBegin) {
-      updateRange(start);
+      updateInViewBegin(start);
     }
   }
 
@@ -397,7 +390,8 @@ function useVirtList<T extends Record<string, any>>(
     direction = offset < reactiveData.offset ? 'forward' : 'backward';
     reactiveData.offset = offset;
 
-    calcRange();
+    calcViewBegin();
+    updateInViewEnd();
 
     // 到达顶部
     if (
@@ -421,16 +415,41 @@ function useVirtList<T extends Record<string, any>>(
     }
   }
 
-  function calcViews() {
-    // 不算buffer的个数
-    const newViews = Math.ceil(slotSize.clientSize / props.minSize) + 1;
-    reactiveData.views = newViews;
+  function updateInViewEnd() {
+    // 延后计算时机
+    // 更新完 inViewBegin 之后直接进行 viewEnd 的计算可能由于时机问题，renderBegin 值还没更新，导致计算错误
+    requestAnimationFrame(() => {
+      const { inViewBegin, inViewEnd } = reactiveData;
+      let end = inViewEnd;
+      let offsetReduce = getVirtualSize2beginInView();
+      const offsetWithNoHeader =
+        reactiveData.offset -
+        slotSize.headerSize -
+        slotSize.stickyHeaderSize +
+        slotSize.clientSize -
+        slotSize.stickyFooterSize;
+      for (let i = inViewBegin; i < props.list.length; i++) {
+        const itemSize = getItemSize(props.list[i][props.itemKey]);
+        if (
+          offsetWithNoHeader >= offsetReduce &&
+          offsetReduce + itemSize >= offsetWithNoHeader
+        ) {
+          end = i;
+          break;
+        }
+        offsetReduce += itemSize;
+      }
+
+      if (end !== inViewEnd) {
+        reactiveData.inViewEnd = end;
+      }
+    });
   }
 
   function onClientResize() {
-    // 可视区域尺寸变化 => 1. 更新可视区域个数 2. 可视区域个数变化后需要及时更新记录尺寸
-    calcViews();
-    updateRange(reactiveData.inViewBegin);
+    // 可视区域尺寸变化 => 更新可视区域范围
+    updateInViewBegin(reactiveData.inViewBegin);
+    updateInViewEnd();
   }
 
   function calcListTotalSize() {
@@ -472,7 +491,8 @@ function useVirtList<T extends Record<string, any>>(
     });
     updateTotalVirtualSize();
     scrollToOffset(reactiveData.offset - deletedListSize);
-    calcRange();
+    calcViewBegin();
+    updateInViewEnd();
   }
   // expose only
   function addedList2Top(addedList: T[]) {
@@ -485,7 +505,8 @@ function useVirtList<T extends Record<string, any>>(
     scrollToOffset(reactiveData.offset + addedListSize);
     forceFixOffset = true;
     abortFixOffset = false;
-    calcRange();
+    calcViewBegin();
+    updateInViewEnd();
   }
 
   function forceUpdate() {
@@ -725,8 +746,9 @@ function useVirtList<T extends Record<string, any>>(
 
       // [require] 因为list长度变化，所以总高度有变化
       calcListTotalSize();
-      // [require] 因为list长度变化，所以重新计算起始结束位置
-      updateRange(reactiveData.inViewBegin);
+      // [require] 因为list长度变化，所以重新计算起始结束位置和结束位置
+      updateInViewBegin(reactiveData.inViewBegin);
+      updateInViewEnd();
       // [require] 如果顶部列表数据发生变更需要更正顶部高度
       updateTotalVirtualSize();
       // [require] 列表长度切内容发生变化，如果起始位置没变，则需要强制更新一下页面
