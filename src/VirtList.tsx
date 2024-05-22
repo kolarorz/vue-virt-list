@@ -756,6 +756,7 @@ function useVirtList<T extends Record<string, any>>(
     resizeObserver,
 
     getOffset,
+    getSlotSize,
     reset,
     scrollToIndex,
     scrollIntoView,
@@ -1029,6 +1030,27 @@ const VirtList = defineComponent({
                     itemData: currentItem,
                     index: renderBegin + index,
                   }),
+            ]) as VNodeChild[],
+          ),
+        );
+      }
+
+      if (mainList.length === 0 && this.$slots.empty) {
+        const height = this.slotSize.clientSize - this.getSlotSize();
+        mainList.push(
+          h(
+            'div',
+            polyfillAttr(
+              {
+                key: `slot-empty-${height}`,
+                style: `height: ${height}px`,
+              },
+              {},
+            ),
+            polyfillChildren([
+              isVue2
+                ? (this as any).$scopedSlots?.empty?.()
+                : (this as any).$slots.empty?.(),
             ]) as VNodeChild[],
           ),
         );
