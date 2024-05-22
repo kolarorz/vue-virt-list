@@ -111,6 +111,7 @@ export type VirtListReturn<T extends Record<string, string>> = {
   resizeObserver: ResizeObserver | undefined;
 
   getOffset: () => number;
+  getSlotSize: () => number;
   reset: () => void;
   scrollToIndex: (index: number) => void;
   scrollIntoView: (index: number) => void;
