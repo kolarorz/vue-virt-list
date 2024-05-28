@@ -42,20 +42,21 @@
 
 ## 暴露方法
 
-| 方法名            | 说明                                                                       | 参数   |
-| ----------------- | -------------------------------------------------------------------------- | ------ |
-| reset             | 重置列表                                                                   | -      |
-| getOffset         | 获取滚动高度                                                               | -      |
-| scrollToTop       | scroll to top                                                              | -      |
-| scrollToBottom    | scroll to bottom                                                           | -      |
-| scrollToIndex     | scroll to index                                                            | index  |
-| scrollInToView    | scroll to index if needed（不在可视范围内）                                | index  |
-| scrollToOffset    | scroll to px                                                               | px     |
-| getItemSize       | 获取指定item尺寸                                                           | index  |
-| getItemPosByIndex | 获取指定item的位置信息: `{ top: number; current: number; bottom: number;}` | index  |
-| forceUpdate       | 强制更新                                                                   | -      |
-| deletedList2Top   | 删除顶部list（通常在分页模式下使用，具体参考demo）                         | list[] |
-| addedList2Top     | 添加顶部list（通常在分页模式下使用，具体参考demo）                         | list[] |
+| 方法名            | 说明                                                                       | 参数                                               |
+| ----------------- | -------------------------------------------------------------------------- | -------------------------------------------------- |
+| reset             | 重置列表                                                                   | -                                                  |
+| getOffset         | 获取滚动高度                                                               | -                                                  |
+| scrollToTop       | scroll to top                                                              | -                                                  |
+| scrollToBottom    | scroll to bottom                                                           | -                                                  |
+| scrollToIndex     | scroll to index                                                            | index                                              |
+| scrollInToView    | scroll to index if needed（不在可视范围内）                                | index                                              |
+| scrollToOffset    | scroll to px                                                               | px                                                 |
+| getItemSize       | 获取指定item尺寸                                                           | index                                              |
+| getItemPosByIndex | 获取指定item的位置信息: `{ top: number; current: number; bottom: number;}` | index                                              |
+| forceUpdate       | 强制更新                                                                   | -                                                  |
+| deletedList2Top   | 删除顶部list（通常在分页模式下使用，具体参考demo）                         | list[]                                             |
+| addedList2Top     | 添加顶部list（通常在分页模式下使用，具体参考demo）                         | list[]                                             |
+| manualRender      | 手动控制渲染（提供渲染起始）                                               | `(renderBegin: number, renderEnd: number) => void` |
 
 ## 额外参数
 
