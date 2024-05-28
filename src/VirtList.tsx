@@ -652,6 +652,36 @@ function useVirtList<T extends Record<string, any>>(
   }
 
   const renderList: ShallowRef<T[]> = shallowRef([]);
+
+  function manualRender(_newRenderBegin: number, _newRenderEnd: number) {
+    // 旧的渲染起始
+    const _oldRenderBegin = reactiveData.renderBegin;
+
+    // update render begin
+    reactiveData.renderBegin = _newRenderBegin;
+    // update render end
+    reactiveData.renderEnd = _newRenderEnd;
+    // update virtualSize, diff range size
+    if (_newRenderBegin > _oldRenderBegin) {
+      reactiveData.virtualSize += getRangeSize(
+        _newRenderBegin,
+        _oldRenderBegin,
+      );
+    } else {
+      reactiveData.virtualSize -= getRangeSize(
+        _newRenderBegin,
+        _oldRenderBegin,
+      );
+    }
+    // update render list
+    renderList.value = props.list.slice(
+      reactiveData.renderBegin,
+      reactiveData.renderEnd + 1,
+    );
+    // update size
+    updateTotalVirtualSize();
+  }
+
   watch(
     // 这里为什么用 renderKey 代替监听 props.list
     // 因为props.list会导致v-for时deepArray导致大量的性能浪费
@@ -759,6 +789,7 @@ function useVirtList<T extends Record<string, any>>(
     getSlotSize,
     reset,
     scrollToIndex,
+    manualRender,
     scrollIntoView,
     scrollToTop,
     scrollToBottom,

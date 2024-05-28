@@ -116,6 +116,7 @@ export type VirtListReturn<T extends Record<string, string>> = {
   scrollToIndex: (index: number) => void;
   scrollIntoView: (index: number) => void;
   scrollToTop: () => void;
+  manualRender: (begin: number, end: number) => void;
   scrollToBottom: () => void;
   scrollToOffset: (offset: number) => void;
   getItemSize: (itemKey: string) => number;
