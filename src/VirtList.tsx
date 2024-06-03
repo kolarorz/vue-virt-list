@@ -315,6 +315,12 @@ function useVirtList<T extends Record<string, any>>(
       start + reactiveData.views,
       props.list.length - 1,
     );
+
+    // expose
+    emitFunction?.rangeUpdate?.(
+      reactiveData.inViewBegin,
+      reactiveData.inViewEnd,
+    );
   }
 
   function calcRange() {
@@ -923,6 +929,9 @@ const VirtList = defineComponent({
       },
       itemResize: (id: string, newSize: number) => {
         context.emit('itemResize', id, newSize);
+      },
+      rangeUpdate: (inViewBegin: number, inViewEnd: number) => {
+        context.emit('rangeUpdate', inViewBegin, inViewEnd);
       },
     };
 

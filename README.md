@@ -10,6 +10,12 @@
 
 👉 <a href="https://d8diegi800.feishu.cn/wiki/MX2Vwn1RWiwUsokjhshcr6sVnNb?from=from_copylink" target="_blank">Advantages</a>
 
+## WeChat
+
+扫码加好友进入技术交流群
+
+<img src="./qrcode.png" width=200 />
+
 ## Documentation
 
 To check out docs, visit <a href="https://keno-lee.github.io/vue-virt-list/" target="_blank">vue-virt-list</a>

@@ -33,12 +33,13 @@
 
 ## 事件
 
-| 方法名     | 说明              | 参数                              |
-| ---------- | ----------------- | --------------------------------- |
-| toTop      | 触顶的回调        | 列表中第一项                      |
-| toBottom   | 触底的回调        | 列表中最后一项                    |
-| scroll     | 滚动的回调        | event                             |
-| itemResize | Item 尺寸发生变化 | `{ id: string, newSize: number }` |
+| 方法名      | 说明              | 参数                                         |
+| ----------- | ----------------- | -------------------------------------------- |
+| toTop       | 触顶的回调        | 列表中第一项                                 |
+| toBottom    | 触底的回调        | 列表中最后一项                               |
+| scroll      | 滚动的回调        | event                                        |
+| itemResize  | Item 尺寸发生变化 | `{ id: string, newSize: number }`            |
+| rangeUpdate | 可视区范围变更    | `{ inViewBegin: number, inViewEnd: number }` |
 
 ## 暴露方法
 

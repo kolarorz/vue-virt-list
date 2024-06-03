@@ -16,6 +16,7 @@
         itemKey="id"
         :minSize="40"
         fixed
+        @rangeUpdate="rangeUpdate"
       >
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />
@@ -49,6 +50,11 @@ export default {
   mounted() {
     this.reactiveData = (this.$refs.virtListRef as any).reactiveData;
     this.list = getList(1000);
+  },
+  methods: {
+    rangeUpdate(inViewBegin: number, inViewEnd: number) {
+      // console.log('inViewBegin', inViewBegin, 'inViewEnd', inViewEnd);
+    },
   },
 };
 </script>

@@ -79,6 +79,7 @@ export interface EmitFunction<T> {
   toTop?: (item: T) => void;
   toBottom?: (item: T) => void;
   itemResize?: (id: string, newSize: number) => void;
+  rangeUpdate?: (begin: number, end: number) => void;
 }
 
 export interface NormalEmitFunction<T> extends EmitFunction<T> {
