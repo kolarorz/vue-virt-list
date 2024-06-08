@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   defineComponent,
-  h,
-  isVue2,
   onBeforeUnmount,
   onBeforeUpdate,
   onMounted,
@@ -14,7 +12,7 @@ import {
   type VNode,
 } from 'vue-demi';
 import { ObserverItem } from './ObserverItem';
-import { polyfillAttr, polyfillChildren, polyfillSlot } from './util';
+import { _h, getSlot } from './util';
 import type { NormalEmitFunction, SlotSize, RealListProps } from './type';
 
 const defaultProps = {
@@ -585,81 +583,71 @@ const RealList = defineComponent({
       stickyFooterStyle,
     } = props as RealListProps<any>;
 
-    const { header, footer, stickyHeader, stickyFooter } = this.$slots;
-
     const renderStickyHeaderSlot = (): VNode | null =>
-      stickyHeader
-        ? h(
+      getSlot(this, 'stickyHeader')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-sticky-header',
-                class: stickyHeaderClass,
-                style: `position: sticky; z-index: 10; 'top: 0; ${stickyHeaderStyle}`,
-                ref: 'stickyHeaderRefEl',
-              },
-              {
+            {
+              key: 'slot-sticky-header',
+              class: stickyHeaderClass,
+              style: `position: sticky; z-index: 10; 'top: 0; ${stickyHeaderStyle}`,
+              ref: 'stickyHeaderRefEl',
+              attrs: {
                 'data-id': 'stickyHeader',
               },
-            ),
-            [polyfillSlot(stickyHeader)],
+            },
+            [getSlot(this, 'stickyHeader')?.()],
           )
         : null;
 
     const renderStickyFooterSlot = (): VNode | null =>
-      stickyFooter
-        ? h(
+      getSlot(this, 'stickyFooter')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-sticky-footer',
-                class: stickyFooterClass,
-                style: `position: sticky; z-index: 10; bottom: 0; ${stickyFooterStyle}`,
-                ref: 'stickyFooterRefEl',
-              },
-              {
+            {
+              key: 'slot-sticky-footer',
+              class: stickyFooterClass,
+              style: `position: sticky; z-index: 10; bottom: 0; ${stickyFooterStyle}`,
+              ref: 'stickyFooterRefEl',
+              attrs: {
                 'data-id': 'stickyFooter',
               },
-            ),
-            [polyfillSlot(stickyFooter)],
+            },
+            [getSlot(this, 'stickyFooter')?.()],
           )
         : null;
 
     const renderHeaderSlot = (): VNode | null =>
-      header
-        ? h(
+      getSlot(this, 'header')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-header',
-                class: headerClass,
-                style: headerStyle,
-                ref: 'headerRefEl',
-              },
-              {
+            {
+              key: 'slot-header',
+              class: headerClass,
+              style: headerStyle,
+              ref: 'headerRefEl',
+              attrs: {
                 'data-id': 'header',
               },
-            ),
-            [polyfillSlot(header)],
+            },
+            [getSlot(this, 'header')?.()],
           )
         : null;
 
     const renderFooterSlot = (): VNode | null =>
-      footer
-        ? h(
+      getSlot(this, 'footer')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-footer',
-                class: footerClass,
-                style: footerStyle,
-                ref: 'footerRefEl',
-              },
-              {
+            {
+              key: 'slot-footer',
+              class: footerClass,
+              style: footerStyle,
+              ref: 'footerRefEl',
+              attrs: {
                 'data-id': 'footer',
               },
-            ),
-            [polyfillSlot(footer)],
+            },
+            [getSlot(this, 'footer')?.()],
           )
         : null;
 
@@ -668,30 +656,28 @@ const RealList = defineComponent({
       for (let i = 0; i < props.list.length; i++) {
         const currentItem = props.list[i];
         mainList.push(
-          h(
+          _h(
             ObserverItem,
-            polyfillAttr(
-              {
-                key: currentItem[itemKey],
-              },
-              {
+            {
+              key: currentItem[itemKey],
+              attrs: {
                 id: currentItem[itemKey],
                 resizeObserver: resizeObserver,
               },
-            ),
-            polyfillChildren([
-              isVue2
-                ? (this as any).$scopedSlots?.default?.({
-                    itemData: currentItem,
-                  })
-                : (this.$slots as any).default?.({
-                    itemData: currentItem,
-                  }),
-            ]),
+            },
+            {
+              default: () =>
+                getSlot(
+                  this,
+                  'default',
+                )?.({
+                  itemData: currentItem,
+                }),
+            },
           ),
         );
       }
-      return h(
+      return _h(
         'div',
         {
           ref: 'listRefEl',
@@ -700,24 +686,22 @@ const RealList = defineComponent({
       );
     };
 
-    return h(
+    return _h(
       'div',
-      polyfillAttr(
-        {
-          ref: 'clientRefEl',
-          style: `width: 100%; height: 100%; overflow: overlay;`,
-        },
-        {
+      {
+        ref: 'clientRefEl',
+        style: `width: 100%; height: 100%; overflow: overlay;`,
+        attrs: {
           'data-id': 'client',
         },
-      ),
-      polyfillChildren([
+      },
+      [
         renderStickyHeaderSlot(),
         renderHeaderSlot(),
         renderMainList(),
         renderFooterSlot(),
         renderStickyFooterSlot(),
-      ]),
+      ],
     );
   },
 });

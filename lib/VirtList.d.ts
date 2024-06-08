@@ -224,6 +224,7 @@ declare const VirtList: import("vue-demi").DefineComponent<{
         default: string;
     };
 }>>, {
+    fixed: boolean;
     list: any[];
     minSize: number;
     scrollDistance: number;
@@ -235,7 +236,6 @@ declare const VirtList: import("vue-demi").DefineComponent<{
     stickyHeaderStyle: string;
     stickyFooterClass: string;
     stickyFooterStyle: string;
-    fixed: boolean;
     renderControl: Function;
     buffer: number;
     bufferTop: number;

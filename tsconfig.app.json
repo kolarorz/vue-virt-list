@@ -1,15 +1,14 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  // "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "docs/**/*"],
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*", "example/**/__tests__/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "jsx": "preserve",
     "composite": true,
-    "types": ["node"]
-    // "paths": {
-    //   "vue-virt-list": ["./src"]
-    // }
+    "types": ["node"],
+    "paths": {
+      "vue-virt-list": ["./src"]
+    }
   }
 }

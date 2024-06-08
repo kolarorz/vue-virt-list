@@ -1,6 +1,6 @@
-import { defineComponent, h, onBeforeUnmount, onMounted, ref } from 'vue-demi';
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue-demi';
 import type { ObserverItemProps } from './type';
-import { polyfillSlot, polyfillAttr } from './util';
+import { _h, getSlot } from './util';
 
 const useObserverItem = (props: ObserverItemProps) => {
   const itemRefEl = ref(null);
@@ -38,15 +38,15 @@ const ObserverItem = defineComponent({
   },
   render() {
     const { id } = this;
-    return h(
+    return _h(
       'div',
-      polyfillAttr(
-        { ref: 'itemRefEl' },
-        {
+      {
+        ref: 'itemRefEl',
+        attrs: {
           'data-id': id,
         },
-      ),
-      [polyfillSlot(this.$slots.default)],
+      },
+      [getSlot(this, 'default')?.()],
     );
   },
 });

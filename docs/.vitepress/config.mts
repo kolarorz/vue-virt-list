@@ -61,7 +61,7 @@ export default defineConfig({
         { text: '可变窗口大小', link: '/examples/resize/' },
 
         { text: '可变高度', link: '/examples/dynamic/' },
-        { text: '表格', link: '/examples/table/' },
+        { text: '表格', link: '/examples/table-demo/' },
         { text: '无限加载', link: '/examples/infinity/' },
         { text: '聊天室', link: '/examples/chat/' },
         // { text: '树形', link: '/examples/tree/' },
@@ -75,6 +75,14 @@ export default defineConfig({
               link: '/examples/pagination-virt/',
             },
             { text: '分页-真实列表', link: '/examples/pagination-real/' },
+          ],
+        },
+        {
+          text: '扩展组件',
+          items: [
+            { text: 'Grid', link: '/examples/grid/' },
+            { text: 'Tree', link: '/examples/tree/' },
+            { text: 'Table', link: '/examples/table/' },
           ],
         },
       ],
