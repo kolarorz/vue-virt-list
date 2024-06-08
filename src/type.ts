@@ -1,14 +1,27 @@
-import type { Ref, ShallowReactive, VNodeChild } from 'vue-demi';
+import type {
+  Ref,
+  ShallowReactive,
+  VNodeChild,
+  VNode,
+  VNodeArrayChildren,
+} from 'vue-demi';
 
 export type ObserverItemProps = {
   resizeObserver: ResizeObserver;
 };
 
 export type RawChildren =
-  | VNodeChild[]
-  | {
-      default: () => VNodeChild[];
-    };
+  | string
+  | number
+  | boolean
+  | VNode
+  | VNodeArrayChildren
+  | (() => any);
+
+export type RawSlots = {
+  [name: string]: unknown;
+  $stable?: boolean;
+};
 
 export type ReactiveData = {
   views: number;

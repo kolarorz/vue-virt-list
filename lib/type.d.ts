@@ -1,9 +1,11 @@
-import type { Ref, ShallowReactive, VNodeChild } from 'vue-demi';
+import type { Ref, ShallowReactive, VNode, VNodeArrayChildren } from 'vue-demi';
 export type ObserverItemProps = {
     resizeObserver: ResizeObserver;
 };
-export type RawChildren = VNodeChild[] | {
-    default: () => VNodeChild[];
+export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
+export type RawSlots = {
+    [name: string]: unknown;
+    $stable?: boolean;
 };
 export type ReactiveData = {
     views: number;
@@ -57,6 +59,7 @@ export interface EmitFunction<T> {
     toTop?: (item: T) => void;
     toBottom?: (item: T) => void;
     itemResize?: (id: string, newSize: number) => void;
+    rangeUpdate?: (begin: number, end: number) => void;
 }
 export interface NormalEmitFunction<T> extends EmitFunction<T> {
     updateCurrent?: (key: string | number) => void;
@@ -82,10 +85,12 @@ export type VirtListReturn<T extends Record<string, string>> = {
     sizesMap: Map<string, number>;
     resizeObserver: ResizeObserver | undefined;
     getOffset: () => number;
+    getSlotSize: () => number;
     reset: () => void;
     scrollToIndex: (index: number) => void;
     scrollIntoView: (index: number) => void;
     scrollToTop: () => void;
+    manualRender: (begin: number, end: number) => void;
     scrollToBottom: () => void;
     scrollToOffset: (offset: number) => void;
     getItemSize: (itemKey: string) => number;

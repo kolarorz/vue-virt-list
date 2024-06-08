@@ -13,6 +13,20 @@ export function getList(length: number, start = 0): Item[] {
   return newList;
 }
 
+type PersonItem = { index: number; id: string; avatar: string; name: string };
+export function getAvatarList(length: number, start = 0): PersonItem[] {
+  const newList: PersonItem[] = [];
+  for (let i = 0; i < length; i++) {
+    newList.push({
+      index: i,
+      id: faker.string.nanoid(),
+      avatar: faker.image.avatar(),
+      name: faker.person.firstName(),
+    });
+  }
+  return newList;
+}
+
 // 异步获取数据
 export async function asyncGetList(
   length: number,
@@ -36,7 +50,7 @@ export async function asyncGetList(
 
 const randomArr = [60, 80, 100, 110, 130];
 export function getHorizontalList(count: number) {
-  const data = [];
+  const data: { id: number; width: number }[] = [];
   for (let index = 0; index < count; index += 1) {
     const randomIndex = Math.floor(Math.random() * randomArr.length);
     data.push({

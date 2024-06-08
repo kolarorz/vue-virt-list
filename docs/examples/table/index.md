@@ -1,5 +1,3 @@
-# 表格
+# 表格 VirtTable
 
-## 基础示例
-
-<!<< ./Main.vue
+开发中...尽请期待，提前预览：https://github.com/keno-lee/vue-virt-grid

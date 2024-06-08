@@ -9,7 +9,6 @@ import {
   ref,
   shallowRef,
   watch,
-  h,
   type ShallowRef,
   type ShallowReactive,
   type VNodeChild,
@@ -24,7 +23,8 @@ import type {
   VirtListProps,
   VirtListReturn,
 } from './type';
-import { polyfillSlot, polyfillAttr, polyfillChildren } from './util';
+
+import { _h, _h2Slot, getSlot } from './util';
 
 const defaultProps = {
   fixed: false,
@@ -956,89 +956,75 @@ const VirtList = defineComponent({
       stickyFooterStyle,
     } = this.props;
 
-    const renderStickyHeaderSlot = (): VNode | null => {
-      return this.$slots.stickyHeader
-        ? h(
+    const renderStickyHeaderSlot = (): VNode | null =>
+      getSlot(this, 'stickyHeader')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-sticky-header',
-                class: stickyHeaderClass,
-                style: `position: sticky; z-index: 10; ${
-                  horizontal ? 'left: 0' : 'top: 0;'
-                } ${stickyHeaderStyle}`,
-                ref: 'stickyHeaderRefEl',
-              },
-              {
+            {
+              key: 'slot-sticky-header',
+              class: stickyHeaderClass,
+              style: `position: sticky; z-index: 10; ${
+                horizontal ? 'left: 0' : 'top: 0;'
+              } ${stickyHeaderStyle}`,
+              ref: 'stickyHeaderRefEl',
+              attrs: {
                 'data-id': 'stickyHeader',
               },
-            ),
-            [polyfillSlot(this.$slots.stickyHeader)],
+            },
+            [getSlot(this, 'stickyHeader')?.()],
           )
         : null;
-    };
 
-    const renderStickyFooterSlot = (): VNode | null => {
-      return this.$slots.stickyFooter
-        ? h(
+    const renderStickyFooterSlot = (): VNode | null =>
+      getSlot(this, 'stickyFooter')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-sticky-footer',
-                class: stickyFooterClass,
-                style: `position: sticky; z-index: 10; ${
-                  horizontal ? 'right: 0' : 'bottom: 0;'
-                } ${stickyFooterStyle}`,
-                ref: 'stickyFooterRefEl',
-              },
-              {
+            {
+              key: 'slot-sticky-footer',
+              class: stickyFooterClass,
+              style: `position: sticky; z-index: 10; ${
+                horizontal ? 'right: 0' : 'bottom: 0;'
+              } ${stickyFooterStyle}`,
+              ref: 'stickyFooterRefEl',
+              attrs: {
                 'data-id': 'stickyFooter',
               },
-            ),
-            [polyfillSlot(this.$slots.stickyFooter)],
+            },
+            [getSlot(this, 'stickyFooter')?.()],
           )
         : null;
-    };
 
-    const renderHeaderSlot = (): VNode | null => {
-      return this.$slots.header
-        ? h(
+    const renderHeaderSlot = (): VNode | null =>
+      getSlot(this, 'header')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-header',
-                class: headerClass,
-                style: headerStyle,
-                ref: 'headerRefEl',
-              },
-              {
-                'data-id': 'header',
-              },
-            ),
-            [polyfillSlot(this.$slots.header)],
+            {
+              key: 'slot-header',
+              class: headerClass,
+              style: headerStyle,
+              ref: 'headerRefEl',
+              attrs: { 'data-id': 'header' },
+            },
+            [getSlot(this, 'header')?.()],
           )
         : null;
-    };
 
-    const renderFooterSlot = (): VNode | null => {
-      return this.$slots.footer
-        ? h(
+    const renderFooterSlot = (): VNode | null =>
+      getSlot(this, 'footer')
+        ? _h(
             'div',
-            polyfillAttr(
-              {
-                key: 'slot-footer',
-                class: footerClass,
-                style: footerStyle,
-                ref: 'footerRefEl',
-              },
-              {
+            {
+              key: 'slot-footer',
+              class: footerClass,
+              style: footerStyle,
+              ref: 'footerRefEl',
+              attrs: {
                 'data-id': 'footer',
               },
-            ),
-            [polyfillSlot(this.$slots.footer)],
+            },
+            [getSlot(this, 'footer')?.()],
           )
         : null;
-    };
 
     const { listTotalSize, virtualSize, renderBegin } = reactiveData;
 
@@ -1047,51 +1033,52 @@ const VirtList = defineComponent({
       for (let index = 0; index < renderList.length; index += 1) {
         const currentItem = renderList[index];
         mainList.push(
-          h(
+          _h(
             ObserverItem,
-            polyfillAttr(
-              {
-                key: currentItem[itemKey],
-                class: itemClass,
-                style: itemStyle,
-              },
-              {
+            {
+              key: currentItem[itemKey],
+              class: itemClass,
+              style: itemStyle,
+              attrs: {
                 id: currentItem[itemKey],
                 resizeObserver: resizeObserver,
               },
-            ),
-            polyfillChildren([
-              isVue2
-                ? (this as any).$scopedSlots?.default?.({
-                    itemData: currentItem,
-                    index: renderBegin + index,
-                  })
-                : (this as any).$slots.default?.({
+            },
+            // vue3 推荐使用 functional
+            isVue2
+              ? [
+                  getSlot(
+                    this,
+                    'default',
+                  )?.({
                     itemData: currentItem,
                     index: renderBegin + index,
                   }),
-            ]) as VNodeChild[],
+                ]
+              : {
+                  default: () =>
+                    getSlot(
+                      this,
+                      'default',
+                    )?.({
+                      itemData: currentItem,
+                      index: renderBegin + index,
+                    }),
+                },
           ),
         );
       }
 
-      if (mainList.length === 0 && this.$slots.empty) {
+      if (mainList.length === 0 && getSlot(this, 'empty')) {
         const height = this.slotSize.clientSize - this.getSlotSize();
         mainList.push(
-          h(
+          _h(
             'div',
-            polyfillAttr(
-              {
-                key: `slot-empty-${height}`,
-                style: `height: ${height}px`,
-              },
-              {},
-            ),
-            polyfillChildren([
-              isVue2
-                ? (this as any).$scopedSlots?.empty?.()
-                : (this as any).$slots.empty?.(),
-            ]) as VNodeChild[],
+            {
+              key: `slot-empty-${height}`,
+              style: `height: ${height}px`,
+            },
+            [getSlot(this, 'empty')?.()],
           ),
         );
       }
@@ -1099,8 +1086,11 @@ const VirtList = defineComponent({
       const dynamicListStyle = horizontal
         ? `will-change: width; min-width: ${listTotalSize}px; display: flex; ${listStyle}`
         : `will-change: height; min-height: ${listTotalSize}px; ${listStyle}`;
+      const virtualStyle = horizontal
+        ? `width: ${virtualSize}px; will-change: width;`
+        : `height: ${virtualSize}px; will-change: height;`;
 
-      return h(
+      return _h(
         'div',
         {
           ref: 'listRefEl',
@@ -1108,10 +1098,8 @@ const VirtList = defineComponent({
           style: dynamicListStyle,
         },
         [
-          h('div', {
-            style: horizontal
-              ? `width: ${virtualSize}px; will-change: width;`
-              : `height: ${virtualSize}px; will-change: height;`,
+          _h('div', {
+            style: virtualStyle,
           }),
           mainList,
         ],
@@ -1122,25 +1110,23 @@ const VirtList = defineComponent({
     //   return <div style={`float: left; height: ${listTotalSize}px`}></div>; // 虚拟滚动条
     // };
 
-    return h(
+    return _h(
       'div',
-      polyfillAttr(
-        {
-          ref: 'clientRefEl',
-          class: 'virt-list__client',
-          style: `width: 100%; height: 100%; overflow: overlay;`,
-        },
-        {
+      {
+        ref: 'clientRefEl',
+        class: 'virt-list__client',
+        style: `width: 100%; height: 100%; overflow: overlay;`,
+        attrs: {
           'data-id': 'client',
         },
-      ),
-      polyfillChildren([
+      },
+      [
         renderStickyHeaderSlot(),
         renderHeaderSlot(),
         renderMainList(),
         renderFooterSlot(),
         renderStickyFooterSlot(),
-      ]) as VNodeChild[],
+      ],
     );
   },
 });
