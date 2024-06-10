@@ -68,46 +68,10 @@ const collapseNode = () => {
       currentNodeKey="4"
       :defaultExpandedKeys="['4']"
       :indent="20"
-      stickyHeaderStyle="text-align: center; height: 40px; background: #42b983;"
-      headerStyle="text-align: center; height: 40px; background: cyan"
-      footerStyle="text-align: center; height: 40px; background: cyan"
-      stickyFooterStyle="text-align: center; height: 40px; background: #42b983;"
+      showCheckbox
     >
-      <template #stickyHeader>
-        <div>悬浮header</div>
-      </template>
-      <template #header>
-        <div>header</div>
-      </template>
-      <template #footer>
-        <div>footer</div>
-      </template>
-      <template #stickyFooter>
-        <div>悬浮footer</div>
-      </template>
       <template #empty>
         <div style="padding: 16px">暂无数据</div>
-      </template>
-      <template #icon="{ expanded, node }">
-        <div
-          v-if="!node.isLeaf"
-          style="height: 20px; width: 20px"
-          :style="{ transform: `rotate(${expanded ? 90 : 0}deg)` }"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1024 1024"
-            data-v-6fbb019e=""
-          >
-            <path
-              fill="currentColor"
-              d="M128 192h768v128H128zm0 256h512v128H128zm0 256h768v128H128zm576-352 192 160-192 128z"
-            ></path>
-          </svg>
-        </div>
-      </template>
-      <template #content="{ node }">
-        <div style="color: aqua">{{ node.label }}</div>
       </template>
     </VirtTree>
   </div>
