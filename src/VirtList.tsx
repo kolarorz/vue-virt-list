@@ -24,7 +24,7 @@ import type {
   VirtListReturn,
 } from './type';
 
-import { _h, _h2Slot, getSlot } from './util';
+import { _h, _h2Slot, _hChild, getSlot } from './util';
 
 const defaultProps = {
   fixed: false,
@@ -1033,7 +1033,7 @@ const VirtList = defineComponent({
       for (let index = 0; index < renderList.length; index += 1) {
         const currentItem = renderList[index];
         mainList.push(
-          _h(
+          _hChild(
             ObserverItem,
             {
               key: currentItem[itemKey],
@@ -1044,27 +1044,13 @@ const VirtList = defineComponent({
                 resizeObserver: resizeObserver,
               },
             },
-            // vue3 推荐使用 functional
-            isVue2
-              ? [
-                  getSlot(
-                    this,
-                    'default',
-                  )?.({
-                    itemData: currentItem,
-                    index: renderBegin + index,
-                  }),
-                ]
-              : {
-                  default: () =>
-                    getSlot(
-                      this,
-                      'default',
-                    )?.({
-                      itemData: currentItem,
-                      index: renderBegin + index,
-                    }),
-                },
+            getSlot(
+              this,
+              'default',
+            )?.({
+              itemData: currentItem,
+              index: renderBegin + index,
+            }),
           ),
         );
       }
