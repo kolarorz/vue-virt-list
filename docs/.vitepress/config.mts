@@ -78,7 +78,7 @@ export default defineConfig({
           ],
         },
         {
-          text: '扩展组件',
+          text: '开箱即用',
           items: [
             { text: 'Grid', link: '/examples/grid/' },
             { text: 'Tree', link: '/examples/tree/' },
