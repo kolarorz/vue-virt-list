@@ -7,6 +7,7 @@ import {
   type ExtractPropTypes,
   type ComputedOptions,
   type MethodOptions,
+  type VNode,
 } from 'vue-demi';
 import type { RawChildren, RawSlots } from './type';
 
@@ -58,6 +59,53 @@ function vue3h<P>(
 }
 
 export const _h = isVue2 ? vue2h : vue3h;
+
+function vue2hChild<P>(
+  ele:
+    | Component<
+        Readonly<
+          P extends ComponentPropsOptions<Data> ? ExtractPropTypes<P> : P
+        >,
+        any,
+        any,
+        ComputedOptions,
+        MethodOptions,
+        {},
+        any
+      >
+    | string,
+  props: Props,
+  child?: VNode,
+) {
+  const { attrs, ...rest } = props;
+  return h(ele, { attrs, ...rest } as any, [child]);
+}
+
+function vue3hChild<P>(
+  ele:
+    | Component<
+        Readonly<
+          P extends ComponentPropsOptions<Data> ? ExtractPropTypes<P> : P
+        >,
+        any,
+        any,
+        ComputedOptions,
+        MethodOptions,
+        {},
+        any
+      >
+    | string,
+  props: Props,
+  child?: VNode,
+) {
+  const { attrs, ...rest } = props;
+  // vue3 为了性能，推荐使用functional
+  return h(ele, { ...attrs, ...rest } as any, {
+    default: () => child,
+  });
+}
+
+export const _hChild = isVue2 ? vue2hChild : vue3hChild;
 
 function vue2h2Slot<P>(
   ele:
