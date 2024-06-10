@@ -1,0 +1,78 @@
+.virt-tree-item-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-radius: 1px 1px 0 0;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f7fa;
+    color: rgb(96, 98, 102);
+  }
+}
+
+.virt-tree-item-container > .virt-tree-icon {
+  transform: rotate(-90deg);
+  transition: all 0.5s ease;
+}
+.virt-tree-icon.virt-tree-icon--expanded {
+  transform: rotate(0deg);
+}
+.virt-tree-node-content {
+  flex: 1;
+}
+
+.virt-tree-item-container--current {
+  background-color: #f5f7fa;
+  color: rgb(96, 98, 102);
+}
+.checkbox {
+  display: inline-block;
+  position: relative;
+  border: 1px solid rgb(190, 192, 198);
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  transition:
+    border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
+    background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
+    outline 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
+}
+.checkbox--indeterminate,
+.checkbox--checked {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+.checkbox::after {
+  box-sizing: content-box;
+  content: '';
+  border: 2px solid transparent;
+  border-left: 0;
+  border-top: 0;
+  height: 7px;
+  left: 4px;
+  position: absolute;
+  top: 1px;
+  transform: rotate(45deg) scaleY(0);
+  width: 4px;
+  transition: transform 0.15s ease-in 0.05s;
+  transform-origin: center;
+}
+.checkbox--checked::after {
+  transform: rotate(45deg) scaleY(1);
+  border-color: #fff;
+}
+.checkbox--indeterminate::before {
+  content: '';
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  height: 4px;
+  transform: scale(0.5);
+  left: 0;
+  right: 0;
+  top: 5px;
+}
