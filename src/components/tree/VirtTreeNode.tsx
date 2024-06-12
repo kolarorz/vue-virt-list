@@ -52,6 +52,11 @@ export default defineComponent({
       ctx.emit('click', props.node, e);
     };
 
+    const handleToggle = (e: Event) => {
+      e.stopPropagation();
+      ctx.emit('toggle', props.node);
+    };
+
     const onChange = (e: Event) => {
       e.stopPropagation();
       ctx.emit('check', props.node, !props.checked);
@@ -60,10 +65,11 @@ export default defineComponent({
     return {
       handleClick,
       onChange,
+      handleToggle,
     };
   },
   render() {
-    const { handleClick, onChange } = this;
+    const { handleClick, onChange, handleToggle } = this;
     const {
       current,
       indent,
@@ -96,6 +102,7 @@ export default defineComponent({
                       style: {
                         opacity: node.isLeaf ? 0 : 1,
                       },
+                      onClick: handleToggle,
                     },
                     _h(
                       'svg',

@@ -88,6 +88,10 @@ export const treeProps = {
     type: Boolean,
     default: false,
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export const TreeNodeEmits = {
@@ -116,22 +120,15 @@ export const useTree = (
     tree,
   );
 
-  const getKeys = (key: TreeKey): TreeKey[] => {
-    const node = tree.value?.treeNodesMap.get(key);
-    if (!node?.parent) return [key];
-    const currentKey = getKeys(node.parent.key);
-    return [...currentKey, key];
+  const expandParents = (node: ITreeNode) => {
+    expandedKeysSet.value.add(node.key);
+    if (!node?.parent) return;
+    expandParents(node.parent);
   };
 
   const flattenList = computed(() => {
     // 展开节点的所有父节点
-    const formatExpandList = Array.from(expandedKeysSet.value).reduce<
-      TreeKey[]
-    >((pre, key) => {
-      const keys = getKeys(key);
-      return [...pre, ...keys];
-    }, []);
-    const expandedKeys = new Set(formatExpandList);
+    const expandedKeys = expandedKeysSet.value;
     const flattenNodes: ITreeNode[] = [];
     const nodes = (tree.value && tree.value.treeNodes) || [];
     function traverse() {
@@ -282,7 +279,13 @@ export const useTree = (
   };
 
   const setExpandedKeys = (keys: TreeKey[]) => {
-    expandedKeysSet.value = new Set(keys);
+    // 设置展开项的时候需要展开所有的父级
+    for (const key of keys) {
+      const node = tree.value?.treeNodesMap.get(key);
+      if (node) {
+        expandParents(node);
+      }
+    }
     triggerRef(expandedKeysSet);
   };
 
@@ -304,7 +307,11 @@ export const useTree = (
   };
 
   const expandNodeByKey = (key: TreeKey) => {
-    expandedKeysSet.value.add(key);
+    if (!key && key !== 0) return;
+    const targetItem = tree.value?.treeNodesMap.get(key);
+    if (!targetItem) return;
+    // 根据节点展开的时候需要展开所有父亲节点
+    expandParents(targetItem);
     triggerRef(expandedKeysSet);
     scrollToTarget(key, false);
   };
@@ -368,6 +375,7 @@ export const useTree = (
     flattenList,
 
     onScroll,
+    setTreeData,
     toggleExpand,
     expandNode,
     collapseNode,
