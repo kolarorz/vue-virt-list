@@ -22,6 +22,7 @@ export default defineComponent({
       isChecked,
       isIndeterminate,
       onCheckChange,
+      toggleExpand,
     } = this;
 
     const { minSize, showCheckbox, indent } = this.$props as TreeProps;
@@ -44,6 +45,7 @@ export default defineComponent({
           indeterminate: isIndeterminate(itemData),
           onClick: onClickTreeNode,
           onCheck: onCheckChange,
+          onToggle: (node: ITreeNode) => toggleExpand(node),
         },
         {
           default: getSlot(this, 'default')
