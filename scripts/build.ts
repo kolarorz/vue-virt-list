@@ -19,7 +19,7 @@ export default defineConfig(({ command }) => ({
   build: {
     emptyOutDir: true,
     minify: false,
-    sourcemap: true,
+    // sourcemap: true,
     target: ['chrome62'],
 
     rollupOptions: {
@@ -31,7 +31,7 @@ export default defineConfig(({ command }) => ({
         manualChunks: undefined,
         format: 'es',
         dir: './lib',
-        // preserveModules: true,
+        preserveModules: true,
         entryFileNames: '[name].js',
       },
     },
