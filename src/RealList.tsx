@@ -12,7 +12,7 @@ import {
   type VNode,
 } from 'vue-demi';
 import { ObserverItem } from './ObserverItem';
-import { _h, getSlot } from './util';
+import { _h, _hChild, getSlot } from './util';
 import type { NormalEmitFunction, SlotSize, RealListProps } from './type';
 
 const defaultProps = {
@@ -656,7 +656,7 @@ const RealList = defineComponent({
       for (let i = 0; i < props.list.length; i++) {
         const currentItem = props.list[i];
         mainList.push(
-          _h(
+          _hChild(
             ObserverItem,
             {
               key: currentItem[itemKey],
@@ -665,15 +665,12 @@ const RealList = defineComponent({
                 resizeObserver: resizeObserver,
               },
             },
-            {
-              default: () =>
-                getSlot(
-                  this,
-                  'default',
-                )?.({
-                  itemData: currentItem,
-                }),
-            },
+            getSlot(
+              this,
+              'default',
+            )?.({
+              itemData: currentItem,
+            }),
           ),
         );
       }

@@ -12,7 +12,7 @@
 
 ## WeChat
 
-扫码加好友进入技术交流群
+有问题可扫码加好友进入技术交流群（备注github账号名）
 
 <img src="./qrcode.png" width=200 />
 
