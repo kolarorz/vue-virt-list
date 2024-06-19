@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 // import vueJsx from '@vitejs/plugin-vue-jsx';
 import { en } from './en';
 import { zh } from './zh';
+let NAME_KEY = 1;
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -65,7 +66,7 @@ export default defineConfig({
           // const ViewName = sourceFile
           //   .replace('.vue', '')
           //   .replace(/\.*?\//g, '');
-          const ViewName = 'Example';
+          const ViewName = `Example${NAME_KEY++}`;
           let scriptToken = state.tokens.find((token) =>
             /<script( setup)?>/.test(token.content),
           )!;

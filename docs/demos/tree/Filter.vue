@@ -31,34 +31,22 @@ onMounted(() => {
 
 const virtTreeRef = ref<typeof VirtTree>();
 const key = ref<number>(0);
-const onCollapseAll = () => {
-  virtTreeRef.value.collapseAllNods([]);
+
+const filterMethod = (query: string, node: any) => {
+  return node.name.includes(query);
 };
 
-const onExpandAll = () => {
-  virtTreeRef.value.expandAllNodes();
-};
-
-const expandNode = () => {
-  virtTreeRef.value.expandNodeByKey(key.value);
-};
-const collapseNode = () => {
-  virtTreeRef.value.collapseNodeByKey(key.value);
+const onFilter = () => {
+  virtTreeRef.value.filter(key.value);
 };
 </script>
 
 <template>
   <div class="demo-tree">
     <div class="tree-btn-container">
-      <div style="display: flex; gap: 8px">
-        <div class="btn-item" @click="onCollapseAll">折叠所有</div>
-        <div class="btn-item" @click="onExpandAll">展开所有</div>
-      </div>
       <div class="input-container">
-        <div class="input-label">操作指定节点：</div>
         <input v-model="key" />
-        <div class="btn-item" @click="expandNode">展开</div>
-        <div class="btn-item" @click="collapseNode">折叠</div>
+        <div class="btn-item" @click="onFilter">filter</div>
       </div>
     </div>
     <VirtTree
@@ -66,7 +54,7 @@ const collapseNode = () => {
       :data="data"
       :props="treeProps"
       :indent="20"
-      showCheckbox
+      :filter-method="filterMethod"
     >
       <template #empty>
         <div style="padding: 16px">暂无数据</div>

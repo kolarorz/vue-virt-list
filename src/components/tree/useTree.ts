@@ -20,6 +20,7 @@ import type {
   CheckedInfo,
 } from './type';
 import { useCheck } from './useCheck';
+import { useFilter } from './useFilter';
 
 // enums
 export enum TreeOptionsEnum {
@@ -92,6 +93,9 @@ export const treeProps = {
     type: Boolean,
     default: false,
   },
+  filterMethod: {
+    type: Function as PropType<(query: string, node: TreeNodeData) => boolean>,
+  },
 };
 
 export const TreeNodeEmits = {
@@ -120,6 +124,11 @@ export const useTree = (
     tree,
   );
 
+  const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter(
+    props,
+    tree,
+  );
+
   const expandParents = (node: ITreeNode) => {
     expandedKeysSet.value.add(node.key);
     if (!node?.parent) return;
@@ -129,6 +138,7 @@ export const useTree = (
   const flattenList = computed(() => {
     // 展开节点的所有父节点
     const expandedKeys = expandedKeysSet.value;
+    const hiddenNodeKeys = hiddenNodeKeySet.value;
     const flattenNodes: ITreeNode[] = [];
     const nodes = (tree.value && tree.value.treeNodes) || [];
     function traverse() {
@@ -139,7 +149,9 @@ export const useTree = (
       while (stack.length) {
         const node = stack.pop();
         if (!node) continue;
-        flattenNodes.push(node);
+        if (!hiddenNodeKeys.has(node.key)) {
+          flattenNodes.push(node);
+        }
         if (expandedKeys.has(node.key)) {
           const children = node.children;
           if (children) {
@@ -345,6 +357,13 @@ export const useTree = (
     toggleCheckbox(node, checked);
   };
 
+  const filter = (query: string) => {
+    const keys = doFilter(query);
+    if (keys) {
+      expandedKeysSet.value = keys;
+    }
+  };
+
   watch(
     () => props.data,
     (data: TreeData) => {
@@ -375,6 +394,8 @@ export const useTree = (
     flattenList,
 
     onScroll,
+    filter,
+    isForceHiddenExpandIcon,
     setTreeData,
     toggleExpand,
     expandNode,

@@ -23,6 +23,7 @@ export default defineComponent({
       isIndeterminate,
       onCheckChange,
       toggleExpand,
+      isForceHiddenExpandIcon,
     } = this;
 
     const { minSize, showCheckbox, indent } = this.$props as TreeProps;
@@ -39,6 +40,7 @@ export default defineComponent({
           node: itemData,
           indent,
           showCheckbox,
+          hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
           expanded: isExpanded(itemData),
           current: isCurrent(itemData),
           checked: isChecked(itemData),
