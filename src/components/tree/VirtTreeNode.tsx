@@ -39,6 +39,10 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
+  hiddenExpandIcon: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
@@ -78,6 +82,7 @@ export default defineComponent({
       indeterminate,
       expanded,
       node,
+      hiddenExpandIcon,
     } = this.$props as TreeNodeProps;
 
     const renderDefault = () => {
@@ -100,7 +105,7 @@ export default defineComponent({
                     {
                       class: `virt-tree-icon ${expanded ? 'virt-tree-icon--expanded' : ''}`,
                       style: {
-                        opacity: node.isLeaf ? 0 : 1,
+                        opacity: node.isLeaf || hiddenExpandIcon ? 0 : 1,
                       },
                       onClick: handleToggle,
                     },

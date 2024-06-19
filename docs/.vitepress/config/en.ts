@@ -111,6 +111,7 @@ function sidebarApi(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'VirtList', link: 'virt-list' },
         { text: 'VirtGrid', link: 'virt-grid' },
+        { text: 'VirtTree', link: 'virt-tree' },
       ],
     },
   ];
