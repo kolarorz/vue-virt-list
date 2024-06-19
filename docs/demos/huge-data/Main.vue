@@ -20,7 +20,7 @@
 
     <div class="demo-huge">
       <div class="empty" v-if="list.length === 0">
-        {{ loading ? '数据解压中...' : '空空如也' }}
+        {{ loading ? '数据解压中...' : 'empty' }}
       </div>
 
       <VirtList

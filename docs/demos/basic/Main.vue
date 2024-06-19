@@ -28,7 +28,7 @@
       <span>RenderEnd: {{ reactiveData?.renderEnd }} </span>
     </div>
 
-    <div class="demo-base">
+    <div class="demo-basic">
       <VirtList
         ref="virtListRef"
         :buffer="5"
@@ -119,7 +119,7 @@ function deleteItem(id: number) {
 </script>
 
 <style lang="scss" scoped>
-.demo-base {
+.demo-basic {
   width: 100%;
   height: 500px;
   background-color: var(--vp-sidebar-bg-color);

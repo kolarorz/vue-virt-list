@@ -1,6 +1,6 @@
-# API 文档
+# VirtList API
 
-## 属性
+## Props
 
 | 参数          | 说明                                                                              | 类型                                                               | 默认值  | 是否必须                     |
 | ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------- | ---------------------------- |
@@ -21,7 +21,7 @@
 | itemClass     | item容器类名                                                                      | `String`                                                           | `''`    | -                            |
 | renderControl | 渲染控制器                                                                        | `(begin: number, end: number ) => { begin: number; end: number };` | -       | -                            |
 
-## 插槽
+## Slots
 
 | name          | 说明                                           |
 | ------------- | ---------------------------------------------- |
@@ -31,7 +31,7 @@
 | sticky-footer | 底部悬浮插槽                                   |
 | default       | item 内容， `作用域参数为 { itemData, index }` |
 
-## 事件
+## Events
 
 | 方法名      | 说明              | 参数                                         |
 | ----------- | ----------------- | -------------------------------------------- |
@@ -41,7 +41,7 @@
 | itemResize  | Item 尺寸发生变化 | `{ id: string, newSize: number }`            |
 | rangeUpdate | 可视区范围变更    | `{ inViewBegin: number, inViewEnd: number }` |
 
-## 暴露方法
+## Methods
 
 | 方法名            | 说明                                                                       | 参数                                               |
 | ----------------- | -------------------------------------------------------------------------- | -------------------------------------------------- |
@@ -59,7 +59,7 @@
 | addedList2Top     | 添加顶部list（通常在分页模式下使用，具体参考demo）                         | list[]                                             |
 | manualRender      | 手动控制渲染（提供渲染起始）                                               | `(renderBegin: number, renderEnd: number) => void` |
 
-## 额外参数
+## Extra variables
 
 ### reactive:ReactiveData
 
@@ -85,25 +85,3 @@
 | footerSize       | number | footer插槽高度       |
 | stickyHeaderSize | number | stickyHeader插槽高度 |
 | stickyFooterSize | number | stickyFooter插槽高度 |
-
-## Grid
-
-### Grid属性
-
-| 参数      | 说明                                             | 类型     | 默认值 | 是否必须                     |
-| --------- | ------------------------------------------------ | -------- | ------ | ---------------------------- |
-| list      | 数据                                             | `Array`  | -      | <font color="#f00">是</font> |
-| minSize   | **最小尺寸**，会根据这个尺寸来计算可视区域内个数 | `Number` | `20`   | <font color="#f00">是</font> |
-| gridItems | 每列展示个数                                     | `Number` | `2`    | 否                           |
-| 其他属性  | 同VirtList属性                                   | -        | -      | -                            |
-
-### Grid 暴露方法
-
-| 方法名         | 说明                                        | 参数  |
-| -------------- | ------------------------------------------- | ----- |
-| scrollToTop    | scroll to top                               | -     |
-| scrollToBottom | scroll to bottom                            | -     |
-| scrollToIndex  | scroll to index                             | index |
-| scrollInToView | scroll to index if needed（不在可视范围内） | index |
-| scrollToOffset | scroll to px                                | px    |
-| forceUpdate    | 强制更新                                    | -     |
