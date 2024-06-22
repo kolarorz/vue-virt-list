@@ -57,7 +57,7 @@ export const treeProps = {
     required: true,
     default: () => [],
   },
-  props: {
+  fieldNames: {
     type: Object as PropType<ITreeOptionProps>,
     default: () => ({ children: 'children', label: 'label', value: 'value' }),
   },
@@ -168,13 +168,13 @@ export const useTree = (
   });
 
   const valueKey = computed(() => {
-    return props.props?.value || TreeOptionsEnum.KEY;
+    return props.fieldNames?.value || TreeOptionsEnum.KEY;
   });
   const childrenKey = computed(() => {
-    return props.props?.children || TreeOptionsEnum.CHILDREN;
+    return props.fieldNames?.children || TreeOptionsEnum.CHILDREN;
   });
   const labelKey = computed(() => {
-    return props.props?.label || TreeOptionsEnum.LABEL;
+    return props.fieldNames?.label || TreeOptionsEnum.LABEL;
   });
 
   const getKey = (node: TreeNodeData) => (!node ? '' : node[valueKey.value]);

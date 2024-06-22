@@ -10,12 +10,6 @@
 
 👉 <a href="https://d8diegi800.feishu.cn/wiki/MX2Vwn1RWiwUsokjhshcr6sVnNb?from=from_copylink" target="_blank">Advantages</a>
 
-## WeChat
-
-有问题可扫码加好友进入技术交流群（备注github账号名）
-
-<img src="./qrcode.png" width=200 />
-
 ## Documentation
 
 To check out docs, visit <a href="https://keno-lee.github.io/vue-virt-list/" target="_blank">vue-virt-list</a>
@@ -75,3 +69,9 @@ npm install vue-virt-list -S
   // const list = shallowRef([{ id: 0, text: 'text' }])
 </script>
 ```
+
+## WeChat
+
+有问题可扫码加好友进入技术交流群（备注github账号名）
+
+<img src="./qrcode.png" width=200 />

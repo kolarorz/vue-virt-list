@@ -410,7 +410,7 @@ function useVirtList<T extends Record<string, any>>(
       direction === 'forward' &&
       reactiveData.offset - props.scrollDistance <= 0
     ) {
-      console.log('[VirtList] 到达顶部');
+      // console.log('[VirtList] 到达顶部');
       emitFunction?.toTop?.(props.list[0]);
     }
     // 到达底部 - 放在这里是为了渲染完成拿到真是高度了，再判断是否是真的到达底部
@@ -422,7 +422,7 @@ function useVirtList<T extends Record<string, any>>(
           reactiveData.listTotalSize + getSlotSize() - slotSize.clientSize,
         )
     ) {
-      console.log('[VirtList] 到达底部');
+      // console.log('[VirtList] 到达底部');
       emitFunction?.toBottom?.(props.list[props.list.length - 1]);
     }
   }
@@ -453,7 +453,7 @@ function useVirtList<T extends Record<string, any>>(
   }
 
   function reset() {
-    console.log('[VirtList] reset');
+    // console.log('[VirtList] reset');
 
     reactiveData.offset = 0;
     reactiveData.listTotalSize = 0;

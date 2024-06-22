@@ -1,5 +1,7 @@
 :root {
   --color-bg-message: #ccc;
+
+  --vp-layout-max-width: 1920px;
 }
 
 body {
@@ -16,6 +18,10 @@ body {
   width: 100px;
   padding: 2px 4px;
   border: 1px solid var(--vp-c-border);
+}
+
+.content-container {
+  max-width: 100% !important;
 }
 
 .content {

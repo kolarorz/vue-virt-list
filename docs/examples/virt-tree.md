@@ -1,7 +1,5 @@
 # VirtTree
 
-[组件API](https://keno-lee.github.io/vue-virt-list/api/#virt-tree)
-
 ## 基础示例
 
 <!<< @/demos/tree/Main.vue
