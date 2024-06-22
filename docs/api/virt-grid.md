@@ -2,20 +2,20 @@
 
 ## Attributes
 
-| Attribute | Description                                      | Type     | Default | Required                      |
-| --------- | ------------------------------------------------ | -------- | ------- | ----------------------------- |
-| list      | 数据                                             | `Array`  | -       | <font color="#f00">Yes</font> |
-| minSize   | **最小尺寸**，会根据这个尺寸来计算可视区域内个数 | `Number` | `20`    | <font color="#f00">Yes</font> |
-| gridItems | 每列展示个数                                     | `Number` | `2`     | 否                            |
-| 其他属性  | 同VirtList属性                                   | -        | -       | -                             |
+| Attribute   | Description                          | Type     | Default | Required                      |
+| ----------- | ------------------------------------ | -------- | ------- | ----------------------------- |
+| list        | list data                            | `Array`  | -       | <font color="#f00">Yes</font> |
+| minSize     | The Min Size of Item                 | `Number` | `20`    | <font color="#f00">Yes</font> |
+| gridItems   | Number of items displayed per column | `Number` | `2`     | 否                             |
+| other attrs | Same as VirtList's attribute         | -        | -       | -                             |
 
 ## Methods
 
-| Method         | Description                                 | Parameters |
-| -------------- | ------------------------------------------- | ---------- |
-| scrollToTop    | scroll to top                               | -          |
-| scrollToBottom | scroll to bottom                            | -          |
-| scrollToIndex  | scroll to index                             | index      |
-| scrollInToView | scroll to index if needed（不在可视范围内） | index      |
-| scrollToOffset | scroll to px                                | px         |
-| forceUpdate    | 强制更新                                    | -          |
+| Method         | Description                                       | Parameters |
+| -------------- | ------------------------------------------------- | ---------- |
+| scrollToTop    | scroll to top                                     | -          |
+| scrollToBottom | scroll to bottom                                  | -          |
+| scrollToIndex  | scroll to index                                   | index      |
+| scrollInToView | scroll to index if needed（if item is not in view） | index      |
+| scrollToOffset | scroll to px                                      | px         |
+| forceUpdate    | force update(render)                              | -          |

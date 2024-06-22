@@ -1,13 +1,13 @@
 # VirtTree
 
-## 基础示例
+## Basic
 
 <!<< @/demos/tree/Main.vue
 
-## checkbox
+## Checkbox
 
 <!<< @/demos/tree/Checkbox.vue
 
-## filter
+## Filter
 
 <!<< @/demos/tree/Filter.vue
