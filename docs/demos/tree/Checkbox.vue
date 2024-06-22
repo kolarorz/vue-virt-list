@@ -64,7 +64,7 @@ const collapseNode = () => {
     <VirtTree
       ref="virtTreeRef"
       :data="data"
-      :props="treeProps"
+      :fieldNames="treeProps"
       :indent="20"
       showCheckbox
     >

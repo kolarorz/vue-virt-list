@@ -6,7 +6,7 @@ import { _h, _h2Slot, getSlot } from '../../util';
 import type { ITreeNode, TreeNodeData } from './type';
 
 export default defineComponent({
-  name: 'VitTree',
+  name: 'VirtTree',
   props: treeProps,
   setup(props: TreeProps, context: SetupContext) {
     const emits = context.emit as SetupContext<typeof TreeEmits>['emit'];
@@ -72,40 +72,26 @@ export default defineComponent({
       );
     };
 
-    const renderTree = () => {
-      return _h2Slot(
-        VirtList,
-        {
-          ref: 'virListRef',
-          attrs: {
-            list: flattenList,
-            minSize: minSize,
-            itemKey: 'key',
-            onScroll: onScroll,
-            ...this.$attrs,
-          },
-        },
-        {
-          default: renderTreeNode,
-          stickyHeader: getSlot(this, 'stickyHeader'),
-          stickyFooter: getSlot(this, 'stickyFooter'),
-          header: getSlot(this, 'header'),
-          footer: getSlot(this, 'footer'),
-          empty: getSlot(this, 'empty'),
-        },
-      );
-    };
-
-    return _h(
-      'div',
+    return _h2Slot(
+      VirtList,
       {
-        style: {
-          height: '100%',
-          width: '100%',
-          overflow: 'hidden',
+        ref: 'virListRef',
+        attrs: {
+          list: flattenList,
+          minSize: minSize,
+          itemKey: 'key',
+          onScroll: onScroll,
+          ...this.$attrs,
         },
       },
-      [renderTree()],
+      {
+        default: renderTreeNode,
+        stickyHeader: getSlot(this, 'stickyHeader'),
+        stickyFooter: getSlot(this, 'stickyFooter'),
+        header: getSlot(this, 'header'),
+        footer: getSlot(this, 'footer'),
+        empty: getSlot(this, 'empty'),
+      },
     );
   },
 });

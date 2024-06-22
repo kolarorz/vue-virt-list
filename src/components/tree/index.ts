@@ -1,2 +1,2 @@
-export { default as VirtTree } from './VitTree';
+export { default as VirtTree } from './VirtTree';
 export * from './type';

@@ -64,7 +64,7 @@ const collapseNode = () => {
     <VirtTree
       ref="virtTreeRef"
       :data="data"
-      :props="treeProps"
+      :fieldNames="treeProps"
       currentNodeKey="4"
       :defaultExpandedKeys="['4']"
       :indent="20"
@@ -119,7 +119,8 @@ const collapseNode = () => {
   height: 500px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  // overflow: hidden;
+
   .tree-btn-container {
     display: flex;
     flex: 1;
