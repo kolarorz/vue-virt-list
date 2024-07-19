@@ -1101,7 +1101,7 @@ const VirtList = defineComponent({
       {
         ref: 'clientRefEl',
         class: 'virt-list__client',
-        style: `width: 100%; height: 100%; overflow: overlay;`,
+        style: `width: 100%; height: 100%; overflow: auto;`,
         attrs: {
           'data-id': 'client',
         },
