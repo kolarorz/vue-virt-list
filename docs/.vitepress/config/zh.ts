@@ -99,6 +99,11 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
             { text: 'VirtTable', link: 'virtable' },
           ],
         },
+        {
+          text: 'Beta',
+          collapsed: false,
+          items: [{ text: 'VirtScrollbar', link: 'virt-scrollbar' }],
+        },
       ],
     },
   ];

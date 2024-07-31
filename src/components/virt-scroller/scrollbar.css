@@ -1,0 +1,10 @@
+.scrollbar-container .scrollbar-item {
+  position: absolute;
+  border-radius: 5px;
+  z-index: 11;
+  opacity: 0.3;
+}
+.scrollbar-container .scrollbar-item:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}

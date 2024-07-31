@@ -91,14 +91,27 @@ function toggleShow() {
       display: flex;
       margin-right: 20px;
       margin-bottom: 10px;
+      gap: 2px;
       // margin-bottom: 20px;
 
       .demo-btn {
-        padding: 2px 6px;
+        // padding: 2px 6px;
+        padding: 4px 12px;
+        cursor: pointer;
+        border: 1px solid #ececec;
+        border-radius: 4px;
+        font-size: 14px;
+        &:hover {
+          background-color: #ececec;
+        }
       }
 
       .demo-input {
         width: 60px;
+        height: 100%;
+        border: 1px solid #ececec;
+        border-radius: 4px;
+        padding: 0 8px;
       }
     }
   }
