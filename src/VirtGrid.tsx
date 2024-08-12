@@ -25,7 +25,7 @@ const VirtGrid = defineComponent({
 
     function updateList() {
       // reset gridList
-      gridList.value = [];
+      const list = [];
       for (let i = 0; i < props.list.length; i += props.gridItems) {
         const children = [];
         for (let j = 0; j < props.gridItems; j += 1) {
@@ -33,12 +33,15 @@ const VirtGrid = defineComponent({
           children.push(props.list[i + j]);
         }
         // id 是组件生成的
-        gridList.value.push({
+        list.push({
           _id: i,
           children,
         });
       }
-      virtListRef?.value?.forceUpdate();
+      gridList.value = list;
+
+      const lastIndex = virtListRef?.value?.reactiveData.inViewBegin;
+      scrollToIndex(lastIndex * props.gridItems);
     }
 
     function scrollToIndex(index: number) {
