@@ -101,7 +101,7 @@ const useRealList = <T extends Record<string, any>>(
 
         if (id) {
           const prevSize = getItemSize(id);
-          const currentSize = entry.contentBoxSize[0].blockSize;
+          const currentSize = entry.borderBoxSize[0].blockSize;
 
           if (id === 'client') {
             slotSize.clientSize = currentSize;

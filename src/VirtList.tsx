@@ -515,13 +515,13 @@ function useVirtList<T extends Record<string, any>>(
           // 兼容性处理，详情：https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver
           // ios中没有borderBoxSize，只有contentRect
           if (entry.borderBoxSize) {
-            // Firefox implements `contentBoxSize` as a single content rect, rather than an array
-            const contentBoxSize = Array.isArray(entry.contentBoxSize)
-              ? entry.contentBoxSize[0]
-              : entry.contentBoxSize;
+            // Firefox implements `borderBoxSize` as a single content rect, rather than an array
+            const borderBoxSize = Array.isArray(entry.borderBoxSize)
+              ? entry.borderBoxSize[0]
+              : entry.borderBoxSize;
             newSize = props.horizontal
-              ? contentBoxSize.inlineSize
-              : contentBoxSize.blockSize;
+              ? borderBoxSize.inlineSize
+              : borderBoxSize.blockSize;
           } else {
             newSize = props.horizontal
               ? entry.contentRect.width
@@ -758,6 +758,8 @@ function useVirtList<T extends Record<string, any>>(
         reset();
         return;
       }
+
+      console.error('reset');
 
       // [require] 因为list长度变化，所以总高度有变化
       calcListTotalSize();
