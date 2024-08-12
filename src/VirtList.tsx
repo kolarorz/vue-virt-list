@@ -759,8 +759,6 @@ function useVirtList<T extends Record<string, any>>(
         return;
       }
 
-      console.error('reset');
-
       // [require] 因为list长度变化，所以总高度有变化
       calcListTotalSize();
       // [require] 因为list长度变化，所以重新计算起始结束位置
