@@ -172,7 +172,6 @@ function useVirtList<T extends Record<string, any>>(
   }
   // expose 滚动到指定下标
   async function scrollToIndex(index: number) {
-    console.log('scrollToIndex', index);
 
     if (index < 0) {
       return;
