@@ -71,7 +71,7 @@ function deleteItem(itemData) {
   if (targetIndex > -1) {
     list.value.splice(targetIndex, 1);
     // 如果list为shallowRef，务必调用该方法用来更新list变化
-    // virtGridRef?.value?.updateList();
+    // virtGridRef?.value?.forceUpdate();
   }
 }
 </script>
