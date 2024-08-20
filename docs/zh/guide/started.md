@@ -22,6 +22,11 @@
 
 - `"vue": "^2.0.0 || >=3.0.0"`
 
+## 注意!!!
+
+1. `list.item.id` <font color="#f00">必须唯一!!!</font>
+2. item元素之间不能使用 <font color="#f00">margin!!!</font>
+
 ## 引入
 
 ```html

@@ -14,3 +14,8 @@
 ## 修复滚动selection问题
 
 仅修复vue2下diff算法的bug(列表在向下滚动过程中，vue2-diff算法会导致整个列表重新挂载)
+
+## shallowRef
+
+无论是使用VirtList还是使用VirtGrid，一旦使用了响应式。就需要使用提供的forceUpdate方法来更新list长度变化。对于item内容变化，需要自行使用renderKey来进行相应更新。
+具体demo请参考: https://keno-lee.github.io/vue-virt-list/examples/huge-data/

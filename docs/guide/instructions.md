@@ -14,3 +14,8 @@ This virtual list supports full-frame rendering, but in scenarios with large dat
 ## fix selection
 
 Fixed a bug in the Vue 2 diff algorithm (during the downward scrolling of the list, the Vue 2 diff algorithm would cause the entire list to remount).
+
+## shallowRef
+
+无论是使用VirtList还是使用VirtGrid，一旦使用了响应式。就需要使用提供的forceUpdate方法来更新list长度变化。对于item内容变化，需要自行使用renderKey来进行相应更新。
+具体demo请参考: https://keno-lee.github.io/vue-virt-list/examples/huge-data/

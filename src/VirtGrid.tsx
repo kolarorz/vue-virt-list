@@ -42,6 +42,7 @@ const VirtGrid = defineComponent({
 
       const lastIndex = virtListRef?.value?.reactiveData.inViewBegin;
       scrollToIndex(lastIndex * props.gridItems);
+      virtListRef?.value?.forceUpdate();
     }
 
     function scrollToIndex(index: number) {
@@ -67,7 +68,7 @@ const VirtGrid = defineComponent({
     }
 
     function forceUpdate() {
-      virtListRef?.value?.forceUpdate();
+      updateList();
     }
 
     watch(
