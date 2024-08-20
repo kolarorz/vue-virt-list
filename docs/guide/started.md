@@ -22,6 +22,11 @@
 
 - `"vue": "^2.0.0 || >=3.0.0"`
 
+## Attention!!!
+
+1. `list.item.id` <font color="#f00">Must be unique!!!</font>
+2. <font color="#f00">Margin!!!</font> cannot be used between item elements
+
 ## Example
 
 ```html
