@@ -96,6 +96,9 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('../../../', import.meta.url)),
+        'vue-virt-list/lib/assets/tree.css': fileURLToPath(
+          new URL('../../../src/components/tree/tree.css', import.meta.url),
+        ),
         'vue-virt-list': fileURLToPath(
           new URL('../../../src/index.ts', import.meta.url),
         ),

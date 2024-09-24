@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, shallowRef } from 'vue';
 import { VirtTree } from 'vue-virt-list';
+import 'vue-virt-list/lib/assets/tree.css';
 
 type ItemData = {
   id: string | number;

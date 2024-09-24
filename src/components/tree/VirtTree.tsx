@@ -1,4 +1,4 @@
-import { defineComponent, type SetupContext, watch } from 'vue-demi';
+import { defineComponent, type SetupContext } from 'vue-demi';
 import {
   useTree,
   customFieldNames,
@@ -8,7 +8,7 @@ import {
 import VirtTreeNode from './VirtTreeNode';
 import { VirtList } from '../../VirtList';
 import { _h, _h2Slot, getSlot } from '../../util';
-import type { TreeNode, TreeNodeData } from './type';
+import type { TreeNode } from './type';
 
 export const VirtTree = defineComponent({
   name: 'VirtTree',
