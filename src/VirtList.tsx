@@ -172,7 +172,6 @@ function useVirtList<T extends Record<string, any>>(
   }
   // expose 滚动到指定下标
   async function scrollToIndex(index: number) {
-
     if (index < 0) {
       return;
     }
@@ -514,13 +513,13 @@ function useVirtList<T extends Record<string, any>>(
           // 兼容性处理，详情：https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver
           // ios中没有borderBoxSize，只有contentRect
           if (entry.borderBoxSize) {
-            // Firefox implements `borderBoxSize` as a single content rect, rather than an array
-            const borderBoxSize = Array.isArray(entry.borderBoxSize)
-              ? entry.borderBoxSize[0]
-              : entry.borderBoxSize;
+            // Firefox implements `contentBoxSize` as a single content rect, rather than an array
+            const contentBoxSize = Array.isArray(entry.contentBoxSize)
+              ? entry.contentBoxSize[0]
+              : entry.contentBoxSize;
             newSize = props.horizontal
-              ? borderBoxSize.inlineSize
-              : borderBoxSize.blockSize;
+              ? contentBoxSize.inlineSize
+              : contentBoxSize.blockSize;
           } else {
             newSize = props.horizontal
               ? entry.contentRect.width
@@ -826,6 +825,10 @@ const VirtList = defineComponent({
       default: 20,
       required: true,
     },
+    itemGap: {
+      type: Number,
+      default: 0,
+    },
     renderControl: {
       type: Function,
       default: undefined,
@@ -939,6 +942,7 @@ const VirtList = defineComponent({
   render() {
     const { renderList, reactiveData, resizeObserver } = this;
     const {
+      itemGap,
       itemKey,
       horizontal,
       listStyle,
@@ -1027,6 +1031,7 @@ const VirtList = defineComponent({
 
     const { listTotalSize, virtualSize, renderBegin } = reactiveData;
 
+    const itemGapStyle = itemGap > 0 ? `padding: ${itemGap / 2}px 0; ` : '';
     const renderMainList = (): VNode | null => {
       const mainList = [];
       for (let index = 0; index < renderList.length; index += 1) {
@@ -1037,7 +1042,7 @@ const VirtList = defineComponent({
             {
               key: currentItem[itemKey],
               class: itemClass,
-              style: itemStyle,
+              style: `${itemGapStyle}${itemStyle}`,
               attrs: {
                 id: currentItem[itemKey],
                 resizeObserver: resizeObserver,
@@ -1100,6 +1105,7 @@ const VirtList = defineComponent({
       {
         ref: 'clientRefEl',
         class: 'virt-list__client',
+        // 如果要自动撑开高度，不要虚拟，修改这里的样式即可
         style: `width: 100%; height: 100%; overflow: auto;`,
         attrs: {
           'data-id': 'client',

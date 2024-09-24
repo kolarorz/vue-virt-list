@@ -1,35 +1,48 @@
 export type TreeNodeData = Record<string, any>;
-export type TreeKey = string | number;
+export type TreeNodeKey = string | number;
 export type TreeData = TreeNodeData[];
 
-export interface ITreeNode<T = TreeNodeData> {
-  key: TreeKey;
+export interface TreeNode<T = TreeNodeData> {
+  key: TreeNodeKey;
   level: number;
-  parent?: ITreeNode;
-  children?: ITreeNode[];
-  data: T;
-  disabled?: boolean;
-  label?: string;
+  title?: string;
   isLeaf?: boolean;
+  isLast?: boolean;
+  parent?: TreeNode;
+  children?: TreeNode[];
+  disableSelect?: boolean;
+  disableCheckbox?: boolean;
+  searchedIndex?: number;
+  data: T;
 }
 
-export interface ITreeOptionProps {
+export interface TreeFieldNames {
+  key?: string;
+  title?: string;
   children?: string;
-  label?: string;
-  value?: string;
-  disabled?: string;
+  disableSelect?: string;
+  disableCheckbox?: string;
+  disableDragIn?: string;
+  disableDragOut?: string;
 }
 
-export interface ITreeInfo {
-  treeNodesMap: Map<TreeKey, ITreeNode>;
-  treeNodes: ITreeNode[];
-  levelNodesMap: Map<TreeKey, ITreeNode[]>;
+export interface TreeInfo {
+  treeNodesMap: Map<TreeNodeKey, TreeNode>;
+  treeNodes: TreeNode[];
+  levelNodesMap: Map<TreeNodeKey, TreeNode[]>;
   maxLevel: number;
+  allNodeKeys: TreeNodeKey[];
 }
 
 export interface CheckedInfo {
-  checkedKeys: TreeKey[];
+  checkedKeys: TreeNodeKey[];
   checkedNodes: TreeData;
-  halfCheckedKeys: TreeKey[];
+  halfCheckedKeys: TreeNodeKey[];
   halfCheckedNodes: TreeData;
+}
+
+export interface IScrollParams {
+  key?: TreeNodeKey;
+  align?: 'view' | 'top';
+  offset?: number;
 }

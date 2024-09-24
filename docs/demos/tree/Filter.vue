@@ -4,40 +4,39 @@ import { VirtTree } from 'vue-virt-list';
 
 type Data = {
   id: string | number;
-  name: string;
+  title: string;
   children?: Data;
 }[];
 
-const treeProps = {
-  value: 'id',
-  label: 'name',
+const customFieldNames = {
+  key: 'id',
 };
 
-const data = shallowRef<Data>([]);
+const list = shallowRef<Data>([]);
 onMounted(() => {
-  data.value = Array.from({ length: 40 }).map((_, i) => ({
+  list.value = Array.from({ length: 40 }).map((_, i) => ({
     id: String(i),
-    name: `Node-${i}`,
+    title: `Node-${i}`,
     children: Array.from({ length: 3 }).map((_, index) => ({
       id: `${i}-${index}`,
-      name: `Node-${i}-${index}`,
+      title: `Node-${i}-${index}`,
       children: Array.from({ length: 2 }).map((_, indexChild) => ({
         id: `${i}-${index}-${indexChild}`,
-        name: `Node-${i}-${index}-${indexChild}`,
+        title: `Node-${i}-${index}-${indexChild}`,
       })),
     })),
   }));
 });
 
 const virtTreeRef = ref<typeof VirtTree>();
-const key = ref<number>(0);
+const key = ref<string>('Node-0');
 
 const filterMethod = (query: string, node: any) => {
   return node.name.includes(query);
 };
 
 const onFilter = () => {
-  virtTreeRef.value.filter(key.value);
+  virtTreeRef.value?.filter(key.value);
 };
 </script>
 
@@ -49,24 +48,26 @@ const onFilter = () => {
         <div class="btn-item" @click="onFilter">filter</div>
       </div>
     </div>
-    <VirtTree
-      ref="virtTreeRef"
-      :data="data"
-      :fieldNames="treeProps"
-      :indent="20"
-      :filter-method="filterMethod"
-    >
-      <template #empty>
-        <div style="padding: 16px">暂无数据</div>
-      </template>
-    </VirtTree>
+
+    <div class="virt-tree-wrapper">
+      <VirtTree
+        ref="virtTreeRef"
+        :list="list"
+        :fieldNames="customFieldNames"
+        :indent="20"
+        :filter-method="filterMethod"
+      >
+        <template #empty>
+          <div style="padding: 16px">暂无数据</div>
+        </template>
+      </VirtTree>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .demo-tree {
   width: 100%;
-  height: 500px;
   display: flex;
   flex-direction: column;
   overflow: hidden;

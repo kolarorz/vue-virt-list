@@ -33,8 +33,8 @@ function vue2h<P>(
   props: Props,
   children?: RawChildren | RawSlots,
 ) {
-  const { attrs, ...rest } = props;
-  return h(ele, { attrs, ...rest } as any, children);
+  const { attrs, on, ...rest } = props;
+  return h(ele, { attrs, on, ...rest } as any, children);
 }
 
 function vue3h<P>(
@@ -54,8 +54,15 @@ function vue3h<P>(
   props: Props,
   children?: RawChildren | RawSlots,
 ) {
-  const { attrs, ...rest } = props;
-  return h(ele, { ...attrs, ...rest } as any, children);
+  const { attrs, on, ...rest } = props;
+  let event: Record<string, () => void> = {};
+  if (on) {
+    Object.entries(on).forEach((item) => {
+      const [key, value] = item as [string, () => void];
+      event[`on${key[0].toUpperCase() + key.slice(1)}`] = value;
+    });
+  }
+  return h(ele, { ...attrs, ...event, ...rest } as any, children);
 }
 
 export const _h = isVue2 ? vue2h : vue3h;
@@ -77,8 +84,8 @@ function vue2hChild<P>(
   props: Props,
   child?: VNode,
 ) {
-  const { attrs, ...rest } = props;
-  return h(ele, { attrs, ...rest } as any, [child]);
+  const { attrs, on, ...rest } = props;
+  return h(ele, { attrs, on, ...rest } as any, [child]);
 }
 
 function vue3hChild<P>(
@@ -98,9 +105,16 @@ function vue3hChild<P>(
   props: Props,
   child?: VNode,
 ) {
-  const { attrs, ...rest } = props;
+  const { attrs, on, ...rest } = props;
+  let event: Record<string, () => void> = {};
+  if (on) {
+    Object.entries(on).forEach((item) => {
+      const [key, value] = item as [string, () => void];
+      event[`on${key[0].toUpperCase() + key.slice(1)}`] = value;
+    });
+  }
   // vue3 为了性能，推荐使用functional
-  return h(ele, { ...attrs, ...rest } as any, {
+  return h(ele, { ...attrs, ...event, ...rest } as any, {
     default: () => child,
   });
 }
@@ -124,8 +138,8 @@ function vue2h2Slot<P>(
   props: Props,
   slots?: any,
 ) {
-  const { attrs, ...rest } = props;
-  return h(ele, { attrs, ...rest, scopedSlots: slots } as any);
+  const { attrs, on, ...rest } = props;
+  return h(ele, { attrs, on, ...rest, scopedSlots: slots } as any);
 }
 
 // vue3 渲染slot时推荐使用functional
@@ -146,8 +160,15 @@ function vue3h2Slot<P>(
   props: Props,
   slots?: any,
 ) {
-  const { attrs, ...rest } = props;
-  return h(ele, { ...attrs, ...rest } as any, slots);
+  const { attrs, on, ...rest } = props;
+  let event: Record<string, () => void> = {};
+  if (on) {
+    Object.entries(on).forEach((item) => {
+      const [key, value] = item as [string, () => void];
+      event[`on${key[0].toUpperCase() + key.slice(1)}`] = value;
+    });
+  }
+  return h(ele, { ...attrs, ...event, ...rest } as any, slots);
 }
 
 // 渲染传递插槽

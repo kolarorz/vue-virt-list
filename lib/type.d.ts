@@ -23,6 +23,7 @@ interface BaseListProps<T extends Record<string, string>> {
     list: T[];
     itemKey: string | number;
     minSize: number;
+    itemGap?: number;
     scrollDistance?: number;
     headerClass?: string;
     headerStyle?: string;
