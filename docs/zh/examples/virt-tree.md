@@ -78,6 +78,7 @@ Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-fo
   --virt-tree-color-text-selected: #1456f0;
 
   /* node */
+  --virt-tree-color-node-bg: #fff;
   --virt-tree-color-node-bg-hover: #1f232914;
   --virt-tree-color-node-bg-disabled: transparent;
   --virt-tree-color-node-bg-selected: #f0f4ff;
@@ -115,6 +116,7 @@ html.dark .virt-tree-item {
   --virt-tree-color-text-selected: #4c88ff;
 
   /* node */
+  --virt-tree-color-node-bg: #1b1b1f;
   --virt-tree-color-node-bg-hover: #2e3238;
   --virt-tree-color-node-bg-disabled: transparent;
   --virt-tree-color-node-bg-selected: #152340;
