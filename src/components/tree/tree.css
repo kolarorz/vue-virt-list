@@ -1,52 +1,253 @@
-.virt-tree-item-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 4px;
-  border-radius: 1px 1px 0 0;
-  cursor: pointer;
-  &:hover {
-    background-color: #f5f7fa;
-    color: rgb(96, 98, 102);
-  }
+.virt-tree-item {
+  /* drag line */
+  --virt-tree-color-drag-line: #4c88ff;
+  --virt-tree-color-drag-box: rgb(76, 136, 255, 0.1);
+  --virt-tree-color-drag-line-disabled: rgb(76, 136, 255, 0.4);
+
+  /* text */
+  --virt-tree-color-text: #1f2329;
+  --virt-tree-color-text-disabled: #a8abb2;
+  --virt-tree-color-text-selected: #1456f0;
+
+  /* node */
+  --virt-tree-color-node-bg: #fff;
+  --virt-tree-color-node-bg-hover: #1f232914;
+  --virt-tree-color-node-bg-disabled: transparent;
+  --virt-tree-color-node-bg-selected: #f0f4ff;
+
+  /* icon */
+  --virt-tree-color-icon: #2b2f36;
+  --virt-tree-color-icon-bg-hover: #1f23291a;
+
+  /* line */
+  --virt-tree-line-color: #cacdd1;
+
+  /* checkbox */
+  --virt-tree-color-checkbox-bg: #fff;
+  --virt-tree-color-checkbox-bg-indeterminate: #1890ff;
+  --virt-tree-color-checkbox-bg-checked: #1890ff;
+  --virt-tree-color-checkbox-bg-disabled: rgba(255, 255, 255, 0.3);
+  --virt-tree-color-checkbox-border: rgb(190, 192, 198);
+  --virt-tree-color-checkbox-border-checked: #1890ff;
+  --virt-tree-color-checkbox-border-indeterminate: #1890ff;
+
+  /* 生效于图标的margin和拖拽线的左边距离 */
+  --virt-tree-switcher-icon-margin-right: 4px;
+  --virt-tree-drag-line-gap: 4px;
 }
 
-.virt-tree-item-container > .virt-tree-icon {
+html.dark .virt-tree-item {
+  /* drag line */
+  --virt-tree-color-drag-line: #4c88ff;
+  --virt-tree-color-drag-box: rgb(76, 136, 255, 0.1);
+  --virt-tree-color-drag-line-disabled: rgb(76, 136, 255, 0.4);
+
+  /* text */
+  --virt-tree-color-text: #f9f9f9;
+  --virt-tree-color-text-disabled: rgba(255, 255, 255, 0.3);
+  --virt-tree-color-text-selected: #4c88ff;
+
+  /* node */
+  --virt-tree-color-node-bg: #1b1b1f;
+  --virt-tree-color-node-bg-hover: #2e3238;
+  --virt-tree-color-node-bg-disabled: transparent;
+  --virt-tree-color-node-bg-selected: #152340;
+
+  /* icon */
+  --virt-tree-color-icon: #f9f9f9;
+  --virt-tree-color-icon-bg-hover: #ebebeb1a;
+
+  /* line */
+  --virt-tree-line-color: #35393f;
+
+  /* checkbox */
+  --virt-tree-color-checkbox-bg: #fff;
+  --virt-tree-color-checkbox-bg-indeterminate: #1890ff;
+  --virt-tree-color-checkbox-bg-checked: #1890ff;
+  --virt-tree-color-checkbox-bg-disabled: rgba(255, 255, 255, 0.3);
+  --virt-tree-color-checkbox-border: rgb(190, 192, 198);
+  --virt-tree-color-checkbox-border-checked: #1890ff;
+  --virt-tree-color-checkbox-border-indeterminate: #1890ff;
+
+  /* 生效于图标的margin和拖拽线的左边距离 */
+  --virt-tree-switcher-icon-margin-right: 4px;
+  --virt-tree-drag-line-gap: 4px;
+}
+
+/* item */
+.virt-tree-item {
+  position: relative;
+}
+.virt-tree-drag-line {
+  width: calc(100% - var(--virt-tree-switcher-icon-margin-right));
+  height: 2px;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  display: flex;
+  z-index: 99999;
+  /* 图标icon的margin-right，如果样式覆盖了 */
+  margin-left: var(--virt-tree-switcher-icon-margin-right);
+  /* 层级线的分隔距离 */
+  gap: var(--virt-tree-drag-line-gap);
+}
+.virt-tree-drag-line-arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid var(--virt-tree-color-drag-line);
+  border-right: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  position: absolute;
+  top: -3px;
+  left: 0;
+}
+.virt-tree-drag-box {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--virt-tree-color-drag-line);
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.virt-tree-item--drag {
+  opacity: 0.2;
+}
+.virt-tree-item--ghost {
+  opacity: 1;
+  z-index: 99999;
+  /* box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1); */
+  /* background-color: var(--virt-tree-color-bg-clone-node); */
+  box-shadow: 1px 1px 5px 1px rgba(124, 126, 128, 0.1);
+}
+/* 禁用node按钮的箭头 */
+.virt-tree-item--ghost .virt-tree-icon-wrapper.is-expanded .virt-tree-icon {
+  transform: rotate(-90deg);
+}
+
+/* node */
+.virt-tree-node {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  cursor: pointer;
+  user-select: none;
+  color: var(--virt-tree-color-text);
+  background-color: var(--virt-tree-color-node-bg);
+}
+/* 用户如需自定义hover，则样式覆盖 */
+.virt-tree-node:hover {
+  background-color: var(--virt-tree-color-node-bg-hover);
+}
+/* 拖拽时候禁用hover样式 */
+.virt-list__client.is-dragging .virt-tree-node:hover {
+  background-color: transparent;
+}
+
+.virt-tree-node.is-selected {
+  color: var(--virt-tree-color-text-selected);
+  background-color: var(--virt-tree-color-node-bg-selected);
+}
+.virt-tree-node.is-disabled {
+  color: var(--virt-tree-color-text-disabled);
+  background-color: var(--virt-tree-color-node-bg-disabled);
+}
+.virt-tree-node.is-disabled .virt-tree-node-content {
+  cursor: not-allowed;
+}
+
+/* content */
+.virt-tree-node-content {
+  flex: 1;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+}
+/* 固定高度 */
+.virt-tree-node-content.is-fixed-height {
+  word-break: keep-all;
+}
+
+/* indent */
+.virt-tree-node-indent {
+  display: flex;
+}
+.virt-tree-node-indent-block {
+  position: relative;
+}
+.virt-tree-node-indent-block-line-vertical::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 50%;
+  box-sizing: border-box;
+  width: 1px;
+  border-left: 1px solid var(--virt-tree-line-color);
+}
+.virt-tree-node-indent-block-line-horizontal::after {
+  content: '';
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  height: 1px;
+  border-top: 1px solid var(--virt-tree-line-color);
+}
+.virt-tree-node-indent-block-line-vertical--half::before {
+  height: calc(50% + 1px);
+}
+
+/* icon */
+.virt-tree-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--virt-tree-color-icon);
+  margin-right: var(--virt-tree-switcher-icon-margin-right);
+}
+.virt-tree-icon-wrapper .virt-tree-icon svg {
   transform: rotate(-90deg);
   transition: all 0.5s ease;
 }
-.virt-tree-icon.virt-tree-icon--expanded {
+.virt-tree-icon-wrapper.is-expanded .virt-tree-icon svg {
   transform: rotate(0deg);
 }
-.virt-tree-node-content {
-  flex: 1;
+.virt-tree-icon {
+  overflow: hidden;
+  border-radius: 2px;
+}
+.virt-tree-icon:hover {
+  background-color: var(--virt-tree-color-icon-bg-hover);
+}
+.virt-tree-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
-.virt-tree-item-container--current {
-  background-color: #f5f7fa;
-  color: rgb(96, 98, 102);
+/* checkbox */
+.virt-tree-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
 }
-.checkbox {
+.virt-tree-checkbox {
   display: inline-block;
   position: relative;
-  border: 1px solid rgb(190, 192, 198);
+  border: 1px solid var(--virt-tree-color-checkbox-border);
   border-radius: 4px;
   box-sizing: border-box;
   width: 16px;
   height: 16px;
-  background-color: #fff;
+  background-color: var(--virt-tree-color-checkbox-bg);
   transition:
     border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
     background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
     outline 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 }
-.checkbox--indeterminate,
-.checkbox--checked {
-  background-color: #1890ff;
-  border-color: #1890ff;
-}
-.checkbox::after {
+.virt-tree-checkbox::after {
   box-sizing: content-box;
   content: '';
   border: 2px solid transparent;
@@ -61,11 +262,19 @@
   transition: transform 0.15s ease-in 0.05s;
   transform-origin: center;
 }
-.checkbox--checked::after {
+.virt-tree-checkbox.is-checked {
+  border-color: var(--virt-tree-color-checkbox-border-checked);
+  background-color: var(--virt-tree-color-checkbox-bg-checked);
+}
+.virt-tree-checkbox.is-checked::after {
   transform: rotate(45deg) scaleY(1);
   border-color: #fff;
 }
-.checkbox--indeterminate::before {
+.virt-tree-checkbox.is-indeterminate {
+  border-color: var(--virt-tree-color-checkbox-border-indeterminate);
+  background-color: var(--virt-tree-color-checkbox-bg-indeterminate);
+}
+.virt-tree-checkbox.is-indeterminate::before {
   content: '';
   position: absolute;
   display: block;
@@ -75,4 +284,9 @@
   left: 0;
   right: 0;
   top: 5px;
+}
+.virt-tree-checkbox.is-disabled {
+  cursor: not-allowed;
+  background: var(--virt-tree-color-checkbox-bg-disabled);
+  border-color: #d9d9d9;
 }

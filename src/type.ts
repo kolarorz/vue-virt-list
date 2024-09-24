@@ -1,10 +1,4 @@
-import type {
-  Ref,
-  ShallowReactive,
-  VNodeChild,
-  VNode,
-  VNodeArrayChildren,
-} from 'vue-demi';
+import type { Ref, ShallowReactive, VNode, VNodeArrayChildren } from 'vue-demi';
 
 export type ObserverItemProps = {
   resizeObserver: ResizeObserver;
@@ -50,6 +44,7 @@ interface BaseListProps<T extends Record<string, string>> {
   list: T[];
   itemKey: string | number;
   minSize: number;
+  itemGap?: number;
   scrollDistance?: number;
   headerClass?: string;
   headerStyle?: string;

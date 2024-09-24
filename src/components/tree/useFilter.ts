@@ -1,5 +1,10 @@
-import { computed, shallowRef, triggerRef, type ShallowRef } from 'vue-demi';
-import type { ITreeInfo, ITreeNode, TreeKey } from './type';
+import {
+  computed,
+  shallowRef,
+  triggerRef,
+  type ShallowReactive,
+} from 'vue-demi';
+import type { TreeInfo, TreeNode, TreeNodeKey } from './type';
 import type { TreeProps } from './useTree';
 
 const isFunction = (value: unknown) =>
@@ -7,12 +12,15 @@ const isFunction = (value: unknown) =>
   value instanceof Function ||
   Object.prototype.toString.call(value) === '[object Function]';
 
-export const useFilter = (
-  props: TreeProps,
-  tree: ShallowRef<ITreeInfo | undefined>,
-) => {
-  const hiddenNodeKeySet = shallowRef<Set<TreeKey>>(new Set([]));
-  const hiddenExpandIconKeySet = shallowRef<Set<TreeKey>>(new Set([]));
+export const useFilter = ({
+  props,
+  treeInfo,
+}: {
+  props: TreeProps;
+  treeInfo: ShallowReactive<TreeInfo | undefined>;
+}) => {
+  const hiddenNodeKeySet = shallowRef<Set<TreeNodeKey>>(new Set([]));
+  const hiddenExpandIconKeySet = shallowRef<Set<TreeNodeKey>>(new Set([]));
 
   const filterable = computed(() => {
     return isFunction(props.filterMethod);
@@ -22,17 +30,24 @@ export const useFilter = (
     if (!filterable.value) {
       return;
     }
-    const expandKeySet = new Set<TreeKey>();
+    const expandKeySet = new Set<TreeNodeKey>();
     const hiddenExpandIconKeys = hiddenExpandIconKeySet.value;
     const hiddenKeys = hiddenNodeKeySet.value;
-    const family: ITreeNode[] = [];
-    const nodes = tree.value?.treeNodes || [];
+    const family: TreeNode[] = [];
+    const nodes = treeInfo.treeNodes || [];
     const filter = props.filterMethod;
     hiddenKeys.clear();
-    function traverse(nodes: ITreeNode[]) {
+    function traverse(nodes: TreeNode[]) {
       nodes.forEach((node) => {
+        // 每次遍历都生成 searchedIndex
+        const searchedIndex =
+          query === ''
+            ? -1
+            : node.title?.toLowerCase().indexOf(query.toLowerCase());
+        node.searchedIndex = searchedIndex;
+
         family.push(node);
-        if (filter?.(query, node.data)) {
+        if (filter?.(query, node)) {
           family.forEach((member) => {
             expandKeySet.add(member.key);
           });
@@ -70,7 +85,7 @@ export const useFilter = (
     return expandKeySet;
   }
 
-  function isForceHiddenExpandIcon(node: ITreeNode): boolean {
+  function isForceHiddenExpandIcon(node: TreeNode): boolean {
     return hiddenExpandIconKeySet.value.has(node.key);
   }
 

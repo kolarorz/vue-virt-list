@@ -1,72 +1,109 @@
-import { defineComponent, type SetupContext } from 'vue-demi';
-import { useTree, treeProps, type TreeProps, TreeEmits } from './useTree';
-import TreeNode from './VirtTreeNode';
+import { defineComponent, type SetupContext, watch } from 'vue-demi';
+import {
+  useTree,
+  customFieldNames,
+  TreeEmits,
+  type TreeProps,
+} from './useTree';
+import VirtTreeNode from './VirtTreeNode';
 import { VirtList } from '../../VirtList';
 import { _h, _h2Slot, getSlot } from '../../util';
-import type { ITreeNode, TreeNodeData } from './type';
+import type { TreeNode, TreeNodeData } from './type';
 
-export default defineComponent({
+export const VirtTree = defineComponent({
   name: 'VirtTree',
-  props: treeProps,
+  props: customFieldNames,
   setup(props: TreeProps, context: SetupContext) {
     const emits = context.emit as SetupContext<typeof TreeEmits>['emit'];
     return useTree(props, emits);
   },
   render() {
     const {
-      flattenList,
-      onClickTreeNode,
-      isExpanded,
+      dragging,
+      renderList,
+
       onScroll,
-      isCurrent,
-      isChecked,
-      isIndeterminate,
-      onCheckChange,
-      toggleExpand,
       isForceHiddenExpandIcon,
+
+      hasChecked,
+      hasIndeterminate,
+      onClickCheckbox,
+
+      hasExpanded,
+      onClickExpandIcon,
+
+      hasSelected,
+
+      hasFocused,
+
+      onDragstart,
+      onClickNodeContent,
     } = this;
 
-    const { minSize, showCheckbox, indent } = this.$props as TreeProps;
+    const {
+      minSize,
+      fixed,
+      itemGap,
+      buffer,
+      checkable,
+      selectable,
+      indent,
+      iconSize,
+      showLine,
+      draggable,
+    } = this.$props as TreeProps;
 
     const renderTreeNode = ({
       itemData,
     }: {
-      itemData: ITreeNode;
+      itemData: TreeNode;
       index: number;
     }) => {
       return _h2Slot(
-        TreeNode,
+        VirtTreeNode,
         {
-          node: itemData,
-          indent,
-          showCheckbox,
-          hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
-          expanded: isExpanded(itemData),
-          current: isCurrent(itemData),
-          checked: isChecked(itemData),
-          indeterminate: isIndeterminate(itemData),
-          onClick: onClickTreeNode,
-          onCheck: onCheckChange,
-          onToggle: (node: ITreeNode) => toggleExpand(node),
+          attrs: {
+            node: itemData,
+            minSize,
+            fixed,
+            indent,
+            iconSize,
+            showLine,
+            itemGap,
+            // 动态判断当前节点是否需要隐藏展开图标
+            hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
+            // expand
+            isExpanded: hasExpanded(itemData),
+            // select
+            selectable,
+            isSelected: hasSelected(itemData),
+            disableSelect: itemData.disableSelect,
+            // checkbox
+            checkable,
+            isChecked: hasChecked(itemData),
+            isIndeterminate: hasIndeterminate(itemData),
+            disableCheckbox: itemData.disableCheckbox,
+            // focus
+            isFocused: hasFocused(itemData),
+            // drag
+            draggable: draggable,
+          },
+          on: {
+            clickExpandIcon: onClickExpandIcon,
+            clickNodeContent: onClickNodeContent,
+            clickCheckbox: onClickCheckbox,
+            dragstart: onDragstart,
+          },
         },
         {
           default: getSlot(this, 'default')
-            ? (node: ITreeNode, data: TreeNodeData, expand: boolean) =>
-                getSlot(
-                  this,
-                  'default',
-                )?.({
-                  node,
-                  data,
-                  expand,
-                })
+            ? (node: TreeNode) => getSlot(this, 'default')?.({ node })
             : null,
           content: getSlot(this, 'content')
-            ? (node: ITreeNode) => getSlot(this, 'content')?.({ node })
+            ? (node: TreeNode) => getSlot(this, 'content')?.({ node })
             : null,
           icon: getSlot(this, 'icon')
-            ? (node: ITreeNode, expanded: boolean) =>
-                getSlot(this, 'icon')?.({ node, expanded })
+            ? (node: TreeNode) => getSlot(this, 'icon')?.({ node })
             : null,
         },
       );
@@ -75,13 +112,22 @@ export default defineComponent({
     return _h2Slot(
       VirtList,
       {
-        ref: 'virListRef',
+        ref: 'virtListRef',
         attrs: {
-          list: flattenList,
-          minSize: minSize,
+          list: renderList,
+          minSize,
+          fixed,
           itemKey: 'key',
-          onScroll: onScroll,
+          itemGap,
+          buffer,
           ...this.$attrs,
+          itemClass: 'virt-tree-item',
+        },
+        class: {
+          'is-dragging': dragging,
+        },
+        on: {
+          scroll: onScroll,
         },
       },
       {

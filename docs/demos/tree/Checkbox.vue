@@ -4,46 +4,63 @@ import { VirtTree } from 'vue-virt-list';
 
 type Data = {
   id: string | number;
-  name: string;
+  title: string;
   children?: Data;
 }[];
 
-const treeProps = {
-  value: 'id',
-  label: 'name',
+const customFieldNames = {
+  key: 'id',
 };
 
-const data = shallowRef<Data>([]);
+const list = shallowRef<Data>([]);
 onMounted(() => {
-  data.value = Array.from({ length: 40 }).map((_, i) => ({
+  list.value = Array.from({ length: 40 }).map((_, i) => ({
     id: String(i),
-    name: `Node-${i}`,
+    title: `Node-${i}`,
     children: Array.from({ length: 3 }).map((_, index) => ({
       id: `${i}-${index}`,
-      name: `Node-${i}-${index}`,
+      title: `Node-${i}-${index}`,
       children: Array.from({ length: 2 }).map((_, indexChild) => ({
         id: `${i}-${index}-${indexChild}`,
-        name: `Node-${i}-${index}-${indexChild}`,
+        title: `Node-${i}-${index}-${indexChild}`,
+        disableCheckbox: indexChild % 2 === 0,
+        children:
+          indexChild % 2 !== 0
+            ? []
+            : Array.from({ length: 2 }).map((_, indexChild) => ({
+                id: `${i}-${index}-${indexChild}-${indexChild}`,
+                title: `Node-${i}-${index}-${indexChild}-${indexChild}`,
+              })),
       })),
     })),
   }));
 });
 
 const virtTreeRef = ref<typeof VirtTree>();
-const key = ref<number>(0);
-const onCollapseAll = () => {
-  virtTreeRef.value.collapseAllNods([]);
-};
+const key = ref<string>('0');
 
 const onExpandAll = () => {
-  virtTreeRef.value.expandAllNodes();
+  virtTreeRef.value?.expandAll(true);
+};
+const onCollapseAll = () => {
+  virtTreeRef.value?.expandAll(false);
 };
 
 const expandNode = () => {
-  virtTreeRef.value.expandNodeByKey(key.value);
+  virtTreeRef.value?.expandNode(key.value, true);
 };
 const collapseNode = () => {
-  virtTreeRef.value.collapseNodeByKey(key.value);
+  virtTreeRef.value?.expandNode(key.value, false);
+};
+
+const checkedKeys = ref<(number | string)[]>(['0']);
+
+const onCheck = (data: Data, checkedInfo: any) => {
+  console.warn('data', data, checkedInfo);
+};
+
+const clearCheck = (check: boolean) => {
+  virtTreeRef.value?.checkAll(check);
 };
 </script>
 
@@ -53,6 +70,8 @@ const collapseNode = () => {
       <div style="display: flex; gap: 8px">
         <div class="btn-item" @click="onCollapseAll">折叠所有</div>
         <div class="btn-item" @click="onExpandAll">展开所有</div>
+        <div class="btn-item" @click="clearCheck(false)">清空 check</div>
+        <div class="btn-item" @click="clearCheck(true)">check所有</div>
       </div>
       <div class="input-container">
         <div class="input-label">操作指定节点：</div>
@@ -61,24 +80,31 @@ const collapseNode = () => {
         <div class="btn-item" @click="collapseNode">折叠</div>
       </div>
     </div>
-    <VirtTree
-      ref="virtTreeRef"
-      :data="data"
-      :fieldNames="treeProps"
-      :indent="20"
-      showCheckbox
-    >
-      <template #empty>
-        <div style="padding: 16px">暂无数据</div>
-      </template>
-    </VirtTree>
+    <div>{{ checkedKeys }}</div>
+
+    <div class="virt-tree-wrapper">
+      <VirtTree
+        ref="virtTreeRef"
+        :list="list"
+        :fieldNames="customFieldNames"
+        :indent="20"
+        checkable
+        checkOnClickNode
+        v-model:checkedKeys="checkedKeys"
+        @check="onCheck"
+        defaultExpandAll
+      >
+        <template #empty>
+          <div style="padding: 16px">暂无数据</div>
+        </template>
+      </VirtTree>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .demo-tree {
   width: 100%;
-  height: 500px;
   display: flex;
   flex-direction: column;
   overflow: hidden;

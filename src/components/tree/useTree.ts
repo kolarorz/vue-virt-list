@@ -1,9 +1,7 @@
 import {
   computed,
-  nextTick,
   ref,
-  shallowRef,
-  triggerRef,
+  shallowReactive,
   watch,
   type ExtractPropTypes,
   type PropType,
@@ -11,138 +9,424 @@ import {
 } from 'vue-demi';
 import { VirtList } from '../../VirtList';
 import type {
-  ITreeNode,
-  ITreeInfo,
+  TreeNode,
+  TreeInfo,
   TreeNodeData,
   TreeData,
-  TreeKey,
-  ITreeOptionProps,
+  TreeNodeKey,
+  TreeFieldNames,
   CheckedInfo,
+  IScrollParams,
 } from './type';
 import { useCheck } from './useCheck';
 import { useFilter } from './useFilter';
+import { useSelect } from './useSelect';
+import { useFocus } from './useFocus';
+import { useExpand } from './useExpand';
+import { useDrag } from './useDrag';
 
-// enums
-export enum TreeOptionsEnum {
-  KEY = 'id',
-  LABEL = 'label',
-  CHILDREN = 'children',
-}
-
+const defaultFiledNames: Required<TreeFieldNames> = {
+  key: 'key',
+  title: 'title',
+  children: 'children',
+  disableSelect: 'disableSelect',
+  disableCheckbox: 'disableCheckbox',
+  disableDragIn: 'disableDragIn',
+  disableDragOut: 'disableDragOut',
+};
 // emits
-export const NODE_CLICK = 'node-click';
-export const NODE_EXPAND = 'node-expand';
-export const NODE_COLLAPSE = 'node-collapse';
-export const CURRENT_CHANGE = 'current-change';
-export const NODE_CHECK = 'node-check';
-export const NODE_CHECK_CHANGE = 'node-check-change';
+export const NODE_CLICK = 'click';
 export const TREE_SCROLL = 'scroll';
 
+export const NODE_EXPAND = 'expand';
+export const UPDATE_EXPANDED_KEYS = 'update:expandedKeys';
+
+export const NODE_SELECT = 'select';
+export const UPDATE_SELECTED_KEYS = 'update:selectedKeys';
+
+export const NODE_CHECK = 'check';
+export const UPDATE_CHECKED_KEYS = 'update:checkedKeys';
+
+export const DRAGSTART = 'dragstart';
+export const DRAGEND = 'dragend';
+
 export const TreeEmits = {
-  [NODE_CLICK]: (data: TreeNodeData, node: ITreeNode, e: MouseEvent) =>
+  [NODE_CLICK]: (data: TreeNodeData, node: TreeNode, e: MouseEvent) =>
     data && node && e,
-  [NODE_EXPAND]: (data: TreeNodeData, node: ITreeNode) => data && node,
-  [NODE_COLLAPSE]: (data: TreeNodeData, node: ITreeNode) => data && node,
-  [CURRENT_CHANGE]: (data: TreeNodeData, node: ITreeNode) => data && node,
-  [NODE_CHECK]: (data: TreeNodeData, checkedInfo: CheckedInfo) =>
-    data && checkedInfo,
-  [NODE_CHECK_CHANGE]: (data: TreeNodeData, checked: boolean) =>
-    data && typeof checked === 'boolean',
   [TREE_SCROLL]: (e: Event) => e,
+
+  [NODE_EXPAND]: (
+    expandKeys: Array<string | number>,
+    data: {
+      node?: TreeNode;
+      expanded: boolean;
+      expandedNodes: TreeNodeData[];
+    },
+  ) => expandKeys && data,
+  [UPDATE_EXPANDED_KEYS]: (expandedKeys: TreeNodeKey[]) => expandedKeys,
+
+  [NODE_SELECT]: (
+    selectedKeys: TreeNodeKey[],
+    data: {
+      node: TreeNode;
+      selected: boolean;
+      selectedKeys: TreeNodeKey[];
+      selectedNodes: TreeNodeData[];
+    },
+  ) => selectedKeys && data,
+  [UPDATE_SELECTED_KEYS]: (selectedKeys: TreeNodeKey[]) => selectedKeys,
+
+  [NODE_CHECK]: (
+    checkedKeys: TreeNodeKey[],
+    data: {
+      node: TreeNode;
+      checked: boolean;
+      checkedKeys: TreeNodeKey[];
+      checkedNodes: TreeNodeData[];
+      halfCheckedKeys: TreeNodeKey[];
+      halfCheckedNodes: TreeNodeData[];
+    },
+  ) => checkedKeys && data,
+  [UPDATE_CHECKED_KEYS]: (checkedKeys: TreeNodeKey[]) => checkedKeys,
+
+  [DRAGSTART]: (data: { sourceNode: TreeNodeData }) => data,
+  [DRAGEND]: (data?: {
+    node: TreeNode;
+    // undefined 的时候表示进入第一个
+    prevNode: TreeNode | undefined;
+    // undefined 的时候表示根级别
+    parentNode: TreeNode | undefined;
+  }) => data,
 };
 
-export const treeProps = {
-  data: {
-    type: Object as PropType<TreeData>,
+export const customFieldNames = {
+  list: {
+    type: Array as PropType<TreeData>,
     required: true,
     default: () => [],
   },
-  fieldNames: {
-    type: Object as PropType<ITreeOptionProps>,
-    default: () => ({ children: 'children', label: 'label', value: 'value' }),
+  minSize: {
+    type: Number,
+    default: 32,
   },
-  defaultExpandedKeys: {
-    type: Array as PropType<TreeKey[]>,
-    default: () => [],
-  },
-  defaultCheckedKeys: {
-    type: Array as PropType<TreeKey[]>,
-    default: () => [],
+  // 是否为固定高
+  fixed: {
+    type: Boolean,
+    default: false,
   },
   indent: {
     type: Number,
     default: 16,
   },
-  currentNodeKey: {
-    type: [String, Number] as PropType<TreeKey>,
-    default: '',
-  },
-  minSize: {
+  iconSize: {
     type: Number,
-    default: 10,
+    default: 16,
+  },
+  itemGap: {
+    type: Number,
+    default: 0,
+  },
+  buffer: {
+    type: Number,
+    default: 2,
+  },
+
+  showLine: {
+    type: Boolean,
+    default: false,
+  },
+
+  fieldNames: {
+    type: Object as PropType<TreeFieldNames>,
+    default: () => ({}),
+  },
+
+  filterMethod: {
+    type: Function as PropType<(query: string, node: TreeNode) => boolean>,
+  },
+
+  // expand
+  defaultExpandAll: {
+    type: Boolean,
+    default: false,
+  },
+  expandedKeys: {
+    type: Array as PropType<TreeNodeKey[]>,
   },
   expandOnClickNode: {
     type: Boolean,
-    default: true,
+    default: false,
   },
-  showCheckbox: {
+
+  // selectable
+  selectable: {
     type: Boolean,
     default: false,
   },
-  disabled: {
+  selectMultiple: {
     type: Boolean,
     default: false,
   },
-  filterMethod: {
-    type: Function as PropType<(query: string, node: TreeNodeData) => boolean>,
+  selectedKeys: {
+    type: Array as PropType<TreeNodeKey[]>,
   },
+
+  // checkable
+  checkable: {
+    type: Boolean,
+    default: false,
+  },
+  checkedKeys: {
+    type: Array as PropType<TreeNodeKey[]>,
+  },
+  checkedStrictly: {
+    type: Boolean,
+    default: false,
+  },
+  checkOnClickNode: {
+    type: Boolean,
+    default: false,
+  },
+
+  // focus
+  focusedKeys: {
+    type: Array as PropType<TreeNodeKey[]>,
+    default: () => [],
+  },
+
+  draggable: {
+    type: Boolean,
+    default: false,
+  },
+  dragClass: {
+    type: String,
+    default: '',
+  },
+  dragGhostClass: {
+    type: String,
+    default: '',
+  },
+  // 待确定的功能
+  // beforeDrag: {
+  //   type: Function as PropType<
+  //     (data: {
+  //       placement: 'top' | 'bottom' | 'center';
+  //       node: TreeNode;
+  //       prevNode: TreeNode;
+  //       parentNode: TreeNode;
+  //     }) => boolean
+  //   >,
+  //   default: () => true,
+  // },
 };
 
 export const TreeNodeEmits = {
-  click: (node: ITreeNode, e: MouseEvent) => node && e,
-  check: (node: ITreeNode, checked: boolean) =>
+  click: (node: TreeNode, e: MouseEvent) => node && e,
+  check: (node: TreeNode, checked: boolean) =>
     node && typeof checked === 'boolean',
 };
 
-export type TreeProps = ExtractPropTypes<typeof treeProps>;
+export type TreeProps = ExtractPropTypes<typeof customFieldNames>;
 
 export const useTree = (
   props: TreeProps,
   emits: SetupContext<typeof TreeEmits>['emit'],
 ) => {
-  const virListRef = ref<InstanceType<typeof VirtList> | null>(null);
-  const expandedKeysSet = shallowRef<Set<TreeKey>>(
-    new Set(props.defaultExpandedKeys),
-  );
-  const tree = shallowRef<ITreeInfo | undefined>();
-  const currentNode = ref<TreeKey>();
-  const parentNodeKeys = new Set<TreeKey>();
+  // 维护一个 dragging 状态
+  const dragging = ref(false);
+  const virtListRef = ref<InstanceType<typeof VirtList> | null>(null);
 
-  const { isChecked, isIndeterminate, toggleCheckbox } = useCheck(
-    props,
-    emits,
-    tree,
-  );
+  const mergeFieldNames = {
+    ...defaultFiledNames,
+    ...props.fieldNames,
+  };
+  const getKey = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.key];
+  const getTitle = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.title];
+  const getChildren = (node: TreeNodeData) =>
+    !node ? [] : node[mergeFieldNames.children];
+  const getDisableSelect = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.disableSelect];
+  const getDisableCheckbox = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.disableCheckbox];
 
-  const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter(
-    props,
-    tree,
-  );
+  const treeInfo = shallowReactive<TreeInfo>({
+    treeNodesMap: new Map(),
+    levelNodesMap: new Map(),
+    maxLevel: 1,
+    treeNodes: [],
+    allNodeKeys: [],
+  });
+  const parentNodeKeys: TreeNodeKey[] = [];
 
-  const expandParents = (node: ITreeNode) => {
-    expandedKeysSet.value.add(node.key);
-    if (!node?.parent) return;
-    expandParents(node.parent);
+  function setTreeNode(key: TreeNodeKey, value: TreeNode) {
+    // 因为无法判定用户使用number or string作为key，所以这里统一转成string处理
+    return treeInfo.treeNodesMap.set(String(key), value);
+  }
+
+  function getTreeNode(key: TreeNodeKey) {
+    return treeInfo.treeNodesMap.get(String(key));
+  }
+
+  const setTreeData = (list: TreeData) => {
+    const levelNodesMap = new Map<TreeNodeKey, TreeNode[]>();
+
+    let maxLevel = 1;
+    const flat = (nodes: TreeData, level: number = 1, parent?: TreeNode) => {
+      const currNodes: TreeNode[] = [];
+      let index = 0;
+      for (const rawNode of nodes) {
+        index++;
+        const key = getKey(rawNode);
+        const title = getTitle(rawNode);
+        const children = getChildren(rawNode);
+        const disableSelect = getDisableSelect(rawNode);
+        const disableCheckbox = getDisableCheckbox(rawNode);
+        const node: TreeNode = {
+          data: rawNode,
+          key,
+          parent,
+          level,
+          title,
+          disableSelect,
+          disableCheckbox,
+          isLeaf: !children || children.length === 0,
+          isLast: index === nodes.length,
+        };
+        if (children && children.length) {
+          node.children = flat(children, level + 1, node);
+          parentNodeKeys.push(node.key);
+        }
+        currNodes.push(node);
+        setTreeNode(key, node);
+        treeInfo.allNodeKeys.push(key);
+        if (level > maxLevel) {
+          maxLevel = level;
+        }
+        const levelInfo = levelNodesMap.get(level);
+        if (levelInfo) {
+          levelInfo.push(node);
+          continue;
+        }
+        levelNodesMap.set(level, [node]);
+      }
+      return currNodes;
+    };
+    treeInfo.treeNodes = flat(list);
+    treeInfo.levelNodesMap = levelNodesMap;
+    treeInfo.maxLevel = maxLevel;
+
+    // return {
+    //   treeNodes,
+    //   treeNodesMap,
+    //   levelNodesMap,
+    //   maxLevel,
+    //   allNodeKeys,
+    // };
   };
 
-  const flattenList = computed(() => {
-    // 展开节点的所有父节点
-    const expandedKeys = expandedKeysSet.value;
+  const scrollToTarget = (key: TreeNodeKey, isTop: boolean = true) => {
+    const currIndex = renderList.value.findIndex((l) => l.key === key);
+    // 若展开节点不在可视区域内，将对应节点滚动到可视区域
+    if (currIndex < 0) {
+      // 若滚动目标元素不在当前数据列表中，需要展开当前节点
+      expandNode(key, true);
+      return;
+    }
+    if (isTop) {
+      virtListRef.value?.scrollToIndex(currIndex);
+      return;
+    }
+    virtListRef.value?.scrollIntoView(currIndex);
+  };
+
+  const onScroll = (e: Event) => {
+    emits(TREE_SCROLL, e);
+  };
+
+  // const forceUpdate = () => {
+  //   virtListRef.value?.forceUpdate();
+  // };
+
+  const scrollToBottom = () => {
+    virtListRef.value?.scrollToBottom();
+  };
+
+  const scrollToTop = () => {
+    virtListRef.value?.scrollToTop();
+  };
+
+  const scrollTo = (scroll: IScrollParams) => {
+    const { key, align, offset } = scroll;
+    if (offset && offset >= 0) {
+      // 只滚动到指定位置
+      virtListRef.value?.scrollToOffset(offset);
+      return;
+    }
+    // 滚动指定元素，需要滚动目标的 key
+    if (!key) return;
+    if (align && align === 'top') {
+      scrollToTarget(key, true);
+    } else {
+      scrollToTarget(key, false);
+    }
+  };
+
+  const {
+    hasChecked,
+    hasIndeterminate,
+    setCheckedKeys,
+    toggleCheckbox,
+    checkAll,
+    checkNode,
+  } = useCheck({
+    props,
+    treeInfo,
+    getTreeNode,
+    emits,
+  });
+
+  const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter({
+    props,
+    treeInfo,
+  });
+
+  const { hasSelected, toggleSelect, selectNode, selectAll } = useSelect({
+    props,
+    treeInfo,
+    emits,
+    getTreeNode,
+  });
+
+  const { hasExpanded, setExpandedKeys, toggleExpand, expandAll, expandNode } =
+    useExpand({
+      props,
+      virtListRef,
+      parentNodeKeys,
+      getTreeNode,
+      emits,
+    });
+
+  const { hasFocused } = useFocus({ props });
+
+  const { onDragstart } = useDrag({
+    props,
+    virtListRef,
+    dragging,
+    getTreeNode,
+    hasExpanded,
+    expandNode,
+    emits,
+  });
+
+  // 实际渲染的节点
+  const renderList = computed(() => {
     const hiddenNodeKeys = hiddenNodeKeySet.value;
-    const flattenNodes: ITreeNode[] = [];
-    const nodes = (tree.value && tree.value.treeNodes) || [];
+    const flattenNodes: TreeNode[] = [];
+    const nodes = (treeInfo && treeInfo.treeNodes) || [];
     function traverse() {
-      const stack: ITreeNode[] = [];
+      const stack: TreeNode[] = [];
       for (let i = nodes.length - 1; i >= 0; --i) {
         stack.push(nodes[i]);
       }
@@ -152,7 +436,7 @@ export const useTree = (
         if (!hiddenNodeKeys.has(node.key)) {
           flattenNodes.push(node);
         }
-        if (expandedKeys.has(node.key)) {
+        if (hasExpanded(node)) {
           const children = node.children;
           if (children) {
             const length = children.length;
@@ -167,220 +451,49 @@ export const useTree = (
     return flattenNodes;
   });
 
-  const valueKey = computed(() => {
-    return props.fieldNames?.value || TreeOptionsEnum.KEY;
-  });
-  const childrenKey = computed(() => {
-    return props.fieldNames?.children || TreeOptionsEnum.CHILDREN;
-  });
-  const labelKey = computed(() => {
-    return props.fieldNames?.label || TreeOptionsEnum.LABEL;
-  });
-
-  const getKey = (node: TreeNodeData) => (!node ? '' : node[valueKey.value]);
-  const getChildren = (node: TreeNodeData) =>
-    !node ? [] : node[childrenKey.value];
-  const getLabel = (node: TreeNodeData) => (!node ? '' : node[labelKey.value]);
-
-  const createTree = (data: TreeData): ITreeInfo => {
-    const treeNodesMap = new Map<TreeKey, ITreeNode>();
-    const levelNodesMap = new Map<TreeKey, ITreeNode[]>();
-
-    let maxLevel = 1;
-    const flat = (nodes: TreeData, level: number = 1, parent?: ITreeNode) => {
-      const currNodes: ITreeNode[] = [];
-      for (const rawNode of nodes) {
-        const children = getChildren(rawNode);
-        const key = getKey(rawNode);
-        const label = getLabel(rawNode);
-        const node: ITreeNode = {
-          data: rawNode,
-          key,
-          parent,
-          level,
-          label,
-          isLeaf: !children || children.length === 0,
-        };
-        if (children && children.length) {
-          node.children = flat(children, level + 1, node);
-        }
-        parentNodeKeys.add(node.key);
-        currNodes.push(node);
-        treeNodesMap.set(key, node);
-        if (level > maxLevel) {
-          maxLevel = level;
-        }
-        const levelInfo = levelNodesMap.get(level);
-        if (levelInfo) {
-          levelInfo.push(node);
-          continue;
-        }
-        levelNodesMap.set(level, [node]);
-      }
-      return currNodes;
-    };
-    const treeNodes = flat(data);
-    return {
-      treeNodes,
-      treeNodesMap,
-      levelNodesMap,
-      maxLevel,
-    };
+  const onClickExpandIcon = (node: TreeNode) => {
+    if (dragging.value) return;
+    toggleExpand(node);
   };
-
-  const expandNode = (node: ITreeNode) => {
-    emits(NODE_COLLAPSE, node.data, node);
-    expandedKeysSet.value.add(node.key);
-    triggerRef(expandedKeysSet);
+  const onClickCheckbox = (node: TreeNode, e: Event) => {
+    if (dragging.value) return;
+    toggleCheckbox(node);
   };
-
-  const collapseNode = (node: ITreeNode) => {
-    emits(NODE_EXPAND, node.data, node);
-    expandedKeysSet.value.delete(node.key);
-    triggerRef(expandedKeysSet);
-  };
-
-  const toggleExpand = (node: ITreeNode) => {
-    if (!virListRef.value) return;
-    const { offset: preOffset } = virListRef.value.reactiveData;
-    const expandedKeys = expandedKeysSet.value;
-    if (expandedKeys.has(node.key)) {
-      collapseNode(node);
-    } else {
-      expandNode(node);
-    }
-    nextTick(() => {
-      if (virListRef.value) virListRef.value.scrollToOffset(preOffset);
-    });
-  };
-
-  const setTreeData = (data: TreeData) => {
-    tree.value = createTree(data);
-  };
-
-  const isExpanded = (node: ITreeNode) => {
-    return expandedKeysSet.value.has(node.key);
-  };
-
-  const isCurrent = (node: ITreeNode) => {
-    return !!currentNode.value && currentNode.value === node.key;
-  };
-
-  const onClickTreeNode = (node: ITreeNode, e: MouseEvent) => {
-    emits(NODE_CLICK, node.data, node, e);
-    if (!isCurrent(node)) {
-      emits(CURRENT_CHANGE, node.data, node);
-      currentNode.value = node.key;
-    }
-    if (props.expandOnClickNode) {
+  const onClickNodeContent = (node: TreeNode) => {
+    if (dragging.value) return;
+    // 如果支持选中节点，且非禁用时，才允许选中
+    if (props.selectable && !node.disableSelect) {
+      toggleSelect(node);
+    } else if (
+      props.checkable &&
+      !node.disableCheckbox &&
+      props.checkOnClickNode
+    ) {
+      toggleCheckbox(node);
+    } else if (props.expandOnClickNode) {
       toggleExpand(node);
     }
-  };
-
-  const getCurrentNode = (data: TreeKey | TreeNodeData) => {
-    const key = typeof data === 'object' && data !== null ? getKey(data) : data;
-    return tree.value?.treeNodesMap.get(key);
-  };
-
-  const getCurrentKey = () => {
-    return currentNode.value;
-  };
-
-  const setCurrentKey = (key: TreeKey) => {
-    currentNode.value = key;
-  };
-
-  const setExpandedKeys = (keys: TreeKey[]) => {
-    // 设置展开项的时候需要展开所有的父级
-    for (const key of keys) {
-      const node = tree.value?.treeNodesMap.get(key);
-      if (node) {
-        expandParents(node);
-      }
-    }
-    triggerRef(expandedKeysSet);
-  };
-
-  const getNodeByKey = (key: TreeKey) => tree.value?.treeNodesMap.get(key);
-
-  const expandAllNodes = () => {
-    expandedKeysSet.value = parentNodeKeys;
-    triggerRef(expandedKeysSet);
-  };
-
-  const collapseAllNods = () => {
-    expandedKeysSet.value = new Set([]);
-    triggerRef(expandedKeysSet);
-    virListRef.value?.scrollToTop();
-  };
-
-  const onScroll = (e: Event) => {
-    emits(TREE_SCROLL, e);
-  };
-
-  const expandNodeByKey = (key: TreeKey) => {
-    if (!key && key !== 0) return;
-    const targetItem = tree.value?.treeNodesMap.get(key);
-    if (!targetItem) return;
-    // 根据节点展开的时候需要展开所有父亲节点
-    expandParents(targetItem);
-    triggerRef(expandedKeysSet);
-    scrollToTarget(key, false);
-  };
-
-  const collapseNodeByKey = (key: TreeKey) => {
-    if (!expandedKeysSet.value.has(key)) return;
-    expandedKeysSet.value.delete(key);
-    triggerRef(expandedKeysSet);
-  };
-
-  const scrollToBottom = () => {
-    virListRef.value?.scrollToBottom();
-  };
-
-  const scrollToTop = () => {
-    virListRef.value?.scrollToTop();
-  };
-
-  const scrollToTarget = (key: TreeKey, isTop: boolean = true) => {
-    const currIndex = flattenList.value.findIndex((l) => l.key === key);
-    // 若展开节点不在可视区域内，将对应节点滚动到可视区域
-    if (currIndex < 0) return;
-    if (isTop) {
-      virListRef.value?.scrollToIndex(currIndex);
-      return;
-    }
-    virListRef.value?.scrollIntoView(currIndex);
-  };
-
-  const onCheckChange = (node: ITreeNode, checked: boolean) => {
-    toggleCheckbox(node, checked);
   };
 
   const filter = (query: string) => {
     const keys = doFilter(query);
     if (keys) {
-      expandedKeysSet.value = keys;
+      expandNode([...keys], true);
     }
   };
 
-  watch(
-    () => props.data,
-    (data: TreeData) => {
-      parentNodeKeys.clear();
-      setTreeData(data);
-      if (!virListRef.value) return;
-      virListRef.value.forceUpdate();
-    },
-    {
-      immediate: true,
-    },
-  );
+  function forceUpdate() {
+    setTreeData(props.list);
+    setExpandedKeys();
+    setCheckedKeys();
+    if (!virtListRef.value) return;
+    virtListRef.value.forceUpdate();
+  }
 
   watch(
-    () => props.currentNodeKey,
-    (key) => {
-      currentNode.value = key;
+    () => props.list.length,
+    () => {
+      forceUpdate();
     },
     {
       immediate: true,
@@ -388,36 +501,48 @@ export const useTree = (
   );
 
   return {
-    virListRef,
-    tree,
+    virtListRef,
+    treeInfo,
 
-    flattenList,
+    dragging,
+
+    renderList,
 
     onScroll,
     filter,
     isForceHiddenExpandIcon,
     setTreeData,
-    toggleExpand,
-    expandNode,
-    collapseNode,
-    onClickTreeNode,
-    isExpanded,
-    isCurrent,
-    getCurrentNode,
-    getCurrentKey,
-    setCurrentKey,
-    setExpandedKeys,
-    getNodeByKey,
-    expandAllNodes,
-    collapseAllNods,
-    expandNodeByKey,
-    collapseNodeByKey,
+
+    getTreeNode,
     scrollToBottom,
     scrollToTarget,
     scrollToTop,
+    scrollTo,
+    forceUpdate,
 
-    isChecked,
-    isIndeterminate,
-    onCheckChange,
+    // expand
+    hasExpanded,
+    toggleExpand,
+    expandAll,
+    expandNode,
+
+    // select
+    hasSelected,
+    selectNode,
+    selectAll,
+
+    // check
+    hasChecked,
+    hasIndeterminate,
+    checkAll,
+    checkNode,
+
+    // focus
+    hasFocused,
+
+    onDragstart,
+    onClickExpandIcon,
+    onClickNodeContent,
+    onClickCheckbox,
   };
 };

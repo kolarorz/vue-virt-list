@@ -5,8 +5,9 @@
 | Attribute     | Description                                                                                                                              | Type                                                               | Default | Required                      |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------- | ----------------------------- |
 | list          | list data                                                                                                                                | `Array`                                                            | -       | <font color="#f00">Yes</font> |
-| itemKey       | The Id of Item，<font color="#f00">unique key!!!</font>（if not, scroll fail）                                                              | `String\|Number`                                                   | -       | <font color="#f00">Yes</font> |
+| itemKey       | The Id of Item，<font color="#f00">unique key!!!</font>（if not, scroll fail）                                                           | `String\|Number`                                                   | -       | <font color="#f00">Yes</font> |
 | minSize       | **The Min Size of Item**                                                                                                                 | `Number`                                                           | `20`    | <font color="#f00">Yes</font> |
+| itemGap       | the gap between item                                                                                                                     | `Number`                                                           | 0       | -                             |
 | fixed         | fixed height of item use it                                                                                                              | `Number`                                                           | `false` | -                             |
 | buffer        | When the rendering amount is large and the scrolling white screen is serious, you can give a value<br/>bufferTop = bufferBottom = buffer | `Number`                                                           | `0`     | -                             |
 | bufferTop     | buffer of top                                                                                                                            | `Number`                                                           | `0`     | -                             |
@@ -23,12 +24,12 @@
 
 ## Slots
 
-| Name          | Description                                          |
-| ------------- | ---------------------------------------------------- |
-| header        | the slot of header                                   |
-| footer        | the slot of footer                                   |
-| sticky-header | the slot of sticky header                            |
-| sticky-footer | the slot of sticky footer                            |
+| Name          | Description                                           |
+| ------------- | ----------------------------------------------------- |
+| header        | the slot of header                                    |
+| footer        | the slot of footer                                    |
+| sticky-header | the slot of sticky header                             |
+| sticky-footer | the slot of sticky footer                             |
 | default       | the slot of item， `slotScoped = { itemData, index }` |
 
 ## Events
@@ -50,14 +51,14 @@
 | scrollToTop       | scroll to top                                                            | -                                                  |
 | scrollToBottom    | scroll to bottom                                                         | -                                                  |
 | scrollToIndex     | scroll to index                                                          | index                                              |
-| scrollInToView    | scroll to index if needed（if item is not in view）                        | index                                              |
+| scrollInToView    | scroll to index if needed（if item is not in view）                      | index                                              |
 | scrollToOffset    | scroll to px                                                             | px                                                 |
 | getItemSize       | get size of item                                                         | index                                              |
 | getItemPosByIndex | get position of item: `{ top: number; current: number; bottom: number;}` | index                                              |
 | forceUpdate       | force update(render)                                                     | -                                                  |
-| deletedList2Top   | deleted list of top part（Learn more in pagination example）               | list[]                                             |
-| addedList2Top     | added list of top part（Learn more in pagination example）                 | list[]                                             |
-| manualRender      | manual render（need support renderBegin  & renderEnd）                     | `(renderBegin: number, renderEnd: number) => void` |
+| deletedList2Top   | deleted list of top part（Learn more in pagination example）             | list[]                                             |
+| addedList2Top     | added list of top part（Learn more in pagination example）               | list[]                                             |
+| manualRender      | manual render（need support renderBegin  & renderEnd）                   | `(renderBegin: number, renderEnd: number) => void` |
 
 ## Extra variables
 
@@ -67,7 +68,7 @@
 | ------------- | ------ | -------------------------------------------------------------- |
 | views         | number | rendered number In view                                        |
 | offset        | number | scrollTop or scrollLeft                                        |
-| listTotalSize | number | the total of list size（Height without slots)                   |
+| listTotalSize | number | the total of list size（Height without slots)                  |
 | virtualSize   | number | The virtual placeholder size is the size from 0 to renderBegin |
 | inViewBegin   | number | The start Index in view                                        |
 | inViewEnd     | number | The end Index in view                                          |

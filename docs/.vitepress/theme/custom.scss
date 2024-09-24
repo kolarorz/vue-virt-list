@@ -1,7 +1,7 @@
 :root {
   --color-bg-message: #ccc;
 
-  --vp-layout-max-width: 1920px;
+  --vp-layout-max-width: 1600px;
 }
 
 body {
@@ -12,6 +12,9 @@ body {
   padding: 2px 4px;
   border: 1px solid var(--vp-c-border);
   cursor: pointer;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  user-select: none;
 }
 
 .demo-input {
@@ -45,4 +48,13 @@ body {
     border-width: 3px;
     border-color: transparent;
   }
+}
+
+.virt-tree-wrapper {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  height: 500px;
+
+  // TODO
+  // padding: 5px 0;
 }

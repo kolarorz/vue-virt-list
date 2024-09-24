@@ -1,2 +1,4 @@
-export { default as VirtTree } from './VirtTree';
-export * from './type';
+import './tree.css';
+import { VirtTree } from './VirtTree';
+
+export { VirtTree };
