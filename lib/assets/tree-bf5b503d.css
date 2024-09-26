@@ -10,6 +10,7 @@
   --virt-tree-color-text-selected: #1456f0;
 
   /* node */
+  --virt-tree-color-node-bg: #fff;
   --virt-tree-color-node-bg-hover: #1f232914;
   --virt-tree-color-node-bg-disabled: transparent;
   --virt-tree-color-node-bg-selected: #f0f4ff;
@@ -29,6 +30,10 @@
   --virt-tree-color-checkbox-border: rgb(190, 192, 198);
   --virt-tree-color-checkbox-border-checked: #1890ff;
   --virt-tree-color-checkbox-border-indeterminate: #1890ff;
+
+  /* 生效于图标的margin和拖拽线的左边距离 */
+  --virt-tree-switcher-icon-margin-right: 4px;
+  --virt-tree-drag-line-gap: 4px;
 }
 
 html.dark .virt-tree-item {
@@ -43,6 +48,7 @@ html.dark .virt-tree-item {
   --virt-tree-color-text-selected: #4c88ff;
 
   /* node */
+  --virt-tree-color-node-bg: #1b1b1f;
   --virt-tree-color-node-bg-hover: #2e3238;
   --virt-tree-color-node-bg-disabled: transparent;
   --virt-tree-color-node-bg-selected: #152340;
@@ -63,8 +69,9 @@ html.dark .virt-tree-item {
   --virt-tree-color-checkbox-border-checked: #1890ff;
   --virt-tree-color-checkbox-border-indeterminate: #1890ff;
 
-  /* clone */
-  /* --virt-tree-color-bg-clone-node: #2e3238; */
+  /* 生效于图标的margin和拖拽线的左边距离 */
+  --virt-tree-switcher-icon-margin-right: 4px;
+  --virt-tree-drag-line-gap: 4px;
 }
 
 /* item */
@@ -72,13 +79,28 @@ html.dark .virt-tree-item {
   position: relative;
 }
 .virt-tree-drag-line {
-  width: 100%;
+  width: calc(100% - var(--virt-tree-switcher-icon-margin-right));
   height: 2px;
   position: absolute;
   bottom: -1px;
   left: 0;
   display: flex;
-  z-index: 9999;
+  z-index: 99999;
+  /* 图标icon的margin-right，如果样式覆盖了 */
+  margin-left: var(--virt-tree-switcher-icon-margin-right);
+  /* 层级线的分隔距离 */
+  gap: var(--virt-tree-drag-line-gap);
+}
+.virt-tree-drag-line-arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid var(--virt-tree-color-drag-line);
+  border-right: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  position: absolute;
+  top: -3px;
+  left: 0;
 }
 .virt-tree-drag-box {
   width: 100%;
@@ -112,11 +134,17 @@ html.dark .virt-tree-item {
   cursor: pointer;
   user-select: none;
   color: var(--virt-tree-color-text);
+  background-color: var(--virt-tree-color-node-bg);
 }
 /* 用户如需自定义hover，则样式覆盖 */
 .virt-tree-node:hover {
   background-color: var(--virt-tree-color-node-bg-hover);
 }
+/* 拖拽时候禁用hover样式 */
+.virt-list__client.is-dragging .virt-tree-node:hover {
+  background-color: transparent;
+}
+
 .virt-tree-node.is-selected {
   color: var(--virt-tree-color-text-selected);
   background-color: var(--virt-tree-color-node-bg-selected);
@@ -178,7 +206,7 @@ html.dark .virt-tree-item {
   justify-content: center;
   align-items: center;
   color: var(--virt-tree-color-icon);
-  margin-right: 4px;
+  margin-right: var(--virt-tree-switcher-icon-margin-right);
 }
 .virt-tree-icon-wrapper .virt-tree-icon svg {
   transform: rotate(-90deg);

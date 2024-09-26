@@ -6,7 +6,7 @@ export declare const isScrollElement: (element: HTMLElement) => boolean;
  * @returns
  */
 export declare const getScrollElements: (container: HTMLElement, top?: HTMLElement) => HTMLElement[];
-export declare const getScrollParentElement: (container: HTMLElement, top?: HTMLElement) => HTMLElement | undefined;
+export declare const getScrollParentElement: (container: HTMLElement, top?: HTMLElement) => HTMLElement | null;
 export declare const isSiblingElement: (a: Element, b: Element) => boolean;
 export declare const findAncestorWithClass: (element: Element, className: string) => HTMLElement | null;
 export declare function getPrevSibling(element: Element): Element | undefined;

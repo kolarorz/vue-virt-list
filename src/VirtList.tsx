@@ -132,8 +132,8 @@ function useVirtList<T extends Record<string, any>>(
     );
   }
   function getItemSize(itemKey: string) {
-    if (props.fixed) return props.minSize;
-    return sizesMap.get(String(itemKey)) ?? props.minSize;
+    if (props.fixed) return props.minSize + props.itemGap;
+    return sizesMap.get(String(itemKey)) ?? props.minSize + props.itemGap;
   }
   function setItemSize(itemKey: string, size: number) {
     sizesMap.set(String(itemKey), size);
@@ -145,9 +145,9 @@ function useVirtList<T extends Record<string, any>>(
   function getItemPosByIndex(index: number) {
     if (props.fixed) {
       return {
-        top: props.minSize * index,
-        current: props.minSize,
-        bottom: props.minSize * (index + 1),
+        top: (props.minSize + props.itemGap) * index,
+        current: props.minSize + props.itemGap,
+        bottom: (props.minSize + props.itemGap) * (index + 1),
       };
     }
 
@@ -439,7 +439,8 @@ function useVirtList<T extends Record<string, any>>(
 
   function calcListTotalSize() {
     if (props.fixed) {
-      reactiveData.listTotalSize = props.minSize * props.list.length;
+      reactiveData.listTotalSize =
+        (props.minSize + props.itemGap) * props.list.length;
       return;
     }
     const { itemKey } = props;

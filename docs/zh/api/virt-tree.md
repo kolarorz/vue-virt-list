@@ -8,7 +8,7 @@
 | minSize                        | **最小尺寸**，会根据这个尺寸来计算可视区域内个数                              | `number`                     | `32`    | <font color="#f00">Yes</font> |
 | indent                         | 相邻级节点间的水平缩进，单位为像素                                            | `number`                     | `16`    | 否                            |
 | iconSize                       | 图标大小                                                                      | `number`                     | `16`    | 否                            |
-| itemGap                        | 节点之间的间距                                                                | `number`                     | `0`     | 否                            |
+| itemGap                        | 元素之间的间距 (元素尺寸包含itemGap)                                          | `Number`                     | `0`     | 否                            |
 | showLine                       | 是否显示层级线                                                                | `boolean`                    | `false` | 否                            |
 | `[expand]` expandedKeys        | `.sync` 展开的节点的 `key` 集合                                               | `TreeNodeKey[]`              | `[]`    | 否                            |
 | `[expand]` defaultExpandAll    | 是否默认展开节点                                                              | `boolean`                    | `true`  | 否                            |
