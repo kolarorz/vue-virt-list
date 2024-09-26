@@ -151,9 +151,10 @@ declare const RealList: import("vue-demi").DefineComponent<{
         default: string;
     };
 }>>, {
-    list: any[];
     itemKey: string | number;
+    list: any[];
     minSize: number;
+    pageSize: number;
     scrollDistance: number;
     headerClass: string;
     headerStyle: string;
@@ -163,6 +164,5 @@ declare const RealList: import("vue-demi").DefineComponent<{
     stickyHeaderStyle: string;
     stickyFooterClass: string;
     stickyFooterStyle: string;
-    pageSize: number;
 }, {}>;
 export { RealList };

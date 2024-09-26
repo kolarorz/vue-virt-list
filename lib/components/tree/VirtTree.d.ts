@@ -1,4 +1,4 @@
-import type { TreeNode, TreeNodeData } from './type';
+import type { TreeNode } from './type';
 export declare const VirtTree: import("vue-demi").DefineComponent<{
     list: {
         type: import("vue-demi").PropType<import("./type").TreeData>;
@@ -25,6 +25,10 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
+    buffer: {
+        type: NumberConstructor;
+        default: number;
+    };
     showLine: {
         type: BooleanConstructor;
         default: boolean;
@@ -34,7 +38,7 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         default: () => {};
     };
     filterMethod: {
-        type: import("vue-demi").PropType<(query: string, node: TreeNodeData) => boolean>;
+        type: import("vue-demi").PropType<(query: string, node: TreeNode<import("./type").TreeNodeData>) => boolean>;
     };
     defaultExpandAll: {
         type: BooleanConstructor;
@@ -88,15 +92,6 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
     dragGhostClass: {
         type: StringConstructor;
         default: string;
-    };
-    beforeDrag: {
-        type: import("vue-demi").PropType<(data: {
-            placement: "top" | "bottom" | "center";
-            node: TreeNode<TreeNodeData>;
-            prevNode: TreeNode<TreeNodeData>;
-            parentNode: TreeNode<TreeNodeData>;
-        }) => boolean>;
-        default: () => boolean;
     };
 }, {
     virtListRef: import("vue-demi").Ref<import("vue-demi").CreateComponentPublicInstance<Readonly<import("vue-demi").ExtractPropTypes<{
@@ -331,6 +326,18 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         };
     }>>, {
         fixed: boolean;
+        list: any[];
+        minSize: number;
+        scrollDistance: number;
+        headerClass: string;
+        headerStyle: string;
+        footerClass: string;
+        footerStyle: string;
+        stickyHeaderClass: string;
+        stickyHeaderStyle: string;
+        stickyFooterClass: string;
+        stickyFooterStyle: string;
+        itemGap: number;
         renderControl: Function;
         buffer: number;
         bufferTop: number;
@@ -342,18 +349,6 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         listClass: string;
         itemStyle: string;
         itemClass: string;
-        list: any[];
-        minSize: number;
-        itemGap: number;
-        scrollDistance: number;
-        headerClass: string;
-        headerStyle: string;
-        footerClass: string;
-        footerStyle: string;
-        stickyHeaderClass: string;
-        stickyHeaderStyle: string;
-        stickyFooterClass: string;
-        stickyFooterStyle: string;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -478,6 +473,18 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         };
     }>>, import("../..").VirtListReturn<any>, {}, {}, {}, {
         fixed: boolean;
+        list: any[];
+        minSize: number;
+        scrollDistance: number;
+        headerClass: string;
+        headerStyle: string;
+        footerClass: string;
+        footerStyle: string;
+        stickyHeaderClass: string;
+        stickyHeaderStyle: string;
+        stickyFooterClass: string;
+        stickyFooterStyle: string;
+        itemGap: number;
         renderControl: Function;
         buffer: number;
         bufferTop: number;
@@ -489,48 +496,36 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         listClass: string;
         itemStyle: string;
         itemClass: string;
-        list: any[];
-        minSize: number;
-        itemGap: number;
-        scrollDistance: number;
-        headerClass: string;
-        headerStyle: string;
-        footerClass: string;
-        footerStyle: string;
-        stickyHeaderClass: string;
-        stickyHeaderStyle: string;
-        stickyFooterClass: string;
-        stickyFooterStyle: string;
     }> | null>;
     treeInfo: import("vue-demi").ShallowReactive<import("./type").TreeInfo>;
     dragging: import("vue-demi").Ref<boolean>;
-    renderList: import("vue-demi").ComputedRef<TreeNode<TreeNodeData>[]>;
+    renderList: import("vue-demi").ComputedRef<TreeNode<import("./type").TreeNodeData>[]>;
     onScroll: (e: Event) => void;
     filter: (query: string) => void;
-    isForceHiddenExpandIcon: (node: TreeNode<TreeNodeData>) => boolean;
+    isForceHiddenExpandIcon: (node: TreeNode<import("./type").TreeNodeData>) => boolean;
     setTreeData: (list: import("./type").TreeData) => void;
-    getTreeNode: (key: import("./type").TreeNodeKey) => TreeNode<TreeNodeData> | undefined;
+    getTreeNode: (key: import("./type").TreeNodeKey) => TreeNode<import("./type").TreeNodeData> | undefined;
     scrollToBottom: () => void;
     scrollToTarget: (key: import("./type").TreeNodeKey, isTop?: boolean) => void;
     scrollToTop: () => void;
     scrollTo: (scroll: import("./type").IScrollParams) => void;
     forceUpdate: () => void;
-    hasExpanded: (node: TreeNode<TreeNodeData>) => boolean;
-    toggleExpand: (node: TreeNode<TreeNodeData>) => void;
+    hasExpanded: (node: TreeNode<import("./type").TreeNodeData>) => boolean;
+    toggleExpand: (node: TreeNode<import("./type").TreeNodeData>) => void;
     expandAll: (expanded: boolean) => void;
     expandNode: (key: import("./type").TreeNodeKey | import("./type").TreeNodeKey[], expanded: boolean) => void;
-    hasSelected: (node: TreeNode<TreeNodeData>) => boolean;
+    hasSelected: (node: TreeNode<import("./type").TreeNodeData>) => boolean;
     selectNode: (key: import("./type").TreeNodeKey | import("./type").TreeNodeKey[], selected: boolean) => void;
     selectAll: (selected: boolean) => void;
-    hasChecked: (node: TreeNode<TreeNodeData>) => boolean;
-    hasIndeterminate: (node: TreeNode<TreeNodeData>) => boolean;
+    hasChecked: (node: TreeNode<import("./type").TreeNodeData>) => boolean;
+    hasIndeterminate: (node: TreeNode<import("./type").TreeNodeData>) => boolean;
     checkAll: (checked: boolean) => void;
     checkNode: (key: import("./type").TreeNodeKey | import("./type").TreeNodeKey[], checked: boolean) => void;
-    hasFocused: (node: TreeNode<TreeNodeData>) => boolean;
+    hasFocused: (node: TreeNode<import("./type").TreeNodeData>) => boolean;
     onDragstart: (event: MouseEvent) => void;
-    onClickExpandIcon: (node: TreeNode<TreeNodeData>) => void;
-    onClickNodeContent: (node: TreeNode<TreeNodeData>) => void;
-    onClickCheckbox: (node: TreeNode<TreeNodeData>, e: Event) => void;
+    onClickExpandIcon: (node: TreeNode<import("./type").TreeNodeData>) => void;
+    onClickNodeContent: (node: TreeNode<import("./type").TreeNodeData>) => void;
+    onClickCheckbox: (node: TreeNode<import("./type").TreeNodeData>, e: Event) => void;
 }, unknown, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, import("vue-demi").EmitsOptions, string, import("vue-demi").PublicProps, Readonly<import("vue-demi").ExtractPropTypes<{
     list: {
         type: import("vue-demi").PropType<import("./type").TreeData>;
@@ -557,6 +552,10 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
+    buffer: {
+        type: NumberConstructor;
+        default: number;
+    };
     showLine: {
         type: BooleanConstructor;
         default: boolean;
@@ -566,7 +565,7 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         default: () => {};
     };
     filterMethod: {
-        type: import("vue-demi").PropType<(query: string, node: TreeNodeData) => boolean>;
+        type: import("vue-demi").PropType<(query: string, node: TreeNode<import("./type").TreeNodeData>) => boolean>;
     };
     defaultExpandAll: {
         type: BooleanConstructor;
@@ -621,20 +620,12 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
         type: StringConstructor;
         default: string;
     };
-    beforeDrag: {
-        type: import("vue-demi").PropType<(data: {
-            placement: "top" | "bottom" | "center";
-            node: TreeNode<TreeNodeData>;
-            prevNode: TreeNode<TreeNodeData>;
-            parentNode: TreeNode<TreeNodeData>;
-        }) => boolean>;
-        default: () => boolean;
-    };
 }>>, {
     fixed: boolean;
     list: import("./type").TreeData;
     minSize: number;
     itemGap: number;
+    buffer: number;
     indent: number;
     iconSize: number;
     showLine: boolean;
@@ -650,10 +641,4 @@ export declare const VirtTree: import("vue-demi").DefineComponent<{
     draggable: boolean;
     dragClass: string;
     dragGhostClass: string;
-    beforeDrag: (data: {
-        placement: "top" | "bottom" | "center";
-        node: TreeNode<TreeNodeData>;
-        prevNode: TreeNode<TreeNodeData>;
-        parentNode: TreeNode<TreeNodeData>;
-    }) => boolean;
 }, {}>;

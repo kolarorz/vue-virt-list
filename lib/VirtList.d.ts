@@ -233,6 +233,18 @@ declare const VirtList: import("vue-demi").DefineComponent<{
     };
 }>>, {
     fixed: boolean;
+    list: any[];
+    minSize: number;
+    scrollDistance: number;
+    headerClass: string;
+    headerStyle: string;
+    footerClass: string;
+    footerStyle: string;
+    stickyHeaderClass: string;
+    stickyHeaderStyle: string;
+    stickyFooterClass: string;
+    stickyFooterStyle: string;
+    itemGap: number;
     renderControl: Function;
     buffer: number;
     bufferTop: number;
@@ -244,17 +256,5 @@ declare const VirtList: import("vue-demi").DefineComponent<{
     listClass: string;
     itemStyle: string;
     itemClass: string;
-    list: any[];
-    minSize: number;
-    itemGap: number;
-    scrollDistance: number;
-    headerClass: string;
-    headerStyle: string;
-    footerClass: string;
-    footerStyle: string;
-    stickyHeaderClass: string;
-    stickyHeaderStyle: string;
-    stickyFooterClass: string;
-    stickyFooterStyle: string;
 }, {}>;
 export { VirtList, useVirtList };

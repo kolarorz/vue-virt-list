@@ -92,6 +92,10 @@ export declare const customFieldNames: {
         type: NumberConstructor;
         default: number;
     };
+    buffer: {
+        type: NumberConstructor;
+        default: number;
+    };
     showLine: {
         type: BooleanConstructor;
         default: boolean;
@@ -101,7 +105,7 @@ export declare const customFieldNames: {
         default: () => {};
     };
     filterMethod: {
-        type: PropType<(query: string, node: TreeNodeData) => boolean>;
+        type: PropType<(query: string, node: TreeNode) => boolean>;
     };
     defaultExpandAll: {
         type: BooleanConstructor;
@@ -155,15 +159,6 @@ export declare const customFieldNames: {
     dragGhostClass: {
         type: StringConstructor;
         default: string;
-    };
-    beforeDrag: {
-        type: PropType<(data: {
-            placement: 'top' | 'bottom' | 'center';
-            node: TreeNode;
-            prevNode: TreeNode;
-            parentNode: TreeNode;
-        }) => boolean>;
-        default: () => boolean;
     };
 };
 export declare const TreeNodeEmits: {
@@ -404,6 +399,18 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
         };
     }>>, {
         fixed: boolean;
+        list: any[];
+        minSize: number;
+        scrollDistance: number;
+        headerClass: string;
+        headerStyle: string;
+        footerClass: string;
+        footerStyle: string;
+        stickyHeaderClass: string;
+        stickyHeaderStyle: string;
+        stickyFooterClass: string;
+        stickyFooterStyle: string;
+        itemGap: number;
         renderControl: Function;
         buffer: number;
         bufferTop: number;
@@ -415,18 +422,6 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
         listClass: string;
         itemStyle: string;
         itemClass: string;
-        list: any[];
-        minSize: number;
-        itemGap: number;
-        scrollDistance: number;
-        headerClass: string;
-        headerStyle: string;
-        footerClass: string;
-        footerStyle: string;
-        stickyHeaderClass: string;
-        stickyHeaderStyle: string;
-        stickyFooterClass: string;
-        stickyFooterStyle: string;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -551,6 +546,18 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
         };
     }>>, import("../..").VirtListReturn<any>, {}, {}, {}, {
         fixed: boolean;
+        list: any[];
+        minSize: number;
+        scrollDistance: number;
+        headerClass: string;
+        headerStyle: string;
+        footerClass: string;
+        footerStyle: string;
+        stickyHeaderClass: string;
+        stickyHeaderStyle: string;
+        stickyFooterClass: string;
+        stickyFooterStyle: string;
+        itemGap: number;
         renderControl: Function;
         buffer: number;
         bufferTop: number;
@@ -562,18 +569,6 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
         listClass: string;
         itemStyle: string;
         itemClass: string;
-        list: any[];
-        minSize: number;
-        itemGap: number;
-        scrollDistance: number;
-        headerClass: string;
-        headerStyle: string;
-        footerClass: string;
-        footerStyle: string;
-        stickyHeaderClass: string;
-        stickyHeaderStyle: string;
-        stickyFooterClass: string;
-        stickyFooterStyle: string;
     }> | null>;
     treeInfo: import("vue-demi").ShallowReactive<TreeInfo>;
     dragging: import("vue-demi").Ref<boolean>;

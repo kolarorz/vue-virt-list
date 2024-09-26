@@ -11,6 +11,7 @@ export interface TreeNode<T = TreeNodeData> {
     children?: TreeNode[];
     disableSelect?: boolean;
     disableCheckbox?: boolean;
+    searchedIndex?: number;
     data: T;
 }
 export interface TreeFieldNames {

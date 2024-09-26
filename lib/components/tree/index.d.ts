@@ -1,3 +1,3 @@
-import './tree.css';
 import { VirtTree } from './VirtTree';
+import './tree.css';
 export { VirtTree };
