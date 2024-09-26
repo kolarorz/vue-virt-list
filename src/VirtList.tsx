@@ -427,7 +427,8 @@ function useVirtList<T extends Record<string, any>>(
 
   function calcViews() {
     // 不算buffer的个数
-    const newViews = Math.ceil(slotSize.clientSize / props.minSize) + 1;
+    const newViews =
+      Math.ceil(slotSize.clientSize / (props.minSize + props.itemGap)) + 1;
     reactiveData.views = newViews;
   }
 
