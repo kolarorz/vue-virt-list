@@ -69,6 +69,13 @@ npm install vue-virt-list -S
 </script>
 ```
 
+## Sponsor
+
+开源不易，如果帮助到你，请作者喝杯咖啡吧~
+
+<img src="./wechat.png" width=200 />
+<img src="./alipay.png" width=200 />
+
 ## WeChat
 
 有问题可扫码加好友进入技术交流群（备注github账号名）

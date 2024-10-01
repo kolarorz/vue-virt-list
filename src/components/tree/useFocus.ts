@@ -1,6 +1,6 @@
+import { shallowRef, triggerRef, watch } from 'vue-demi';
 import { type TreeProps } from './useTree';
 import type { TreeNode, TreeNodeKey } from './type';
-import { shallowRef, triggerRef, watch } from 'vue';
 
 export const useFocus = ({ props }: { props: TreeProps }) => {
   const focusedKeysSet = shallowRef<Set<TreeNodeKey>>(
