@@ -1,5 +1,6 @@
 import {
   computed,
+  nextTick,
   ref,
   shallowReactive,
   watch,
@@ -235,6 +236,7 @@ export const useTree = (
   // 维护一个 dragging 状态
   const dragging = ref(false);
   const virtListRef = ref<InstanceType<typeof VirtList> | null>(null);
+  const renderKey = ref(0);
 
   const mergeFieldNames = {
     ...defaultFiledNames,
@@ -332,22 +334,22 @@ export const useTree = (
     if (currIndex < 0) {
       // 若滚动目标元素不在当前数据列表中，需要展开当前节点
       expandNode(key, true);
-      return;
     }
-    if (isTop) {
-      virtListRef.value?.scrollToIndex(currIndex);
-      return;
-    }
-    virtListRef.value?.scrollIntoView(currIndex);
+    nextTick(() => {
+      // 重新查找位置并滚动
+      const newIndex = renderList.value.findIndex((l) => l.key === key);
+
+      if (isTop) {
+        virtListRef.value?.scrollToIndex(newIndex);
+        return;
+      }
+      virtListRef.value?.scrollIntoView(newIndex);
+    });
   };
 
   const onScroll = (e: Event) => {
     emits(TREE_SCROLL, e);
   };
-
-  // const forceUpdate = () => {
-  //   virtListRef.value?.forceUpdate();
-  // };
 
   const scrollToBottom = () => {
     virtListRef.value?.scrollToBottom();
@@ -420,37 +422,6 @@ export const useTree = (
     emits,
   });
 
-  // 实际渲染的节点
-  const renderList = computed(() => {
-    const hiddenNodeKeys = hiddenNodeKeySet.value;
-    const flattenNodes: TreeNode[] = [];
-    const nodes = (treeInfo && treeInfo.treeNodes) || [];
-    function traverse() {
-      const stack: TreeNode[] = [];
-      for (let i = nodes.length - 1; i >= 0; --i) {
-        stack.push(nodes[i]);
-      }
-      while (stack.length) {
-        const node = stack.pop();
-        if (!node) continue;
-        if (!hiddenNodeKeys.has(node.key)) {
-          flattenNodes.push(node);
-        }
-        if (hasExpanded(node)) {
-          const children = node.children;
-          if (children) {
-            const length = children.length;
-            for (let i = length - 1; i >= 0; --i) {
-              stack.push(children[i]);
-            }
-          }
-        }
-      }
-    }
-    traverse();
-    return flattenNodes;
-  });
-
   const onClickExpandIcon = (node: TreeNode) => {
     if (dragging.value) return;
     toggleExpand(node);
@@ -474,7 +445,6 @@ export const useTree = (
       toggleExpand(node);
     }
   };
-
   const filter = (query: string) => {
     const keys = doFilter(query);
     if (keys) {
@@ -482,13 +452,53 @@ export const useTree = (
     }
   };
 
+  // 实际渲染的节点
+  const renderList = computed(() => {
+    const hiddenNodeKeys = hiddenNodeKeySet.value;
+    const nodes = (treeInfo && treeInfo.treeNodes) || [];
+    const flattenNodes: TreeNode[] = [];
+    function traverse() {
+      const stack: TreeNode[] = [];
+      for (let i = nodes.length - 1; i >= 0; --i) {
+        stack.push(nodes[i]);
+      }
+      while (stack.length) {
+        const node = stack.pop();
+        if (!node) continue;
+        if (!hiddenNodeKeys.has(node.key)) {
+          flattenNodes.push(node);
+        }
+        if (hasExpanded(node)) {
+          const children = node.children;
+          if (children) {
+            const length = children.length;
+            for (let i = length - 1; i >= 0; --i) {
+              stack.push(children[i]);
+            }
+          }
+        }
+      }
+    }
+    traverse();
+    // 每次需要调用VirtList的更新（因为可能出现length不变的情况）
+    virtListRef.value?.forceUpdate();
+    return flattenNodes;
+  });
+
   function forceUpdate() {
-    setTreeData(props.list);
-    setExpandedKeys();
-    setCheckedKeys();
-    if (!virtListRef.value) return;
-    virtListRef.value.forceUpdate();
+    renderKey.value += 1;
   }
+
+  watch(
+    () => renderKey.value,
+    () => {
+      setTreeData(props.list);
+      setExpandedKeys();
+      setCheckedKeys();
+      if (!virtListRef.value) return;
+      virtListRef.value.forceUpdate();
+    },
+  );
 
   watch(
     () => props.list.length,
