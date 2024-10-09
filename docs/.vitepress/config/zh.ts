@@ -9,9 +9,9 @@ export const zh = defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Guide', link: '/zh/guide/started' },
-      { text: 'Examples', link: '/zh/examples/basic' },
-      { text: 'API', link: '/zh/api/virt-list' },
+      { text: '指南', link: '/guide/started' },
+      { text: '示例', link: '/examples/basic' },
+      { text: 'API', link: '/api/virt-list' },
       {
         text: pkg.version,
         items: [
@@ -30,18 +30,18 @@ export const zh = defineConfig({
     ],
 
     sidebar: {
-      '/zh/guide/': {
-        base: '/zh/guide/',
+      '/guide/': {
+        base: '/guide/',
         items: sidebarGuide(),
       },
 
-      '/zh/examples/': {
-        base: '/zh/examples/',
+      '/examples/': {
+        base: '/examples/',
         items: sidebarExamples(),
       },
 
-      '/zh/api/': {
-        base: '/zh/api/',
+      '/api/': {
+        base: '/api/',
         items: sidebarApi(),
       },
     },
@@ -72,33 +72,34 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     {
       text: '示例',
       items: [
-        { text: '基础示例', link: 'basic.md' },
-        { text: '海量数据', link: 'huge-data' },
-        { text: '固定高度', link: 'fixed' },
-        { text: '水平滚动', link: 'horizontal' },
-        { text: '插槽', link: 'slots' },
-        { text: '各类操作', link: 'operations' },
-        { text: '可变窗口大小', link: 'resize' },
-
-        { text: '可变高度', link: 'dynamic' },
-        { text: '表格', link: 'table' },
-        { text: '无限加载', link: 'infinity' },
-        { text: '聊天室', link: 'chat' },
-        { text: '高阶用法', link: 'advanced' },
         {
-          text: '分页',
-          link: 'pagination',
-        },
-        {
-          text: '开箱即用',
+          text: 'VirtList',
           collapsed: false,
           items: [
-            { text: 'RealList', link: 'real-list' },
-            { text: 'VirtGrid', link: 'virt-grid' },
-            { text: 'VirtTree', link: 'virt-tree' },
-            { text: 'VirtTable', link: 'virtable' },
+            { text: '基础示例', link: 'basic.md' },
+            { text: '海量数据', link: 'huge-data' },
+            { text: '固定高度', link: 'fixed' },
+            { text: '水平滚动', link: 'horizontal' },
+            { text: '插槽', link: 'slots' },
+            { text: '各类操作', link: 'operations' },
+            { text: '可变窗口大小', link: 'resize' },
+
+            { text: '可变高度', link: 'dynamic' },
+            { text: '表格', link: 'table' },
+            { text: '无限加载', link: 'infinity' },
+            { text: '聊天室', link: 'chat' },
+            { text: '高阶用法', link: 'advanced' },
+            {
+              text: '分页',
+              link: 'pagination',
+            },
           ],
         },
+
+        { text: 'RealList', link: 'real-list' },
+        { text: 'VirtGrid', link: 'virt-grid' },
+        { text: 'VirtTree', link: 'virt-tree' },
+        { text: 'VirtTable', link: 'virtable' },
       ],
     },
   ];

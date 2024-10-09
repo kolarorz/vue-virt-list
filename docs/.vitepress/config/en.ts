@@ -9,9 +9,9 @@ export const en = defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Guide', link: '/guide/started' },
-      { text: 'Examples', link: '/examples/basic' },
-      { text: 'API', link: '/api/virt-list' },
+      { text: 'Guide', link: '/en/guide/started' },
+      { text: 'Examples', link: '/en/examples/basic' },
+      { text: 'API', link: '/en/api/virt-list' },
       {
         text: pkg.version,
         items: [
@@ -30,18 +30,18 @@ export const en = defineConfig({
     ],
 
     sidebar: {
-      '/guide/': {
-        base: '/guide/',
+      '/en/guide/': {
+        base: '/en/guide/',
         items: sidebarGuide(),
       },
 
-      '/examples/': {
-        base: '/examples/',
+      '/en/examples/': {
+        base: '/en/examples/',
         items: sidebarExamples(),
       },
 
-      '/api/': {
-        base: '/api/',
+      '/en/api/': {
+        base: '/en/api/',
         items: sidebarApi(),
       },
     },
@@ -72,33 +72,34 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     {
       text: 'Examples',
       items: [
-        { text: 'Basic', link: 'basic' },
-        { text: 'Huge Data', link: 'huge-data' },
-        { text: 'Fixed Size', link: 'fixed' },
-        { text: 'Horizontal Scroll', link: 'horizontal' },
-        { text: 'Slots', link: 'slots' },
-        { text: 'Operations', link: 'operations' },
-        { text: 'Resize Client', link: 'resize' },
-
-        { text: 'Dynamic Size', link: 'dynamic' },
-        { text: 'Table', link: 'table' },
-        { text: 'Infinity Load', link: 'infinity' },
-        { text: 'Chat Room', link: 'chat' },
-        { text: 'Advanced Usage', link: 'advanced' },
         {
-          text: 'Pagination',
-          link: 'pagination',
-        },
-        {
-          text: 'Out of The Box',
+          text: 'VirtList',
           collapsed: false,
           items: [
-            { text: 'RealList', link: 'real-list' },
-            { text: 'VirtGrid', link: 'virt-grid' },
-            { text: 'VirtTree', link: 'virt-tree' },
-            { text: 'VirtTable', link: 'virtable' },
+            { text: 'Basic', link: 'basic' },
+            { text: 'Huge Data', link: 'huge-data' },
+            { text: 'Fixed Size', link: 'fixed' },
+            { text: 'Horizontal Scroll', link: 'horizontal' },
+            { text: 'Slots', link: 'slots' },
+            { text: 'Operations', link: 'operations' },
+            { text: 'Resize Client', link: 'resize' },
+
+            { text: 'Dynamic Size', link: 'dynamic' },
+            { text: 'Table', link: 'table' },
+            { text: 'Infinity Load', link: 'infinity' },
+            { text: 'Chat Room', link: 'chat' },
+            { text: 'Advanced Usage', link: 'advanced' },
+            {
+              text: 'Pagination',
+              link: 'pagination',
+            },
           ],
         },
+
+        { text: 'RealList', link: 'real-list' },
+        { text: 'VirtGrid', link: 'virt-grid' },
+        { text: 'VirtTree', link: 'virt-tree' },
+        { text: 'VirtTable', link: 'virtable' },
       ],
     },
   ];
