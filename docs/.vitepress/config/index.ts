@@ -1,15 +1,18 @@
 import { defineConfig } from 'vitepress';
 import { fileURLToPath } from 'node:url';
 // import vueJsx from '@vitejs/plugin-vue-jsx';
-import { en } from './en';
 import { zh } from './zh';
+import { en } from './en';
 let NAME_KEY = 1;
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   locales: {
-    root: { label: 'English', ...en },
-    zh: { label: '简体中文', ...zh },
+    root: { label: '简体中文', ...zh },
+    en: { label: 'English', ...en },
+  },
+  rewrites: {
+    'zh/:rest*': ':rest*',
   },
   cleanUrls: true,
   title: 'vue-virt-list',
@@ -56,12 +59,13 @@ export default defineConfig({
           }
           let [, sourceFile] = result;
 
-          if (/^examples/.test(state.env.relativePath)) {
-            // 如果匹配到了
-            sourceFile = sourceFile.replace('@/demos/', '../demos/');
-          } else {
-            sourceFile = sourceFile.replace('@/demos/', '../../demos/');
-          }
+          // if (/^examples/.test(state.env.relativePath)) {
+          //   // 如果匹配到了
+          //   sourceFile = sourceFile.replace('@/demos/', '../../demos/');
+          // } else {
+          //   sourceFile = sourceFile.replace('@/demos/', '../../demos/');
+          // }
+          sourceFile = sourceFile.replace('@/demos/', '../../demos/');
 
           // const ViewName = sourceFile
           //   .replace('.vue', '')

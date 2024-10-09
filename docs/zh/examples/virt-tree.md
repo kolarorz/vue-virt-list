@@ -23,6 +23,10 @@ Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-fo
 
 <!<< @/demos/tree/Focus.vue
 
+## Expand
+
+<!<< @/demos/tree/Expand.vue
+
 ## Checkbox
 
 <!<< @/demos/tree/Checkbox.vue
@@ -62,6 +66,10 @@ Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-fo
 ## header&footer Slot
 
 <!<< @/demos/tree/Slots.vue
+
+## draggable
+
+<!<< @/demos/tree/Drag.vue
 
 ## css variable
 
