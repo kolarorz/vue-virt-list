@@ -24,6 +24,7 @@ const VirtGrid = defineComponent({
     const gridList: Ref<{ _id: number; children: any[] }[]> = shallowRef([]);
 
     function updateList() {
+      if (props.gridItems === 0) return;
       // reset gridList
       const list = [];
       for (let i = 0; i < props.list.length; i += props.gridItems) {
