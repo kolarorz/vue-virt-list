@@ -37,6 +37,9 @@ export const useDrag = ({
   let startY = 0;
   let initialX = 10;
   let initialY = 10;
+  // 鼠标位置
+  let mouseX = 0;
+  let mouseY = 0;
   // 是否是一个有效的拖拽
   let dragEffect = false;
   // 拖拽线前后元素的最小层级，用来生成层级分段
@@ -86,6 +89,7 @@ export const useDrag = ({
 
   // 找到目标元素 virt-tree-item
   let scrollElementRect: DOMRect | undefined = undefined;
+  let clientElementRect: DOMRect | undefined = undefined;
 
   const dragBox = document.createElement('div');
   dragBox.classList.add('virt-tree-drag-box');
@@ -108,23 +112,29 @@ export const useDrag = ({
     event.preventDefault();
     event.stopPropagation();
 
+    const clientElement = virtListRef.value?.$el;
+    clientElementRect = clientElement?.getBoundingClientRect();
+    scrollElement = getScrollParentElement(clientElement);
+    scrollElementRect = scrollElement?.getBoundingClientRect();
+    // console.log('scrollElement', scrollElement);
+
+    scrollElement?.addEventListener('scroll', onScroll);
     document.addEventListener('mousemove', onMousemove);
     document.addEventListener('mouseup', onMouseup);
     document.addEventListener('keydown', onKeydown);
   }
 
+  function onScroll() {
+    if (dragging.value) {
+      dragProcess();
+    }
+  }
+
   function dragstart() {
     if (!sourceTreeItem) return;
-    // 拿到treeNode后生成一个一样的元素用来拖拽
-    const clientElement = virtListRef.value?.$el;
-    scrollElement = getScrollParentElement(clientElement);
-    scrollElementRect = scrollElement?.getBoundingClientRect();
-    // console.log('scrollElement', scrollElement);
-
     // 找到目标元素的virt-tree-node，判断是否展开状态，如果是，则定时1s后折叠
     // 数据&交互处理
     const nodeKey = sourceTreeItem?.dataset?.id ?? '';
-    // if (treeInfo && nodeKey) {
     sourceNode = getTreeNode(nodeKey);
     if (!sourceNode) return;
 
@@ -161,29 +171,64 @@ export const useDrag = ({
 
     return cloneTreeItem;
   }
-  function onMousemove(event: MouseEvent) {
-    if (!cloneTreeItem) {
-      dragstart();
-    }
-    if (!cloneTreeItem) return;
 
-    dragging.value = true;
-
-    const clientX = event.clientX;
-    const clientY = event.clientY;
-    const dx = clientX - startX;
-    const dy = clientY - startY;
-    cloneTreeItem.style.left = `${initialX + dx}px`;
-    cloneTreeItem.style.top = `${initialY + dy}px`;
-    const clientElement = virtListRef.value?.$el;
-    const clientElementRect = clientElement?.getBoundingClientRect();
-    if (clientElementRect) {
-      // 不在可视区域，移除
+  // 自动滚动
+  function autoScroll() {
+    if (scrollElement !== null && scrollElementRect !== undefined) {
+      // 每次先清除旧定时器
+      if (autoScrollTimer) {
+        clearInterval(autoScrollTimer);
+        autoScrollTimer = null;
+      }
+      // 判断是否在可视区域
+      if (clientElementRect) {
+        if (
+          mouseX < clientElementRect.left ||
+          mouseX > clientElementRect.right ||
+          mouseY < clientElementRect.top ||
+          mouseY > clientElementRect.bottom
+        ) {
+          return;
+        }
+      }
+      // 4等分
+      const equalPart = scrollElementRect.height / 4;
+      const multiple = 20;
       if (
-        clientX < clientElementRect.left ||
-        clientX > clientElementRect.right ||
-        clientY < clientElementRect.top ||
-        clientY > clientElementRect.bottom
+        scrollElementRect.top < mouseY &&
+        mouseY < scrollElementRect.top + equalPart
+      ) {
+        const relative =
+          (1 - (mouseY - scrollElementRect.top) / equalPart) * multiple;
+        if (!autoScrollTimer) {
+          autoScrollTimer = setInterval(() => {
+            scrollElement!.scrollTop -= relative;
+          }, 10);
+        }
+      } else if (
+        scrollElementRect.top + equalPart * 3 < mouseY &&
+        mouseY < scrollElementRect.bottom
+      ) {
+        const relative =
+          ((mouseY - (scrollElementRect.top + equalPart * 3)) / equalPart) *
+          multiple;
+        if (!autoScrollTimer) {
+          autoScrollTimer = setInterval(() => {
+            scrollElement!.scrollTop += relative;
+          }, 10);
+        }
+      }
+    }
+  }
+
+  function dragProcess() {
+    // 判断是否在可视区域，不在则移除
+    if (clientElementRect) {
+      if (
+        mouseX < clientElementRect.left ||
+        mouseX > clientElementRect.right ||
+        mouseY < clientElementRect.top ||
+        mouseY > clientElementRect.bottom
       ) {
         // 移除 line
         if (hasStyleTreeItem?.contains(dragLine)) {
@@ -199,32 +244,10 @@ export const useDrag = ({
       }
     }
 
-    if (scrollElement && scrollElementRect) {
-      // 自动滚动
-      if (clientY > scrollElementRect.bottom) {
-        if (!autoScrollTimer) {
-          autoScrollTimer = setInterval(() => {
-            scrollElement!.scrollTop += 2;
-          }, 10);
-        }
-      } else if (clientY < scrollElementRect.top) {
-        if (!autoScrollTimer) {
-          autoScrollTimer = setInterval(() => {
-            scrollElement!.scrollTop -= 2;
-          }, 10);
-        }
-      } else {
-        if (autoScrollTimer) {
-          clearInterval(autoScrollTimer);
-          autoScrollTimer = null;
-        }
-      }
-    }
-
-    const hoverElement = document.elementFromPoint(clientX, clientY);
+    // 获取hover元素
+    const hoverElement = document.elementFromPoint(mouseX, mouseY);
     if (!hoverElement) return;
     hoverTreeItem = findAncestorWithClass(hoverElement, 'virt-tree-item');
-
     if (!hoverTreeItem) {
       return;
     }
@@ -252,7 +275,6 @@ export const useDrag = ({
 
     const elementTop = hoverTreeItemRect.top;
     const elementHeight = hoverTreeItemRect.height;
-    const mouseY = event.clientY;
     // 鼠标相对于元素顶部的距离
     const relativeY = mouseY - elementTop;
     // 计算鼠标相对于元素高度的比例
@@ -408,7 +430,7 @@ export const useDrag = ({
 
     if (placement !== 'center') {
       // 需要减去第一个indent
-      const relativeX = clientX - hoverTreeItemRect.left - props.indent;
+      const relativeX = mouseX - hoverTreeItemRect.left - props.indent;
       targetLevel = Math.ceil(relativeX / props.indent);
       if (targetLevel <= minLevel) targetLevel = minLevel;
       if (targetLevel >= maxLevel) targetLevel = maxLevel;
@@ -425,6 +447,27 @@ export const useDrag = ({
       }
     }
   }
+
+  function onMousemove(event: any) {
+    if (!cloneTreeItem) {
+      dragstart();
+    }
+    if (!cloneTreeItem) return;
+
+    dragging.value = true;
+
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+    const dx = mouseX - startX;
+    const dy = mouseY - startY;
+    cloneTreeItem.style.left = `${initialX + dx}px`;
+    cloneTreeItem.style.top = `${initialY + dy}px`;
+
+    autoScroll();
+
+    dragProcess();
+  }
+
   function onMouseup() {
     if (dragging.value) {
       // 延迟一下，不然click仍然会被触发
@@ -521,6 +564,7 @@ export const useDrag = ({
       sourceTreeItem = null;
     }
 
+    scrollElement?.removeEventListener('scroll', onScroll);
     document.removeEventListener('mousemove', onMousemove);
     document.removeEventListener('mouseup', onMouseup);
   }
