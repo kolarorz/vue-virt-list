@@ -54,21 +54,15 @@ function onDragstart() {
 }
 
 function onDragEnd(data: any) {
-  console.log('onDragend', data);
   if (data) {
-    const { node, prevNode, parentNode } = data;
-    console.log('node', node);
-    console.log('prevNode', prevNode);
-    console.log('parentNode', parentNode);
+    console.log('drag success', data);
+    // const { node, prevNode, parentNode } = data;
+    // console.log('drag node', node);
+    // console.log('target prevNode', prevNode);
+    // console.log('target parentNode', parentNode);
+  } else {
+    console.warn('drag fail: Invalid');
   }
-}
-
-function onBeforeDrag(data: any) {
-  console.log('onDragMove', data);
-  if (data.placement === 'center' && data.node.data.id === 3) {
-    return false;
-  }
-  return true;
 }
 
 const draggable = ref(true);
@@ -96,18 +90,18 @@ const expandedKeys = ref<number[]>([1, 100, 102]);
         v-model:expandedKeys="expandedKeys"
         :list="list"
         :fieldNames="customFieldNames"
-        :indent="28"
+        :indent="16"
         :iconSize="14"
         :filter-method="filterMethod"
         :itemGap="4"
         :draggable="draggable"
-        :beforeDrag="onBeforeDrag"
         @dragstart="onDragstart"
         @dragend="onDragEnd"
         dragOnly
         dragGhostClass="drag-ghost-class"
         dragClass="drag-class"
         expandOnClickNode
+        default-expand-all
       >
         <template #empty>
           <div style="padding: 16px">暂无数据</div>
