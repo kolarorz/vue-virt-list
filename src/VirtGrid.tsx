@@ -3,21 +3,24 @@ import {
   shallowRef,
   watch,
   ref,
-  type Ref,
   nextTick,
+  type Ref,
+  type SetupContext,
 } from 'vue-demi';
 import { VirtList } from './VirtList';
 import { _h, _h2Slot, getSlot } from './util';
 
+const GridEmits = {
+  scroll: (e: Event) => e,
+  toTop: (firstItem: any) => firstItem,
+  toBottom: (lastItem: any) => lastItem,
+  itemResize: (id: string, newSize: number) => true,
+  rangeUpdate: (inViewBegin: number, inViewEnd: number) => true,
+};
+
 const VirtGrid = defineComponent({
   name: 'VirtGrid',
-  emits: {
-    scroll: (e: Event) => e,
-    toTop: (firstItem: any) => firstItem,
-    toBottom: (lastItem: any) => lastItem,
-    itemResize: (id: string, newSize: number) => true,
-    rangeUpdate: (inViewBegin: number, inViewEnd: number) => true,
-  },
+  emits: GridEmits,
   props: {
     list: {
       type: Array,
@@ -32,7 +35,9 @@ const VirtGrid = defineComponent({
       default: '',
     },
   },
-  setup(props, context) {
+  setup(props, context: SetupContext) {
+    const emits = context.emit as SetupContext<typeof GridEmits>['emit'];
+
     const virtListRef = ref<typeof VirtList | null>(null);
 
     const gridList: Ref<{ _id: number; children: any[] }[]> = shallowRef([]);
@@ -89,23 +94,23 @@ const VirtGrid = defineComponent({
     }
 
     function onScroll(evt: Event) {
-      context.emit('scroll', evt);
+      emits('scroll', evt);
     }
 
     function onToTop(firstItem: any) {
-      context.emit('toTop', firstItem);
+      emits('toTop', firstItem);
     }
 
     function onToBottom(lastItem: any) {
-      context.emit('toBottom', lastItem);
+      emits('toBottom', lastItem);
     }
 
     function onItemResize(id: string, newSize: number) {
-      context.emit('itemResize', id, newSize);
+      emits('itemResize', id, newSize);
     }
 
     function onRangeUpdate(inViewBegin: number, inViewEnd: number) {
-      context.emit('rangeUpdate', inViewBegin, inViewEnd);
+      emits('rangeUpdate', inViewBegin, inViewEnd);
     }
 
     function forceUpdate() {
