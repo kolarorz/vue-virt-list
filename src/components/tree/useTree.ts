@@ -36,8 +36,13 @@ const defaultFiledNames: Required<TreeFieldNames> = {
   disableDragOut: 'disableDragOut',
 };
 // emits
-export const NODE_CLICK = 'click';
 export const TREE_SCROLL = 'scroll';
+export const TREE_TO_TOP = 'toTop';
+export const TREE_TO_BOTTOM = 'toBottom';
+export const TREE_ITEM_RESIZE = 'itemResize';
+export const TREE_RANGE_UPDATE = 'rangeUpdate';
+
+export const NODE_CLICK = 'click';
 
 export const NODE_EXPAND = 'expand';
 export const UPDATE_EXPANDED_KEYS = 'update:expandedKeys';
@@ -52,9 +57,14 @@ export const DRAGSTART = 'dragstart';
 export const DRAGEND = 'dragend';
 
 export const TreeEmits = {
+  [TREE_SCROLL]: (e: Event) => e,
+  [TREE_TO_TOP]: (firstItem: any) => firstItem,
+  [TREE_TO_BOTTOM]: (lastItem: any) => lastItem,
+  [TREE_ITEM_RESIZE]: (id: string, newSize: number) => true,
+  [TREE_RANGE_UPDATE]: (inViewBegin: number, inViewEnd: number) => true,
+
   [NODE_CLICK]: (data: TreeNodeData, node: TreeNode, e: MouseEvent) =>
     data && node && e,
-  [TREE_SCROLL]: (e: Event) => e,
 
   [NODE_EXPAND]: (
     expandKeys: Array<string | number>,
@@ -347,10 +357,6 @@ export const useTree = (
     });
   };
 
-  const onScroll = (e: Event) => {
-    emits(TREE_SCROLL, e);
-  };
-
   const scrollToBottom = () => {
     virtListRef.value?.scrollToBottom();
   };
@@ -480,10 +486,30 @@ export const useTree = (
       }
     }
     traverse();
-    // 每次需要调用VirtList的更新（因为可能出现length不变的情况）
+    // 每次需要调用更新
     virtListRef.value?.forceUpdate();
     return flattenNodes;
   });
+
+  const onScroll = (e: Event) => {
+    emits(TREE_SCROLL, e);
+  };
+
+  function onToTop(firstItem: any) {
+    emits(TREE_TO_TOP, firstItem);
+  }
+
+  function onToBottom(lastItem: any) {
+    emits(TREE_TO_BOTTOM, lastItem);
+  }
+
+  function onItemResize(id: string, newSize: number) {
+    emits(TREE_ITEM_RESIZE, id, newSize);
+  }
+
+  function onRangeUpdate(inViewBegin: number, inViewEnd: number) {
+    emits(TREE_RANGE_UPDATE, inViewBegin, inViewEnd);
+  }
 
   function forceUpdate() {
     renderKey.value += 1;
@@ -518,7 +544,6 @@ export const useTree = (
 
     renderList,
 
-    onScroll,
     filter,
     isForceHiddenExpandIcon,
     setTreeData,
@@ -554,5 +579,12 @@ export const useTree = (
     onClickExpandIcon,
     onClickNodeContent,
     onClickCheckbox,
+
+    // 透传event
+    onScroll,
+    onToTop,
+    onToBottom,
+    onItemResize,
+    onRangeUpdate,
   };
 };

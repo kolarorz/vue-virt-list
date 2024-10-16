@@ -12,6 +12,7 @@ import type { TreeNode } from './type';
 
 export const VirtTree = defineComponent({
   name: 'VirtTree',
+  emits: TreeEmits,
   props: customFieldNames,
   setup(props: TreeProps, context: SetupContext) {
     const emits = context.emit as SetupContext<typeof TreeEmits>['emit'];
@@ -22,7 +23,6 @@ export const VirtTree = defineComponent({
       dragging,
       renderList,
 
-      onScroll,
       isForceHiddenExpandIcon,
 
       hasChecked,
@@ -38,6 +38,12 @@ export const VirtTree = defineComponent({
 
       onDragstart,
       onClickNodeContent,
+
+      onScroll,
+      onToTop,
+      onToBottom,
+      onItemResize,
+      onRangeUpdate,
     } = this;
 
     const {
@@ -121,6 +127,7 @@ export const VirtTree = defineComponent({
           itemGap,
           buffer,
           ...this.$attrs,
+          // 暂时不支持外部传入class，后面要把该参数改成一个string|object|array
           itemClass: 'virt-tree-item',
         },
         class: {
@@ -128,6 +135,10 @@ export const VirtTree = defineComponent({
         },
         on: {
           scroll: onScroll,
+          toTop: onToTop,
+          toBottom: onToBottom,
+          itemResize: onItemResize,
+          rangeUpdate: onRangeUpdate,
         },
       },
       {

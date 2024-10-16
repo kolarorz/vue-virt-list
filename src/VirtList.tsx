@@ -811,6 +811,13 @@ function useVirtList<T extends Record<string, any>>(
 }
 const VirtList = defineComponent({
   name: 'VirtList',
+  emits: {
+    scroll: (evt: Event) => evt,
+    toTop: (firstItem: any) => firstItem,
+    toBottom: (lastItem: any) => lastItem,
+    itemResize: (id: string, newSize: number) => true,
+    rangeUpdate: (inViewBegin: number, inViewEnd: number) => true,
+  },
   props: {
     list: {
       type: Array<any>,
