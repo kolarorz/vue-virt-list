@@ -12,7 +12,7 @@ import { _h, _h2Slot, getSlot } from './util';
 const VirtGrid = defineComponent({
   name: 'VirtGrid',
   emits: {
-    scroll: (evt: Event) => evt,
+    scroll: (e: Event) => e,
     toTop: (firstItem: any) => firstItem,
     toBottom: (lastItem: any) => lastItem,
     itemResize: (id: string, newSize: number) => true,

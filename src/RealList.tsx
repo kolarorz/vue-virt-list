@@ -493,6 +493,13 @@ const useRealList = <T extends Record<string, any>>(
 
 const RealList = defineComponent({
   name: 'RealList',
+  emits: {
+    scroll: (e: Event) => e,
+    toTop: (firstItem: any) => firstItem,
+    toBottom: (lastItem: any) => lastItem,
+    itemResize: (id: string, newSize: number) => true,
+    updateCurrent: (key: string | number) => true,
+  },
   props: {
     itemKey: {
       type: [String, Number],
@@ -549,8 +556,8 @@ const RealList = defineComponent({
   },
   setup(props, ctx) {
     const emitFunction: NormalEmitFunction<any> = {
-      scroll: (evt: Event) => {
-        ctx.emit('scroll', evt);
+      scroll: (e: Event) => {
+        ctx.emit('scroll', e);
       },
       toTop: (firstItem: any) => {
         ctx.emit('toTop', firstItem);

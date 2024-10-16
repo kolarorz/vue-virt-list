@@ -486,7 +486,7 @@ export const useTree = (
       }
     }
     traverse();
-    // 每次需要调用更新
+    // 每次需要调用VirtList的更新（因为可能出现length不变的情况）
     virtListRef.value?.forceUpdate();
     return flattenNodes;
   });
