@@ -165,7 +165,8 @@ function vue3h2Slot<P>(
   if (on) {
     Object.entries(on).forEach((item) => {
       const [key, value] = item as [string, () => void];
-      event[`on${key[0].toUpperCase() + key.slice(1)}`] = value;
+      const eventName = `on${key[0].toUpperCase() + key.slice(1)}`;
+      event[eventName] = value;
     });
   }
   return h(ele, { ...attrs, ...event, ...rest } as any, slots);

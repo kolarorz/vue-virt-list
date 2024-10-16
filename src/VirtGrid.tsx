@@ -1,9 +1,23 @@
-import { defineComponent, shallowRef, watch, ref, type Ref } from 'vue-demi';
+import {
+  defineComponent,
+  shallowRef,
+  watch,
+  ref,
+  type Ref,
+  nextTick,
+} from 'vue-demi';
 import { VirtList } from './VirtList';
 import { _h, _h2Slot, getSlot } from './util';
 
 const VirtGrid = defineComponent({
   name: 'VirtGrid',
+  emits: {
+    scroll: (evt: Event) => evt,
+    toTop: (firstItem: any) => firstItem,
+    toBottom: (lastItem: any) => lastItem,
+    itemResize: (id: string, newSize: number) => true,
+    rangeUpdate: (inViewBegin: number, inViewEnd: number) => true,
+  },
   props: {
     list: {
       type: Array,
@@ -18,13 +32,13 @@ const VirtGrid = defineComponent({
       default: '',
     },
   },
-  setup(props) {
+  setup(props, context) {
     const virtListRef = ref<typeof VirtList | null>(null);
 
     const gridList: Ref<{ _id: number; children: any[] }[]> = shallowRef([]);
 
     function updateList() {
-      if (props.gridItems === 0) return;
+      if (props.gridItems <= 0) return;
       // reset gridList
       const list = [];
       for (let i = 0; i < props.list.length; i += props.gridItems) {
@@ -40,10 +54,16 @@ const VirtGrid = defineComponent({
         });
       }
       gridList.value = list;
-
-      const lastIndex = virtListRef?.value?.reactiveData.inViewBegin;
-      scrollToIndex(lastIndex * props.gridItems);
       virtListRef?.value?.forceUpdate();
+      scrollToLastIndex();
+    }
+
+    // 滚动到上次的index位置
+    function scrollToLastIndex() {
+      const lastIndex = virtListRef?.value?.reactiveData.inViewBegin;
+      nextTick(() => {
+        scrollToIndex(lastIndex * props.gridItems);
+      });
     }
 
     function scrollToIndex(index: number) {
@@ -66,6 +86,26 @@ const VirtGrid = defineComponent({
 
     function scrollToOffset(offset: number) {
       virtListRef?.value?.scrollToOffset(offset);
+    }
+
+    function onScroll(evt: Event) {
+      context.emit('scroll', evt);
+    }
+
+    function onToTop(firstItem: any) {
+      context.emit('toTop', firstItem);
+    }
+
+    function onToBottom(lastItem: any) {
+      context.emit('toBottom', lastItem);
+    }
+
+    function onItemResize(id: string, newSize: number) {
+      context.emit('itemResize', id, newSize);
+    }
+
+    function onRangeUpdate(inViewBegin: number, inViewEnd: number) {
+      context.emit('rangeUpdate', inViewBegin, inViewEnd);
     }
 
     function forceUpdate() {
@@ -100,15 +140,24 @@ const VirtGrid = defineComponent({
 
       // expose
       updateList,
+      scrollToLastIndex,
       scrollToIndex,
       scrollIntoView,
       scrollToTop,
       scrollToBottom,
       scrollToOffset,
       forceUpdate,
+
+      // 透传event
+      onScroll,
+      onToTop,
+      onToBottom,
+      onItemResize,
+      onRangeUpdate,
     };
   },
   render() {
+    const { onScroll, onToTop, onToBottom, onItemResize, onRangeUpdate } = this;
     const rowRender = (rowData: { itemData: any; index: number }): any[] => {
       const { itemData } = rowData;
       const rows = [];
@@ -135,6 +184,13 @@ const VirtGrid = defineComponent({
           itemKey: '_id',
           itemStyle: `display: flex; min-width: min-content; ${this.itemStyle}`,
           ...this.$attrs,
+        },
+        on: {
+          scroll: onScroll,
+          toTop: onToTop,
+          toBottom: onToBottom,
+          itemResize: onItemResize,
+          rangeUpdate: onRangeUpdate,
         },
       },
       {
