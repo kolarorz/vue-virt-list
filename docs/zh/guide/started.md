@@ -5,11 +5,11 @@
 ::: code-group
 
 ```sh [npm]
-  $ npm add vue-virt-list
+  $ npm install vue-virt-list
 ```
 
 ```sh [pnpm]
-  $ pnpm add vue-virt-list
+  $ pnpm install vue-virt-list
 ```
 
 ```sh [yarn]

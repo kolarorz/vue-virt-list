@@ -1,9 +1,7 @@
 <template>
   <div class="grid-item">
     <div>
-      <div style="font-size: 12px">
-        row:{{ index }}-item:{{ itemData.index }}
-      </div>
+      <div style="font-size: 12px">row:{{ rowIndex }}-item:{{ index }}</div>
       <div style="display: flex; align-items: center">
         <img :src="itemData.avatar" />
         <div style="margin-left: 6px">{{ itemData.name }}</div>
@@ -29,6 +27,10 @@ export default {
       },
     },
     index: {
+      type: Number,
+      default: 0,
+    },
+    rowIndex: {
       type: Number,
       default: 0,
     },

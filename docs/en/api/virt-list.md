@@ -30,6 +30,7 @@
 | footer        | the slot of footer                                    |
 | sticky-header | the slot of sticky header                             |
 | sticky-footer | the slot of sticky footer                             |
+| empty         | the slot of empty                                     |
 | default       | the slot of item， `slotScoped = { itemData, index }` |
 
 ## Events

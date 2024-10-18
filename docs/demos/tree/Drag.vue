@@ -46,7 +46,7 @@ list.value[1].title = `${list.value[1].title} (禁止拖出-disableDragOut)`;
 const virtTreeRef = ref<typeof VirtTree>();
 // const key = ref<number>(0);
 const filterMethod = (query: string, node: any) => {
-  return node.name.includes(query);
+  return node.title.includes(query);
 };
 
 function onDragstart() {
