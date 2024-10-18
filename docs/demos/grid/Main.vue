@@ -9,19 +9,34 @@
     <!-- gridItems -->
     <div>
       <span>gridItems:</span>
-      <span class="demo-btn" style="margin-left: 10px" @click="gridItems = 2"
+      <span
+        class="demo-btn"
+        style="margin-left: 10px"
+        @click="changeGridItems(2)"
         >2</span
       >
-      <span class="demo-btn" style="margin-left: 10px" @click="gridItems = 3"
+      <span
+        class="demo-btn"
+        style="margin-left: 10px"
+        @click="changeGridItems(3)"
         >3</span
       >
-      <span class="demo-btn" style="margin-left: 10px" @click="gridItems = 4"
+      <span
+        class="demo-btn"
+        style="margin-left: 10px"
+        @click="changeGridItems(4)"
         >4</span
       >
-      <span class="demo-btn" style="margin-left: 10px" @click="gridItems = 5"
+      <span
+        class="demo-btn"
+        style="margin-left: 10px"
+        @click="changeGridItems(5)"
         >5</span
       >
-      <span class="demo-btn" style="margin-left: 10px" @click="gridItems = 6"
+      <span
+        class="demo-btn"
+        style="margin-left: 10px"
+        @click="changeGridItems(6)"
         >6</span
       >
     </div>
@@ -34,13 +49,15 @@
         :minSize="70"
         :gridItems="gridItems"
         stickyHeaderStyle="text-align: center; height: 40px; background: #42b983;"
+        @toTop="toTop"
       >
-        <template #default="{ itemData, index }">
-          <Item :itemData="itemData" :index="index" @deleteItem="deleteItem" />
-        </template>
-
-        <template #stickyHeader>
-          <div>悬浮header</div>
+        <template #default="{ itemData, index, rowIndex }">
+          <Item
+            :itemData="itemData"
+            :index="index"
+            :rowIndex="rowIndex"
+            @deleteItem="deleteItem"
+          />
         </template>
       </VirtGrid>
     </div>
@@ -71,8 +88,16 @@ function deleteItem(itemData) {
   if (targetIndex > -1) {
     list.value.splice(targetIndex, 1);
     // 如果list为shallowRef，务必调用该方法用来更新list变化
-    // virtGridRef?.value?.forceUpdate();
+    // virtGridRef?.value?.updateList();
   }
+}
+
+function toTop(e: Event) {
+  console.log('grid-toTop', e);
+}
+
+function changeGridItems(number: number) {
+  gridItems.value = number;
 }
 </script>
 

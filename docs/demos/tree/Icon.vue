@@ -33,7 +33,7 @@ const virtTreeRef = ref<typeof VirtTree>();
 const key = ref<number>(0);
 
 const filterMethod = (query: string, node: any) => {
-  return node.name.includes(query);
+  return node.title.includes(query);
 };
 </script>
 

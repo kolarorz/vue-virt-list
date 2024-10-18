@@ -33,6 +33,13 @@ export default defineConfig(({ command }) => ({
         dir: './lib',
         preserveModules: true,
         entryFileNames: '[name].js',
+
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && /\.(css)$/.test(assetInfo.name)) {
+            return 'assets/[name].css';
+          }
+          return 'assets/[name][extname]';
+        },
       },
     },
   },
