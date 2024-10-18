@@ -19,3 +19,14 @@
 | scrollInToView | scroll to index if needed（不在可视范围内） | index |
 | scrollToOffset | scroll to px                                | px    |
 | forceUpdate    | 强制更新                                    | -     |
+
+## 插槽
+
+| name          | 说明                                                     |
+| ------------- | -------------------------------------------------------- |
+| header        | 顶部插槽                                                 |
+| footer        | 底部插槽                                                 |
+| sticky-header | 顶部悬浮插槽                                             |
+| sticky-footer | 底部悬浮插槽                                             |
+| empty         | 空插槽                                                   |
+| default       | item 内容， `作用域参数为 { itemData, index, rowIndex }` |
