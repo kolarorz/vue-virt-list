@@ -1,7 +1,7 @@
 # vue-virt-list 虚拟列表 虚拟滚动列表 虚拟树
 
 <p align="center">
-<img src="./banner.png?raw=true" width="600"/>
+<img src="https://img.picgo.net/2024/10/18/banner0cf18d1d1663f5d2.png" width="600"/>
 </p>
 
 <p align="center">
@@ -77,11 +77,11 @@ npm install vue-virt-list -S
 
 开源不易，如果帮助到你，请作者喝杯咖啡吧~
 
-<img src="./wechat.png" width=200 />
-<img src="./alipay.png" width=200 />
+<img src="https://img.picgo.net/2024/10/18/wechatb7962c50d6ed1d1b.png" width=200 />
+<img src="https://img.picgo.net/2024/10/18/alipayd8563fbfb64b0daa.png" width=200 />
 
 ## WeChat
 
 有问题可扫码加好友进入技术交流群（备注github账号名）
 
-<img src="./qrcode.png" width=200 />
+<img src="https://img.picgo.net/2024/10/18/qrcode3659314a0b986be8.jpeg" width=200 />
