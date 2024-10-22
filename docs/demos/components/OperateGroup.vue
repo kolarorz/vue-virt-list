@@ -32,11 +32,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { VirtList } from 'vue-virt-list';
+import { VirtList, VirtGrid } from 'vue-virt-list';
 import { ref } from 'vue';
 
 const props = defineProps<{
-  virtListRef: typeof VirtList | null;
+  virtListRef: typeof VirtList | typeof VirtGrid | null;
   length: number;
   visible: boolean;
 }>();

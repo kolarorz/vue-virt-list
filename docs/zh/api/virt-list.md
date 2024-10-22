@@ -60,10 +60,9 @@
 | deletedList2Top   | 删除顶部list（通常在分页模式下使用，具体参考demo）                         | list[]                                             |
 | addedList2Top     | 添加顶部list（通常在分页模式下使用，具体参考demo）                         | list[]                                             |
 | manualRender      | 手动控制渲染（提供渲染起始）                                               | `(renderBegin: number, renderEnd: number) => void` |
+| getReactiveData   | 返回内部动响应式数据                                                       | `reactiveData:ReactiveData`                        |
 
-## 额外参数
-
-### reactive:ReactiveData
+## reactiveData:ReactiveData
 
 | 属性          | 类型   | 说明                                   |
 | ------------- | ------ | -------------------------------------- |

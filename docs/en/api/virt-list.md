@@ -60,10 +60,9 @@
 | deletedList2Top   | deleted list of top part（Learn more in pagination example）             | list[]                                             |
 | addedList2Top     | added list of top part（Learn more in pagination example）               | list[]                                             |
 | manualRender      | manual render（need support renderBegin  & renderEnd）                   | `(renderBegin: number, renderEnd: number) => void` |
+| getReactiveData   | return reactive data                                                     | `reactiveData:ReactiveData`                        |
 
-## Extra variables
-
-### reactive:ReactiveData
+## reactive:ReactiveData
 
 | Attribute     | Type   | Description                                                    |
 | ------------- | ------ | -------------------------------------------------------------- |

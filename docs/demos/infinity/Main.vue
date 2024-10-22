@@ -14,7 +14,14 @@
       <span>RenderEnd: {{ reactiveData.renderEnd }} </span>
     </div>
 
-    <div class="demo-infinity" v-show="visible">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div
+      class="demo-infinity"
+      style="width: 100%; height: 500px"
+      v-show="visible"
+    >
       <VirtList
         ref="virtListRef"
         :list="list"
@@ -86,10 +93,8 @@ export default {
 
 <style lang="scss" scoped>
 .demo-infinity {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 }
 </style>

@@ -18,7 +18,10 @@
       <span>RenderEnd: {{ reactiveData?.renderEnd }} </span>
     </div>
 
-    <div class="demo-huge">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-huge" style="width: 100%; height: 500px">
       <div class="empty" v-if="list.length === 0">
         {{ loading ? '数据解压中...' : 'empty' }}
       </div>
@@ -97,11 +100,9 @@ async function onLoadData() {
 
 <style lang="scss" scoped>
 .demo-huge {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 
   .empty {
     width: 100%;

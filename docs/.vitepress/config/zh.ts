@@ -90,7 +90,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
             { text: '聊天室', link: 'chat' },
             { text: '高阶用法', link: 'advanced' },
             {
-              text: '分页',
+              text: '上下分页',
               link: 'pagination',
             },
           ],

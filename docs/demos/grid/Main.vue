@@ -42,7 +42,10 @@
     </div>
     <div>&nbsp;</div>
 
-    <div class="demo-grid" v-show="visible">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-grid" style="width: 100%; height: 500px" v-show="visible">
       <VirtGrid
         ref="virtGridRef"
         :list="list"
@@ -72,7 +75,7 @@ import Operate from '../components/OperateGroup.vue';
 import { getAvatarList } from '../utils/common';
 import Item from './Item.vue';
 
-const virtGridRef: Ref<InstanceType<typeof VirtGrid> | null> = ref(null);
+const virtGridRef: Ref<typeof VirtGrid | null> = ref(null);
 const visible = ref(true);
 
 const gridItems = ref(2);
@@ -82,7 +85,7 @@ const list: Ref<any[]> = ref([]);
 list.value = getAvatarList(1000);
 
 // console.log(list.value);
-function deleteItem(itemData) {
+function deleteItem(itemData: any) {
   // console.log(itemData);
   const targetIndex = list.value.findIndex((item) => item.id === itemData.id);
   if (targetIndex > -1) {
@@ -103,10 +106,8 @@ function changeGridItems(number: number) {
 
 <style lang="scss" scoped>
 .demo-grid {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow-x: scroll;
   border: 1px solid var(--vp-c-border);
+  overflow-x: scroll;
 }
 </style>

@@ -26,7 +26,7 @@ export const useDrag = ({
   emits,
 }: {
   props: TreeProps;
-  virtListRef: ShallowRef<InstanceType<typeof VirtList> | null>;
+  virtListRef: ShallowRef<typeof VirtList | null>;
   dragging: Ref<boolean>;
   getTreeNode: (key: TreeNodeKey) => TreeNode | undefined;
   hasExpanded: (node: TreeNode) => boolean;

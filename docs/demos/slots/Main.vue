@@ -7,7 +7,10 @@
       @toggleShow="visible = !visible"
     ></Operate>
 
-    <div class="demo-slot" v-show="visible">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-slot" style="width: 100%; height: 500px" v-show="visible">
       <VirtList
         ref="virtListRef"
         :minSize="40"
@@ -69,10 +72,8 @@ export default {
 
 <style lang="scss" scoped>
 .demo-slot {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 }
 </style>
