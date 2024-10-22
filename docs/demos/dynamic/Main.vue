@@ -8,7 +8,10 @@
       <span>RenderEnd: {{ reactiveData.renderEnd }} </span>
     </div>
 
-    <div class="demo-editable">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-dynamic" style="width: 100%; height: 500px">
       <VirtList
         :buffer="5"
         ref="virtListRef"
@@ -53,11 +56,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.demo-editable {
-  width: 100%;
-  height: 500px;
+.demo-dynamic {
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 }
 </style>

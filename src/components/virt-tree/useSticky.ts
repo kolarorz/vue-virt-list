@@ -3,7 +3,7 @@ import { ref, watch, type Ref, type ShallowRef } from 'vue-demi';
 import type { TreeNode, TreeNodeKey } from './type';
 
 export const useSticky = (
-  virtListRef: Ref<InstanceType<typeof VirtList> | null>,
+  virtListRef: Ref<typeof VirtList | null>,
   expandedKeysSet: ShallowRef<Set<TreeNodeKey>>,
 ) => {
   const stickyStack = ref<TreeNodeKey[]>([]);

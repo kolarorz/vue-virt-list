@@ -61,7 +61,7 @@ export default {
   width: 100%;
   height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 }
 </style>

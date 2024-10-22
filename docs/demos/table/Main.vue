@@ -8,7 +8,10 @@
       <span>RenderEnd: {{ reactiveData.renderEnd }} </span>
     </div>
 
-    <div class="demo-table">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-table" style="width: 100%; height: 500px">
       <VirtList ref="virtListRef" :list="list" :minSize="40" itemKey="id">
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />
@@ -77,11 +80,9 @@ export default {
 
 <style lang="scss" scoped>
 .demo-table {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 
   .header {
     height: 40px;

@@ -15,7 +15,10 @@
       <span>RenderEnd: {{ reactiveData?.renderEnd }} </span>
     </div>
 
-    <div class="demo-dynamic">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-performance" style="width: 100%; height: 500px">
       <VirtList
         ref="virtListRef"
         :buffer="5"
@@ -46,7 +49,7 @@ import { asyncGetList } from '../utils/common';
 import Item from './Item.vue';
 
 const loading = ref(false);
-const virtListRef: Ref<InstanceType<typeof VirtList> | null> = ref(null);
+const virtListRef: Ref<typeof VirtList | null> = ref(null);
 const list: ShallowRef<any[]> = shallowRef([]);
 
 const reactiveData = computed(() => {
@@ -80,12 +83,10 @@ function deleteItem(id: number) {
 </script>
 
 <style lang="scss" scoped>
-.demo-dynamic {
-  width: 100%;
-  height: 500px;
+.demo-performance {
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 
   .row-item {
     display: flex;

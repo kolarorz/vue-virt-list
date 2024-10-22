@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <!-- operate -->
     <div class="button-group">
       <button class="demo-btn" @click="manualAddList">Manual Add List</button>
       <span>(</span>
@@ -20,6 +21,7 @@
       <span v-show="loading">数据生成中，请稍等</span>
     </div>
 
+    <!-- render stats -->
     <div style="padding: 10px 0">
       <span>Total: {{ list.length }} </span>
       <span>&nbsp;&nbsp;&nbsp;</span>
@@ -28,7 +30,10 @@
       <span>RenderEnd: {{ reactiveData?.renderEnd }} </span>
     </div>
 
-    <div class="demo-basic">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-basic" style="width: 100%; height: 500px">
       <VirtList
         ref="virtListRef"
         :buffer="5"
@@ -62,7 +67,7 @@ const manualNumber = ref(1000);
 const autoNumber = ref(1000);
 const autoFlag = ref(false);
 const loading = ref(false);
-const virtListRef: Ref<InstanceType<typeof VirtList> | null> = ref(null);
+const virtListRef: Ref<typeof VirtList | null> = ref(null);
 const list: ShallowRef<any[]> = shallowRef([]);
 
 const reactiveData = computed(() => {
@@ -120,11 +125,9 @@ function deleteItem(id: number) {
 
 <style lang="scss" scoped>
 .demo-basic {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 
   .row-item {
     display: flex;

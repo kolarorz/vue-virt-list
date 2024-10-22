@@ -8,7 +8,10 @@
       <span>RenderEnd: {{ reactiveData.renderEnd }} </span>
     </div>
 
-    <div class="demo-fixed">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div class="demo-fixed" style="width: 100%; height: 500px">
       <VirtList
         :buffer="2"
         :list="list"
@@ -61,10 +64,8 @@ export default {
 
 <style lang="scss" scoped>
 .demo-fixed {
-  width: 100%;
-  height: 500px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 }
 </style>

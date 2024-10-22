@@ -245,7 +245,7 @@ export const useTree = (
 ) => {
   // 维护一个 dragging 状态
   const dragging = ref(false);
-  const virtListRef = ref<InstanceType<typeof VirtList> | null>(null);
+  const virtListRef = ref<typeof VirtList | null>(null);
   const renderKey = ref(0);
 
   const mergeFieldNames = {

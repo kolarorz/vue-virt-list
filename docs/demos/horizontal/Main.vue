@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <Operate
-      :virtListRef="$refs.virtListRef"
+      :virtListRef="virtListRef"
       :length="list.length"
       :visible.sync="visible"
     ></Operate>
@@ -14,7 +14,14 @@
       <span>RenderEnd: {{ reactiveData.renderEnd }} </span>
     </div>
 
-    <div class="demo-horizontal" v-show="visible">
+    <!-- demo -->
+    <!-- important: must set a height for Container or VirtList -->
+    <!-- important: must set itemKey and keep id is unique -->
+    <div
+      class="demo-horizontal"
+      style="width: 100%; height: 120px"
+      v-show="visible"
+    >
       <VirtList
         :list="list"
         ref="virtListRef"
@@ -53,10 +60,13 @@ export default {
         renderBegin: 0,
         renderEnd: 0,
       },
+
+      virtListRef: null as typeof VirtList | null,
     };
   },
   mounted() {
-    this.reactiveData = (this.$refs.virtListRef as any).reactiveData;
+    this.virtListRef = this.$refs.virtListRef as typeof VirtList;
+    this.reactiveData = this.virtListRef.reactiveData;
     this.list = getHorizontalList(1000);
   },
 };
@@ -64,11 +74,9 @@ export default {
 
 <style lang="scss" scoped>
 .demo-horizontal {
-  width: 100%;
-  height: 120px;
   background-color: var(--vp-sidebar-bg-color);
-  overflow: hidden;
   border: 1px solid var(--vp-c-border);
+  overflow: hidden;
 
   .demo-col {
     height: 100%;

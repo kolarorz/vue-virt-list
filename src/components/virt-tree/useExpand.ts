@@ -23,7 +23,7 @@ export const useExpand = ({
   emits,
 }: {
   props: TreeProps;
-  virtListRef: ShallowRef<InstanceType<typeof VirtList> | null>;
+  virtListRef: ShallowRef<typeof VirtList | null>;
   parentNodeKeys: TreeNodeKey[];
   getTreeNode: (key: TreeNodeKey) => TreeNode | undefined;
   emits: SetupContext<typeof TreeEmits>['emit'];
