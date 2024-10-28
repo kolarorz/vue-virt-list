@@ -37,6 +37,7 @@ const VirtGrid = defineComponent({
   },
   setup(props, context: SetupContext) {
     const emits = context.emit as SetupContext<typeof GridEmits>['emit'];
+    const renderKey = ref(0);
 
     const virtListRef = ref<typeof VirtList | null>(null);
 
@@ -118,8 +119,15 @@ const VirtGrid = defineComponent({
     }
 
     function forceUpdate() {
-      updateList();
+      renderKey.value += 1;
     }
+
+    watch(
+      () => renderKey.value,
+      () => {
+        updateList();
+      },
+    );
 
     watch(
       () => props.list.length,
