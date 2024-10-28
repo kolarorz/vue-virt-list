@@ -308,6 +308,11 @@ function useVirtList<T extends Record<string, any>>(
       fixSelection();
     }
 
+    if (start < reactiveData.inViewBegin) {
+      // 向上滚动需要修正
+      fixOffset = true;
+    }
+
     reactiveData.inViewBegin = start;
     reactiveData.inViewEnd = Math.min(
       start + reactiveData.views,
@@ -355,9 +360,6 @@ function useVirtList<T extends Record<string, any>>(
           break;
         }
       }
-
-      // 向上滚动需要修正
-      fixOffset = true;
     }
 
     if (direction === 'backward') {
