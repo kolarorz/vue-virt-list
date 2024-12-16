@@ -165,11 +165,15 @@ function useVirtList<T extends Record<string, any>>(
     };
   }
 
-  function scrollToOffset(offset: number) {
+  function scrollToOffset(offset: number, behavior: ScrollBehavior = 'auto') {
     abortFixOffset = true;
-    const directionKey = props.horizontal ? 'scrollLeft' : 'scrollTop';
-    if (clientRefEl.value) clientRefEl.value[directionKey] = offset;
+    const directionKey = props.horizontal ? 'x' : 'y';
+    if (clientRefEl.value) clientRefEl.value.scrollTo({
+      [directionKey]:offset,
+      behavior
+    });
   }
+  
   // expose 滚动到指定下标
   async function scrollToIndex(index: number) {
     if (index < 0) {
