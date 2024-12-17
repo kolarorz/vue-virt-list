@@ -243,31 +243,46 @@ function useVirtList<T extends Record<string, any>>(
   }
   // expose 滚动到顶部，这个和去第一个元素不同
   async function scrollToTop() {
-    scrollToOffset(0);
-
-    setTimeout(() => {
-      const directionKey = props.horizontal ? 'scrollLeft' : 'scrollTop';
-      // 因为纠正滚动条会有误差，所以这里需要再次纠正
-      if (clientRefEl?.value?.[directionKey] !== 0) {
-        scrollToTop();
-      }
-    }, 3);
+    let count = 0;
+    function loopScrollToTop() {
+      count += 1;
+      scrollToOffset(0);
+      setTimeout(() => {
+        if (count > 10) {
+          return;
+        }
+        const directionKey = props.horizontal ? 'scrollLeft' : 'scrollTop';
+        // 因为纠正滚动条会有误差，所以这里需要再次纠正
+        if (clientRefEl?.value?.[directionKey] !== 0) {
+          loopScrollToTop();
+        }
+      }, 3);
+    }
+    loopScrollToTop();
   }
   // expose 滚动到底部
   async function scrollToBottom() {
-    scrollToOffset(getTotalSize());
-
-    setTimeout(() => {
-      // 修复底部误差，因为缩放屏幕的时候，获取的尺寸都是小数，精度会有问题，这里把误差调整为2px
-      if (
-        Math.abs(
-          Math.round(reactiveData.offset + slotSize.clientSize) -
-            Math.round(getTotalSize()),
-        ) > 2
-      ) {
-        scrollToBottom();
-      }
-    }, 3);
+    let count = 0;
+    function loopScrollToBottom() {
+      count += 1;
+      scrollToOffset(getTotalSize());
+      setTimeout(() => {
+        // 做一次拦截，防止异常导致的死循环
+        if (count > 10) {
+          return;
+        }
+        // 修复底部误差，因为缩放屏幕的时候，获取的尺寸都是小数，精度会有问题，这里把误差调整为2px
+        if (
+          Math.abs(
+            Math.round(reactiveData.offset + slotSize.clientSize) -
+              Math.round(getTotalSize()),
+          ) > 2
+        ) {
+          loopScrollToBottom();
+        }
+      }, 3);
+    }
+    loopScrollToBottom();
   }
 
   // 修复vue2-diff的bug导致的selection问题
