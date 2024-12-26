@@ -3,9 +3,11 @@ import {
   shallowRef,
   triggerRef,
   type ShallowReactive,
+  type ShallowRef,
 } from 'vue-demi';
 import type { TreeInfo, TreeNode, TreeNodeKey } from './type';
 import type { TreeProps } from './useTree';
+import type { VirtList } from '../virt-list';
 
 const isFunction = (value: unknown) =>
   typeof value === 'function' ||
@@ -15,9 +17,11 @@ const isFunction = (value: unknown) =>
 export const useFilter = ({
   props,
   treeInfo,
+  virtListRef,
 }: {
   props: TreeProps;
   treeInfo: ShallowReactive<TreeInfo | undefined>;
+  virtListRef: ShallowRef<typeof VirtList | null>;
 }) => {
   const hiddenNodeKeySet = shallowRef<Set<TreeNodeKey>>(new Set([]));
   const hiddenExpandIconKeySet = shallowRef<Set<TreeNodeKey>>(new Set([]));
@@ -49,7 +53,10 @@ export const useFilter = ({
         family.push(node);
         if (filter?.(query, node)) {
           family.forEach((member) => {
-            expandKeySet.add(member.key);
+            // 仅加入非叶子节点
+            if (!member.isLeaf) {
+              expandKeySet.add(member.key);
+            }
           });
         } else if (node.isLeaf) {
           hiddenKeys.add(node.key);
@@ -82,6 +89,7 @@ export const useFilter = ({
     traverse(nodes);
     triggerRef(hiddenNodeKeySet);
     triggerRef(hiddenExpandIconKeySet);
+    virtListRef.value?.scrollToTop();
     return expandKeySet;
   }
 

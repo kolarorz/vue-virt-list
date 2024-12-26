@@ -41,7 +41,6 @@ export const useExpand = ({
       expandedKeysSet.value.clear();
       // 设置展开项的时候需要展开所有的父级
       props.expandedKeys.forEach((key) => {
-        expandedKeysSet.value.add(key);
         const node = getTreeNode(key);
         if (!node) return;
         expandParents(node);
@@ -53,10 +52,19 @@ export const useExpand = ({
     emits(UPDATE_EXPANDED_KEYS, [...expandedKeysSet.value]);
   };
 
+  // 展开节点需要展开所有parent节点
   const expandParents = (node: TreeNode) => {
-    expandedKeysSet.value.add(node.key);
+    if (!node.isLeaf) {
+      expandedKeysSet.value.add(node.key);
+    }
     if (!node?.parent) return;
     expandParents(node.parent);
+  };
+
+  const foldParents = (node: TreeNode) => {
+    expandedKeysSet.value.delete(node.key);
+    if (!node?.parent) return;
+    foldParents(node.parent);
   };
 
   const expandAll = (expanded: boolean) => {
@@ -79,7 +87,11 @@ export const useExpand = ({
     });
   };
 
-  const expandNode = (key: TreeNodeKey | TreeNodeKey[], expanded: boolean) => {
+  const expandNode = (
+    key: TreeNodeKey | TreeNodeKey[],
+    expanded: boolean,
+    foldAllNodes?: boolean,
+  ) => {
     let target: TreeNodeKey[] | null = null;
     if (!Array.isArray(key)) {
       target = [key];
@@ -90,10 +102,21 @@ export const useExpand = ({
       const node = getTreeNode(k);
       if (!node) return;
       if (expanded) {
-        expandedKeysSet.value.add(node.key);
         expandParents(node);
       } else {
-        expandedKeysSet.value.delete(node.key);
+        if (node.isLeaf) {
+          // 如果是叶子节点,需要折叠父节点
+          if (!node?.parent) return;
+          if (foldAllNodes) {
+            // 折叠所有的父节点
+            foldParents(node.parent);
+          } else {
+            // 折叠上一个父节点
+            expandedKeysSet.value.delete(node.parent.key);
+          }
+        } else {
+          expandedKeysSet.value.delete(node.key);
+        }
       }
     });
 

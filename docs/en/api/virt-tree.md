@@ -2,32 +2,33 @@
 
 ## Tree Attributes
 
-| Attribute                      | Description                                                                   | Type                         | Default | Required                      |
-| ------------------------------ | ----------------------------------------------------------------------------- | ---------------------------- | ------- | ----------------------------- |
-| list                           | list                                                                          | `TreeNodeData[]`             | -       | <font color="#f00">Yes</font> |
-| minSize                        | **最小尺寸**，会根据这个尺寸来计算可视区域内个数                              | `number`                     | `32`    | <font color="#f00">Yes</font> |
-| indent                         | 相邻级节点间的水平缩进，单位为像素                                            | `number`                     | `16`    | 否                            |
-| iconSize                       | 图标大小                                                                      | `number`                     | `16`    | 否                            |
-| itemGap                        | the gap between item (item size include itemGap)                              | `Number`                     | 0       | 否                            |
-| showLine                       | 是否显示层级线                                                                | `boolean`                    | `false` | 否                            |
-| `[expand]` expandedKeys        | `.sync` 展开的节点的 `key` 集合                                               | `TreeNodeKey[]`              | `[]`    | 否                            |
-| `[expand]` defaultExpandAll    | 是否默认展开节点                                                              | `boolean`                    | `true`  | 否                            |
-| `[expand]` expandOnClickNode   | 点击元素是否展开 (仅在selectable=false&checkOnClickNode=false时生效)          | `boolean`                    | `true`  | 否                            |
-| `[checkable]` checkable        | 是否有checkbox                                                                | `boolean`                    | `false` | 否                            |
-| `[checkable]` checkedKeys      | `.sync` 勾选的节点的 `key` 集合，只在`showCheckbox`为 true 的时候生效         | `TreeNodeKey[]`              | `[]`    | 否                            |
-| `[checkable]` checkOnClickNode | 点击节点是否可以选中checkbox                                                  | `boolean`                    | `false` | 否                            |
-| `[checkable]` checkedStrictly  | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false        | `boolean`                    | `false` | 否                            |
-| `[selectable]` selectable      | 是否可以选中                                                                  | `boolean`                    | `false` | 否                            |
-| `[selectable]` selectedKeys    | `.sync` 选中的节点的 `key` 集合，只在`selectable`为 true 的时候生效           | `TreeNodeKey[]`              | `[]`    | 否                            |
-| `[selectable]` selectMultiple  | 是否可以多选                                                                  | `boolean`                    | `false` | 否                            |
-| `[focus]` focusedKeys          | `.sync` 激活的节点的 `key` 集合，也可以是一个节点                             | `TreeNodeKey\|TreeNodeKey[]` | `[]`    | 否                            |
-| `[draggable]` draggable        | 是否开启拖拽                                                                  | `boolean`                    | `false` | 否                            |
-| `[draggable]` dragClass        | 拖拽的节点class                                                               | `string`                     | ``      | 否                            |
-| `[draggable]` dragGhostClass   | 拖拽的克隆节点class                                                           | `string`                     | ``      | 否                            |
-| `[draggable]` beforeDrag       | 拖拽进入每个节点前的回调，返回true代表可以完成该拖拽，返回false代表不可以完成 | `() => boolean`              | ``      | 否                            |
-| filterMethod                   | 对树节点进行筛选时执行的方法，返回 true 显示， 返回 false 被隐藏              | `() => boolean`              | -       | 否                            |
-| fieldNames                     | 配置选项                                                                      | `TreeFieldNames`             | -       | 否                            |
-| 其他属性                       | 同VirtList属性                                                                | -                            | -       | -                             |
+| Attribute                       | Description                                                                   | Type                         | Default   | Required                      |
+| ------------------------------- | ----------------------------------------------------------------------------- | ---------------------------- | --------- | ----------------------------- |
+| list                            | list                                                                          | `TreeNodeData[]`             | -         | <font color="#f00">Yes</font> |
+| minSize                         | **最小尺寸**，会根据这个尺寸来计算可视区域内个数                              | `number`                     | `32`      | <font color="#f00">Yes</font> |
+| indent                          | 相邻级节点间的水平缩进，单位为像素                                            | `number`                     | `16`      | 否                            |
+| iconSize                        | 图标大小                                                                      | `number`                     | `16`      | 否                            |
+| itemGap                         | the gap between item (item size include itemGap)                              | `Number`                     | 0         | 否                            |
+| showLine                        | 是否显示层级线                                                                | `boolean`                    | `false`   | 否                            |
+| `[expand]` expandedKeys         | `.sync` 展开的节点的 `key` 集合                                               | `TreeNodeKey[]`              | `[]`      | 否                            |
+| `[expand]` defaultExpandAll     | 是否默认展开节点                                                              | `boolean`                    | `true`    | 否                            |
+| `[expand]` expandOnClickNode    | 点击元素是否展开 (仅在selectable=false&checkOnClickNode=false时生效)          | `boolean`                    | `true`    | 否                            |
+| `[checkable]` checkable         | 是否有checkbox                                                                | `boolean`                    | `false`   | 否                            |
+| `[checkable]` checkedKeys       | `.sync` 勾选的节点的 `key` 集合，只在`showCheckbox`为 true 的时候生效         | `TreeNodeKey[]`              | `[]`      | 否                            |
+| `[checkable]` checkOnClickNode  | 点击节点是否可以选中checkbox                                                  | `boolean`                    | `false`   | 否                            |
+| `[checkable]` checkedStrictly   | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false        | `boolean`                    | `false`   | 否                            |
+| `[selectable]` selectable       | 是否可以选中                                                                  | `boolean`                    | `false`   | 否                            |
+| `[selectable]` selectedKeys     | `.sync` 选中的节点的 `key` 集合，只在`selectable`为 true 的时候生效           | `TreeNodeKey[]`              | `[]`      | 否                            |
+| `[selectable]` selectMultiple   | 是否可以多选                                                                  | `boolean`                    | `false`   | 否                            |
+| `[focus]` focusedKeys           | `.sync` 激活的节点的 `key` 集合，也可以是一个节点                             | `TreeNodeKey\|TreeNodeKey[]` | `[]`      | 否                            |
+| `[draggable]` draggable         | 是否开启拖拽                                                                  | `boolean`                    | `false`   | 否                            |
+| `[draggable]` dragClass         | 拖拽的节点class                                                               | `string`                     | ``        | 否                            |
+| `[draggable]` dragGhostClass    | 拖拽的克隆节点class                                                           | `string`                     | ``        | 否                            |
+| `[draggable]` beforeDrag        | 拖拽进入每个节点前的回调，返回true代表可以完成该拖拽，返回false代表不可以完成 | `() => boolean`              | ``        | 否                            |
+| `[draggable]` dragoverPlacement | 拖拽区域生效的区域范围                                                        | `number[]`                   | `[33,66]` | 否                            |
+| filterMethod                    | 对树节点进行筛选时执行的方法，返回 true 显示， 返回 false 被隐藏              | `() => boolean`              | -         | 否                            |
+| fieldNames                      | 配置选项                                                                      | `TreeFieldNames`             | -         | 否                            |
+| 其他属性                        | 同VirtList属性                                                                | -                            | -         | -                             |
 
 ## Tree Methods
 

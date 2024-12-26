@@ -90,6 +90,38 @@ export function getNextSibling(element: Element) {
   return undefined;
 }
 
+export function getDragoverPlacement(placement: number[]) {
+  if (placement.length <= 0) {
+    return [0.33, 0.66];
+  }
+
+  if (placement.length === 1) {
+    const placementNumber = Number(placement[0]);
+    const inValidNumber = isNaN(placementNumber);
+    if (inValidNumber || placementNumber < 0 || placementNumber > 100) {
+      return [0.33, 0.66];
+    }
+    return [placementNumber / 100, 1 - placementNumber / 100];
+  }
+
+  const innerPlacement = placement.slice(0, 2);
+  const inValidNumber = innerPlacement.some(
+    (item) => isNaN(Number(item)) || Number(item) < 0 || Number(item) > 100,
+  );
+
+  if (inValidNumber) {
+    return [0.33, 0.66];
+  }
+
+  const topPlacement = Number(innerPlacement[0]) / 100;
+  const bottomPlacement = Number(innerPlacement[1]) / 100;
+  if (topPlacement + bottomPlacement > 1) {
+    return [topPlacement, 1 - topPlacement];
+  }
+
+  return [topPlacement, bottomPlacement];
+}
+
 // function getPrevSiblingTreeContent(hoverTreeItem: Element) {
 //   // 找到 hoverTreeItem 的前一个元素，可能不存在
 //   const hoverTreeItemPrevious = getPrevSibling(hoverTreeItem as Element);

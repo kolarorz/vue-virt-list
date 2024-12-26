@@ -217,6 +217,10 @@ export const customFieldNames = {
     type: String,
     default: '',
   },
+  dragoverPlacement: {
+    type: Array as PropType<number[]>,
+    default: () => [33, 66],
+  },
   // 待确定的功能
   // beforeDrag: {
   //   type: Function as PropType<
@@ -398,6 +402,7 @@ export const useTree = (
   const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter({
     props,
     treeInfo,
+    virtListRef,
   });
 
   const { hasSelected, toggleSelect, selectNode, selectAll } = useSelect({

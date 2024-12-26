@@ -71,6 +71,16 @@ Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-fo
 
 <!<< @/demos/tree/Drag.vue
 
+## dragover placement
+
+拖拽悬浮生效区域判定
+
+<!<< @/demos/tree/DragoverPlacement.vue
+
+## drag handler
+
+<!<< @/demos/tree/DragHandler.vue
+
 ## css variable
 
 ```css

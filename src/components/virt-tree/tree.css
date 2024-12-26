@@ -166,6 +166,7 @@ html.dark .virt-tree-item {
 }
 /* 固定高度 */
 .virt-tree-node-content.is-fixed-height {
+  overflow: hidden;
   word-break: keep-all;
 }
 

@@ -14,6 +14,7 @@ import {
   findAncestorWithClass,
   getPrevSibling,
   getNextSibling,
+  getDragoverPlacement,
 } from './utils';
 
 export const useDrag = ({
@@ -90,6 +91,10 @@ export const useDrag = ({
   // 找到目标元素 virt-tree-item
   let scrollElementRect: DOMRect | undefined = undefined;
   let clientElementRect: DOMRect | undefined = undefined;
+
+  const [topPlacement, bottomPlacement] = getDragoverPlacement(
+    props.dragoverPlacement,
+  );
 
   const dragBox = document.createElement('div');
   dragBox.classList.add('virt-tree-drag-box');
@@ -280,9 +285,9 @@ export const useDrag = ({
     // 计算鼠标相对于元素高度的比例
     const positionRatio = relativeY / elementHeight;
 
-    if (positionRatio < 0.33) {
+    if (positionRatio < topPlacement) {
       placement = 'top';
-    } else if (positionRatio > 0.66) {
+    } else if (positionRatio > bottomPlacement) {
       placement = 'bottom';
     } else {
       placement = 'center';
