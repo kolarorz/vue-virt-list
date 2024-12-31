@@ -69,17 +69,21 @@ Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-fo
 
 ## draggable
 
+拖拽后不直接修改数据，而是提供 dragend 事件，由业务自行判定并修改数据，数据更改后，通过响应式更新树。
+
+位置判定说明：每个元素会被切割为3份，上面一份判定为拖入该元素上方，下面一份判定为拖入该元素下方。如果该元素被禁止拖入，则会把该元素一分为二，去掉中间的区域。
+
 <!<< @/demos/tree/Drag.vue
-
-## dragover placement
-
-拖拽悬浮生效区域判定
-
-<!<< @/demos/tree/DragoverPlacement.vue
 
 ## drag handler
 
+自定义拖拽生效图标，而不是整个节点
+
 <!<< @/demos/tree/DragHandler.vue
+
+通常这种形式用在替代 VueDraggable 组件
+
+<!<< @/demos/tree/DragList.vue
 
 ## css variable
 

@@ -14,7 +14,6 @@ import {
   findAncestorWithClass,
   getPrevSibling,
   getNextSibling,
-  getDragoverPlacement,
 } from './utils';
 
 export const useDrag = ({
@@ -92,9 +91,8 @@ export const useDrag = ({
   let scrollElementRect: DOMRect | undefined = undefined;
   let clientElementRect: DOMRect | undefined = undefined;
 
-  const [topPlacement, bottomPlacement] = getDragoverPlacement(
-    props.dragoverPlacement,
-  );
+  let topPlacement = 0.33;
+  let bottomPlacement = 0.66;
 
   const dragBox = document.createElement('div');
   dragBox.classList.add('virt-tree-drag-box');
@@ -253,28 +251,11 @@ export const useDrag = ({
     const hoverElement = document.elementFromPoint(mouseX, mouseY);
     if (!hoverElement) return;
     hoverTreeItem = findAncestorWithClass(hoverElement, 'virt-tree-item');
-    if (!hoverTreeItem) {
-      return;
-    }
-
+    if (!hoverTreeItem) return;
     const hoverTreeId = hoverTreeItem?.dataset?.id;
     if (!hoverTreeId) return;
     const hoverTreeNode = getTreeNode(hoverTreeId);
     if (!hoverTreeNode) return;
-
-    // 操作元素和hover元素不能一致
-    if (hoverTreeItem === sourceTreeItem) {
-      // 移除 line
-      if (hasStyleTreeItem?.contains(dragLine)) {
-        hasStyleTreeItem?.removeChild(dragLine);
-      }
-      // 移除 box
-      if (hasStyleTreeItem?.contains(dragBox)) {
-        hasStyleTreeItem?.removeChild(dragBox);
-      }
-      dragEffect = false;
-      return;
-    }
     const hoverTreeItemRect = hoverTreeItem?.getBoundingClientRect();
     if (!hoverTreeItemRect) return;
 
@@ -284,6 +265,15 @@ export const useDrag = ({
     const relativeY = mouseY - elementTop;
     // 计算鼠标相对于元素高度的比例
     const positionRatio = relativeY / elementHeight;
+
+    if (hoverTreeNode.data.disableDragIn) {
+      // 如果禁止拖入，就不需要中间区域判断了
+      topPlacement = 0.5;
+      bottomPlacement = 0.5;
+    } else {
+      topPlacement = 0.33;
+      bottomPlacement = 0.66;
+    }
 
     if (positionRatio < topPlacement) {
       placement = 'top';
@@ -312,6 +302,20 @@ export const useDrag = ({
       lastPlacement = placement;
       lastHoverTreeItem = hoverTreeItem;
 
+      // 操作元素和hover元素不能一致
+      if (hoverTreeItem === sourceTreeItem) {
+        // 移除 line
+        if (hasStyleTreeItem?.contains(dragLine)) {
+          hasStyleTreeItem?.removeChild(dragLine);
+        }
+        // 移除 box
+        if (hasStyleTreeItem?.contains(dragBox)) {
+          hasStyleTreeItem?.removeChild(dragBox);
+        }
+        dragEffect = false;
+        return;
+      }
+
       // 一旦发生变化立马清除定时器
       if (hoverExpandTimer) {
         clearTimeout(hoverExpandTimer);
@@ -322,11 +326,7 @@ export const useDrag = ({
         dragEffect = false;
         // console.log('鼠标在中部', dragEffect);
         // 判断是否能够进入disableDragIn
-        const id = hoverTreeItem?.dataset?.id;
-        if (!id) return;
-        const node = getTreeNode(id);
-        if (!node) return;
-        parentNode = node;
+        parentNode = hoverTreeNode;
         prevNode = undefined;
         if (hasStyleTreeItem?.contains(dragLine)) {
           hasStyleTreeItem?.removeChild(dragLine);
@@ -345,7 +345,7 @@ export const useDrag = ({
         // }
 
         // 被禁用
-        if (node.data?.disableDragIn) return;
+        if (hoverTreeNode.data?.disableDragIn) return;
 
         // 添加 box
         hoverTreeItem?.appendChild(dragBox);
@@ -358,11 +358,11 @@ export const useDrag = ({
           clearTimeout(hoverExpandTimer);
           hoverExpandTimer = null;
         }
-        const isExpanded = hasExpanded(node);
+        const isExpanded = hasExpanded(hoverTreeNode);
         if (!isExpanded) {
           if (!hoverExpandTimer) {
             hoverExpandTimer = setTimeout(() => {
-              expandNode(id, true);
+              expandNode(hoverTreeId, true);
               if (hoverExpandTimer) {
                 clearTimeout(hoverExpandTimer);
                 hoverExpandTimer = null;
