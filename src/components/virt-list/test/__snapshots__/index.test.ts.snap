@@ -1,0 +1,397 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`props - itemClass > itemClass is array 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props - itemClass > itemClass is function 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"item-0-0\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"item-1-1\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"item-2-2\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"item-3-3\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"item-4-4\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"item-5-5\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"item-6-6\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props - itemClass > itemClass is object 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props itemClass > itemClass is array 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props itemClass > itemClass is function 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"item-0-0\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"item-1-1\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"item-2-2\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"item-3-3\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"item-4-4\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"item-5-5\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"item-6-6\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props itemClass > itemClass is function and return array 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props itemClass > itemClass is function and return string 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"item-0-0\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"item-1-1\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"item-2-2\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"item-3-3\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"item-4-4\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"item-5-5\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"item-6-6\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`props itemClass > itemClass is object 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`virt-list > itemClass is array 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo bar\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`virt-list > itemClass is function 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"item-0-0\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"item-1-1\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"item-2-2\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"item-3-3\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"item-4-4\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"item-5-5\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"item-6-6\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`virt-list > itemClass is object 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"foo\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;
+
+exports[`virt-list > should render 1`] = `
+"<div data-id=\\"client\\" class=\\"virt-list__client\\" style=\\"width: 100%; height: 100%; overflow: auto;\\">
+  <!---->
+  <!---->
+  <div class=\\"\\" style=\\"will-change: height; min-height: 200px;\\">
+    <div style=\\"height: 0px; will-change: height;\\"></div>
+    <div data-id=\\"0\\" class=\\"\\">
+      <div class=\\"item\\">Item 0: 0</div>
+    </div>
+    <div data-id=\\"1\\" class=\\"\\">
+      <div class=\\"item\\">Item 1: 1</div>
+    </div>
+    <div data-id=\\"2\\" class=\\"\\">
+      <div class=\\"item\\">Item 2: 2</div>
+    </div>
+    <div data-id=\\"3\\" class=\\"\\">
+      <div class=\\"item\\">Item 3: 3</div>
+    </div>
+    <div data-id=\\"4\\" class=\\"\\">
+      <div class=\\"item\\">Item 4: 4</div>
+    </div>
+    <div data-id=\\"5\\" class=\\"\\">
+      <div class=\\"item\\">Item 5: 5</div>
+    </div>
+    <div data-id=\\"6\\" class=\\"\\">
+      <div class=\\"item\\">Item 6: 6</div>
+    </div>
+  </div>
+  <!---->
+  <!---->
+</div>"
+`;

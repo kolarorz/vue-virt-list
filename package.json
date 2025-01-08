@@ -12,7 +12,8 @@
     "dev": "vitepress dev docs --host --port=5111",
     "build:docs": "vitepress build docs",
     "build": "vite build -c ./scripts/build.ts && vue-tsc -p tsconfig.build.json",
-    "lint": "eslint ./example --ext .vue,.ts,.tsx,.js,.jsx --fix"
+    "lint": "eslint ./example --ext .vue,.ts,.tsx,.js,.jsx --fix",
+    "test": "vitest"
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.0.0-rc.1",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "@rushstack/eslint-patch": "^1.3.3",
+    "@testing-library/vue": "^8.1.0",
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.3",
     "@types/lodash-es": "^4.17.12",

@@ -39,6 +39,8 @@ export interface BaseListProps<T extends Record<string, string>> {
   stickyFooterStyle?: string;
 }
 
+type ClassType = string | Array<string> | Record<string, any>;
+
 export interface VirtListProps<T extends Record<string, string>>
   extends BaseListProps<T> {
   renderControl?: (
@@ -55,9 +57,9 @@ export interface VirtListProps<T extends Record<string, string>>
   start?: number;
   offset?: number;
   listStyle?: string;
-  listClass?: string;
+  listClass?: ClassType;
   itemStyle?: string;
-  itemClass?: string;
+  itemClass?: ClassType | ((item: T, index: number) => ClassType);
 }
 
 export interface EmitFunction<T> {

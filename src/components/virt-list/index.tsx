@@ -524,7 +524,6 @@ function useVirtList<T extends Record<string, any>>(
       let diff = 0;
       for (const entry of entries) {
         const id = (entry.target as HTMLElement).dataset.id;
-
         if (id) {
           const oldSize = getItemSize(id);
 
@@ -905,7 +904,7 @@ const VirtList = defineComponent({
       default: '',
     },
     listClass: {
-      type: String,
+      type: [String, Array, Object],
       default: '',
     },
     itemStyle: {
@@ -913,11 +912,11 @@ const VirtList = defineComponent({
       default: '',
     },
     itemClass: {
-      type: String,
+      type: [String, Array, Object, Function],
       default: '',
     },
     headerClass: {
-      type: String,
+      type: [String, Array, Object],
       default: '',
     },
     headerStyle: {
@@ -925,7 +924,7 @@ const VirtList = defineComponent({
       default: '',
     },
     footerClass: {
-      type: String,
+      type: [String, Array, Object],
       default: '',
     },
     footerStyle: {
@@ -933,7 +932,7 @@ const VirtList = defineComponent({
       default: '',
     },
     stickyHeaderClass: {
-      type: String,
+      type: [String, Array, Object],
       default: '',
     },
     stickyHeaderStyle: {
@@ -941,7 +940,7 @@ const VirtList = defineComponent({
       default: '',
     },
     stickyFooterClass: {
-      type: String,
+      type: [String, Array, Object],
       default: '',
     },
     stickyFooterStyle: {
@@ -1072,7 +1071,10 @@ const VirtList = defineComponent({
             ObserverItem,
             {
               key: currentItem[itemKey],
-              class: itemClass,
+              class:
+                typeof itemClass === 'function'
+                  ? itemClass(currentItem, index)
+                  : itemClass,
               style: `${itemGapStyle}${itemStyle}`,
               attrs: {
                 id: currentItem[itemKey],
