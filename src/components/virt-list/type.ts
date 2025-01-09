@@ -1,4 +1,5 @@
 import type { Ref, ShallowReactive } from 'vue-demi';
+import type { StyleType, ClassType } from '../../utils';
 
 export type ReactiveData = {
   views: number;
@@ -29,14 +30,14 @@ export interface BaseListProps<T extends Record<string, string>> {
   minSize: number;
   itemGap?: number;
   scrollDistance?: number;
-  headerClass?: string;
-  headerStyle?: string;
-  footerClass?: string;
-  footerStyle?: string;
-  stickyHeaderClass?: string;
-  stickyHeaderStyle?: string;
-  stickyFooterClass?: string;
-  stickyFooterStyle?: string;
+  headerClass: ClassType;
+  headerStyle: StyleType;
+  footerClass: ClassType;
+  footerStyle: StyleType;
+  stickyHeaderClass: ClassType;
+  stickyHeaderStyle: StyleType;
+  stickyFooterClass: ClassType;
+  stickyFooterStyle: StyleType;
 }
 
 type ClassType = string | Array<string> | Record<string, any>;
@@ -56,9 +57,9 @@ export interface VirtListProps<T extends Record<string, string>>
   fixSelection?: boolean;
   start?: number;
   offset?: number;
-  listStyle?: string;
+  listStyle?: StyleType;
   listClass?: ClassType;
-  itemStyle?: string;
+  itemStyle?: StyleType | ((item: T, index: number) => StyleType);
   itemClass?: ClassType | ((item: T, index: number) => ClassType);
 }
 
