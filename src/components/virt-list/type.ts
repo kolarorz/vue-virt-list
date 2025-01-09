@@ -40,8 +40,6 @@ export interface BaseListProps<T extends Record<string, string>> {
   stickyFooterStyle: StyleType;
 }
 
-type ClassType = string | Array<string> | Record<string, any>;
-
 export interface VirtListProps<T extends Record<string, string>>
   extends BaseListProps<T> {
   renderControl?: (
