@@ -200,8 +200,8 @@ export const getSlot = isVue2 ? vue2getSlot : vue3getSlot;
 
 export type StyleType =
   | string
-  | Array<string | { [key: string]: boolean }>
-  | { [key: string]: boolean };
+  | Array<string | { [key: string]: any }>
+  | { [key: string]: any };
 
 export function mergeStyles(...styles: StyleType[]): string {
   let mergedStyles = '';
