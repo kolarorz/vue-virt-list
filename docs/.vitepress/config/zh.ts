@@ -95,6 +95,15 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
             },
           ],
         },
+        {
+          text: 'VirtScrollbar',
+          collapsed: false,
+          items: [
+            { text: '基础示例', link: 'scrollbar-basic' },
+            { text: '高阶用法', link: 'scrollbar-advanced' },
+            { text: '百万数据', link: 'scrollbar-huge' },
+          ],
+        },
 
         { text: 'RealList', link: 'real-list' },
         { text: 'VirtGrid', link: 'virt-grid' },

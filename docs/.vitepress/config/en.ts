@@ -95,6 +95,15 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
             },
           ],
         },
+        {
+          text: 'VirtScrollbar',
+          collapsed: false,
+          items: [
+            { text: 'Basic', link: 'scrollbar-basic' },
+            { text: 'Advanced Usage', link: 'scrollbar-advanced' },
+            { text: 'Million Data', link: 'scrollbar-huge' },
+          ],
+        },
 
         { text: 'RealList', link: 'real-list' },
         { text: 'VirtGrid', link: 'virt-grid' },
@@ -111,6 +120,7 @@ function sidebarApi(): DefaultTheme.SidebarItem[] {
       text: 'API',
       items: [
         { text: 'VirtList', link: 'virt-list' },
+        { text: 'VirtScrollbarList', link: 'virt-scroller' },
         { text: 'VirtGrid', link: 'virt-grid' },
         { text: 'VirtTree', link: 'virt-tree' },
       ],

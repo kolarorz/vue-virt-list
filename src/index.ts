@@ -13,3 +13,10 @@ export { VirtGrid } from './components/virt-grid';
 
 export * from './components/virt-tree/type';
 export { VirtTree } from './components/virt-tree';
+
+export * from './components/virt-scroller';
+export {
+  VirtScrollbarList,
+  VirtualScrollbar,
+  useVirtScrollbarList,
+} from './components/virt-scroller';

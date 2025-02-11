@@ -32,11 +32,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { VirtList, VirtGrid } from 'vue-virt-list';
+import { VirtList, VirtGrid, VirtScrollbarList } from 'vue-virt-list';
 import { ref } from 'vue';
 
 const props = defineProps<{
-  virtListRef: typeof VirtList | typeof VirtGrid | null;
+  virtListRef:
+    | typeof VirtList
+    | typeof VirtGrid
+    | typeof VirtScrollbarList
+    | null;
   length: number;
   visible: boolean;
 }>();
