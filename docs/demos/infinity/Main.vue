@@ -68,6 +68,7 @@ export default {
   data() {
     return {
       visible: true,
+      loading: false,
       list: [] as any[],
       reactiveData: {
         renderBegin: 0,
@@ -83,9 +84,12 @@ export default {
   },
   methods: {
     async toBottom() {
+      if (this.loading) return;
       console.log('toBottom');
+      this.loading = true;
       const list = await asyncGetList(200, this.list.length, 1000);
       this.list = this.list.concat(list);
+      this.loading = false;
     },
   },
 };

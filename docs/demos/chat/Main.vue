@@ -91,9 +91,8 @@ export default {
   },
   methods: {
     async toTop() {
-      console.log('toTop');
       if (this.loading || this.page <= 1) return;
-
+      console.log('toTop');
       this.loading = true;
 
       const list = await asyncGetList(

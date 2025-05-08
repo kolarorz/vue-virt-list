@@ -407,6 +407,26 @@ function useVirtList<T extends Record<string, any>>(
     }
   }
 
+  function judgePosition() {
+    // 使用2px作为误差范围
+    const threshold = Math.max(props.scrollDistance, 2);
+
+    if (direction === 'forward') {
+      if (reactiveData.offset - threshold <= 0) {
+        // console.log('[VirtList] 到达顶部');
+        emitFunction?.toTop?.(props.list[0]);
+      }
+    } else if (direction === 'backward') {
+      // 使用一个 Math.round 来解决小数点的误差问题
+      const scrollSize = Math.round(reactiveData.offset + slotSize.clientSize);
+      const distanceToBottom = Math.round(getTotalSize() - scrollSize);
+      if (distanceToBottom <= threshold) {
+        // console.log('[VirtList] 到达底部');
+        emitFunction?.toBottom?.(props.list[props.list.length - 1]);
+      }
+    }
+  }
+
   function onScroll(evt: Event) {
     // console.log('onscroll');
 
@@ -420,26 +440,7 @@ function useVirtList<T extends Record<string, any>>(
 
     calcRange();
 
-    // 到达顶部
-    if (
-      direction === 'forward' &&
-      reactiveData.offset - props.scrollDistance <= 0
-    ) {
-      // console.log('[VirtList] 到达顶部');
-      emitFunction?.toTop?.(props.list[0]);
-    }
-    // 到达底部 - 放在这里是为了渲染完成拿到真是高度了，再判断是否是真的到达底部
-    // 使用一个 Math.round 来解决小数点的误差问题
-    if (
-      direction === 'backward' &&
-      Math.round(reactiveData.offset + props.scrollDistance) >=
-        Math.round(
-          reactiveData.listTotalSize + getSlotSize() - slotSize.clientSize,
-        )
-    ) {
-      // console.log('[VirtList] 到达底部');
-      emitFunction?.toBottom?.(props.list[props.list.length - 1]);
-    }
+    judgePosition();
   }
 
   function calcViews() {
