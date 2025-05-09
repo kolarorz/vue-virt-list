@@ -407,22 +407,33 @@ function useVirtList<T extends Record<string, any>>(
     }
   }
 
+  // 在组件或类顶部定义状态变量
+  let isAtTop = false;
+  let isAtBottom = false;
+  const THROTTLE_DELAY = 200;
+
   function judgePosition() {
-    // 使用2px作为误差范围
     const threshold = Math.max(props.scrollDistance, 2);
+    const now = Date.now();
 
     if (direction === 'forward') {
-      if (reactiveData.offset - threshold <= 0) {
-        // console.log('[VirtList] 到达顶部');
+      const nearTop = reactiveData.offset - threshold <= 0;
+      if (nearTop && !isAtTop) {
+        isAtTop = true;
         emitFunction?.toTop?.(props.list[0]);
+      } else if (!nearTop) {
+        isAtTop = false;
       }
     } else if (direction === 'backward') {
-      // 使用一个 Math.round 来解决小数点的误差问题
       const scrollSize = Math.round(reactiveData.offset + slotSize.clientSize);
       const distanceToBottom = Math.round(getTotalSize() - scrollSize);
-      if (distanceToBottom <= threshold) {
-        // console.log('[VirtList] 到达底部');
+      const nearBottom = distanceToBottom <= threshold;
+
+      if (nearBottom && !isAtBottom) {
+        isAtBottom = true;
         emitFunction?.toBottom?.(props.list[props.list.length - 1]);
+      } else if (!nearBottom) {
+        isAtBottom = false;
       }
     }
   }
