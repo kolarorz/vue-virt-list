@@ -87,6 +87,9 @@ function useVirtList<T extends Record<string, any>>(
 
   // 全局需要响应式的数据
   const reactiveData: ShallowReactive<ReactiveData> = shallowReactive({
+    hasReachedBottom: false,
+    hasReachedTop: false,
+
     // 可视区域的个数，不算buffer，只和clientSize和minSize有关
     views: 0,
 
@@ -407,42 +410,35 @@ function useVirtList<T extends Record<string, any>>(
     }
   }
 
-  // 在组件或类顶部定义状态变量
-  let isAtTop = false;
-  let isAtBottom = false;
-  const THROTTLE_DELAY = 200;
-
   function judgePosition() {
     const threshold = Math.max(props.scrollDistance, 2);
-    const now = Date.now();
 
     if (direction === 'forward') {
-      const nearTop = reactiveData.offset - threshold <= 0;
-      if (nearTop && !isAtTop) {
-        isAtTop = true;
-        emitFunction?.toTop?.(props.list[0]);
-      } else if (!nearTop) {
-        isAtTop = false;
+      if (reactiveData.offset - threshold <= 0) {
+        if (!reactiveData.hasReachedTop) {
+          emitFunction?.toTop?.(props.list[0]);
+          reactiveData.hasReachedTop = true;
+        }
+      } else {
+        reactiveData.hasReachedTop = false;
       }
     } else if (direction === 'backward') {
       const scrollSize = Math.round(reactiveData.offset + slotSize.clientSize);
       const distanceToBottom = Math.round(getTotalSize() - scrollSize);
-      const nearBottom = distanceToBottom <= threshold;
 
-      if (nearBottom && !isAtBottom) {
-        isAtBottom = true;
-        emitFunction?.toBottom?.(props.list[props.list.length - 1]);
-      } else if (!nearBottom) {
-        isAtBottom = false;
+      if (distanceToBottom <= threshold) {
+        if (!reactiveData.hasReachedBottom) {
+          emitFunction?.toBottom?.(props.list[props.list.length - 1]);
+          reactiveData.hasReachedBottom = true;
+        }
+      } else {
+        reactiveData.hasReachedBottom = false;
       }
     }
   }
 
   function onScroll(evt: Event) {
-    // console.log('onscroll');
-
     emitFunction?.scroll?.(evt);
-
     const offset = getOffset();
 
     if (offset === reactiveData.offset) return;
@@ -450,9 +446,10 @@ function useVirtList<T extends Record<string, any>>(
     reactiveData.offset = offset;
 
     calcRange();
-
     judgePosition();
   }
+
+  // const onScroll = throttledOnScroll;
 
   function calcViews() {
     // 不算buffer的个数
