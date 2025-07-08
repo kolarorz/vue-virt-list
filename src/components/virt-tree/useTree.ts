@@ -221,6 +221,18 @@ export const customFieldNames = {
     type: Array as PropType<number[]>,
     default: () => [33, 66],
   },
+  crossLevelDraggable: {
+    type: Boolean,
+    default: true,
+  },
+  customGroup: {
+    type: String,
+    default: 'virt-tree-group',
+  },
+  listClass: {
+    type: String,
+    default: '',
+  },
   // 待确定的功能
   // beforeDrag: {
   //   type: Function as PropType<
@@ -425,6 +437,7 @@ export const useTree = (
 
   const { onDragstart } = useDrag({
     props,
+    treeInfo,
     virtListRef,
     dragging,
     getTreeNode,

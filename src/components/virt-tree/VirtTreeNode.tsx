@@ -263,6 +263,8 @@ export default defineComponent({
                 index === node.level - 2 &&
                 !!node.isLast &&
                 !isExpanded,
+              'virt-tree-node-indent-block-line-horizontal--double':
+                node.isLeaf,
             },
             style: {
               width: `${indent}px`,

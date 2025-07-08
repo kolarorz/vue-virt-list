@@ -67,6 +67,12 @@ Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-fo
 
 <!<< @/demos/tree/Slots.vue
 
+## disabled cross level drag
+
+禁止跨级拖拽
+
+<!<< @/demos/tree/DragArea.vue
+
 ## draggable
 
 拖拽后不直接修改数据，而是提供 dragend 事件，由业务自行判定并修改数据，数据更改后，通过响应式更新树。

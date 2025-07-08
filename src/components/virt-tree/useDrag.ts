@@ -4,8 +4,9 @@ import {
   type SetupContext,
   type ShallowRef,
   type Ref,
+  type ShallowReactive,
 } from 'vue-demi';
-import type { TreeNode, TreeNodeKey } from './type';
+import type { TreeInfo, TreeNode, TreeNodeData, TreeNodeKey } from './type';
 import type { VirtList } from '../virt-list';
 import { DRAGEND, DRAGSTART, type TreeEmits, type TreeProps } from './useTree';
 import {
@@ -18,6 +19,7 @@ import {
 
 export const useDrag = ({
   props,
+  treeInfo,
   virtListRef,
   dragging,
   getTreeNode,
@@ -26,6 +28,7 @@ export const useDrag = ({
   emits,
 }: {
   props: TreeProps;
+  treeInfo: ShallowReactive<TreeInfo | undefined>;
   virtListRef: ShallowRef<typeof VirtList | null>;
   dragging: Ref<boolean>;
   getTreeNode: (key: TreeNodeKey) => TreeNode | undefined;
@@ -48,6 +51,8 @@ export const useDrag = ({
   let maxLevel = 1;
   // 结束拖拽的时候，拖拽的层级
   let targetLevel = 1;
+  // 标识同级拖拽至可拖拽区域底部
+  let dragAreaBottom = false;
 
   let placement: 'center' | 'top' | 'bottom' | '' = '';
   let lastPlacement: 'center' | 'top' | 'bottom' | '' = '';
@@ -68,6 +73,8 @@ export const useDrag = ({
   let nextTreeItem: HTMLElement | null = null;
   // 滚动元素，用来操作滚动的
   let scrollElement: HTMLElement | null = null;
+  // 当前拖拽元素的父节点
+  let dragAreaParentElement: HTMLElement | null = null;
 
   // 被操作的节点，延时折叠
   let sourceExpandTimer: NodeJS.Timeout | null = null;
@@ -98,11 +105,18 @@ export const useDrag = ({
   dragBox.classList.add('virt-tree-drag-box');
 
   const dragLine = document.createElement('div');
-  dragLine.classList.add('virt-tree-drag-line');
+  dragLine.classList.add(
+    props.crossLevelDraggable
+      ? 'virt-tree-drag-line'
+      : 'virt-tree-drag-line-same-level',
+  );
   dragLine.style.paddingLeft = `${props.indent}px`;
 
   const levelArrow = document.createElement('div');
   levelArrow.classList.add('virt-tree-drag-line-arrow');
+
+  const allowDragArea = document.createElement('div');
+  allowDragArea.classList.add('virt-tree-all-drag-area');
 
   function onDragstart(event: MouseEvent) {
     event.preventDefault();
@@ -133,6 +147,42 @@ export const useDrag = ({
     }
   }
 
+  function calcSize(nodes: TreeNode[]) {
+    let size = 0;
+    for (const child of nodes || []) {
+      if (child.children && child.children?.length > 0 && hasExpanded(child)) {
+        size += calcDragArea(child);
+      }
+      size += virtListRef.value?.getItemSize(child.key);
+    }
+    return size;
+  }
+
+  function calcDragArea(parentNode?: TreeNode) {
+    if (!parentNode) {
+      return calcSize(treeInfo.treeNodes || []);
+    }
+    return calcSize(parentNode?.children || []);
+  }
+
+  function createDragArea(sourceNode: TreeNode<TreeNodeData>) {
+    if (!sourceNode) return;
+
+    const dragAreaSize = calcDragArea(sourceNode.parent);
+    dragAreaParentElement = document.querySelector(
+      sourceNode?.level === 1
+        ? `.virt-list__client .${props.customGroup}`
+        : `.${props.customGroup} [data-id="${sourceNode?.parent?.key}"]`,
+    ) as HTMLElement;
+
+    const parentElRect = dragAreaParentElement?.getBoundingClientRect();
+    allowDragArea.style.width = `${parentElRect.width}px`;
+    allowDragArea.style.height = `${dragAreaSize}px`;
+    allowDragArea.style.top = `${sourceNode?.level === 1 ? 0 : parentElRect.height + (dragAreaParentElement?.offsetTop ?? 0)}px`;
+    virtListRef.value!.listRefEl.style.position = 'relative';
+    virtListRef.value?.listRefEl.append(allowDragArea);
+  }
+
   function dragstart() {
     if (!sourceTreeItem) return;
     // 找到目标元素的virt-tree-node，判断是否展开状态，如果是，则定时1s后折叠
@@ -154,6 +204,10 @@ export const useDrag = ({
     const isExpanded = hasExpanded(sourceNode);
     if (isExpanded) {
       expandNode(nodeKey, false);
+    }
+
+    if (!props.crossLevelDraggable) {
+      createDragArea(sourceNode);
     }
 
     const sourceTreeItemRect = sourceTreeItem.getBoundingClientRect();
@@ -224,57 +278,142 @@ export const useDrag = ({
     }
   }
 
-  function dragProcess() {
-    // 判断是否在可视区域，不在则移除
-    if (clientElementRect) {
+  function buildDragLine(level: number) {
+    dragLine.innerHTML = '';
+    for (let i = 0; i < level; i++) {
+      const lineBlock = document.createElement('div');
+      if (i === level - 1) {
+        // 最后一个占满
+        lineBlock.style.flex = '1';
+        lineBlock.style.backgroundColor = 'var(--virt-tree-color-drag-line)';
+      } else {
+        lineBlock.style.width = `${props.indent - 4}px`;
+      }
+      lineBlock.style.height = '100%';
+      lineBlock.style.position = 'relative';
+      dragLine.appendChild(lineBlock);
+    }
+  }
+
+  function findTargetLevelParent(childNode: TreeNode, targetLevel?: number) {
+    if (!childNode || !targetLevel) return null;
+    let parentNode = childNode.parent;
+    while (parentNode) {
+      if (parentNode.level === targetLevel) {
+        return parentNode;
+      }
+      parentNode = parentNode.parent;
+    }
+    return null;
+  }
+
+  function updateDragRelateNode(hoverTreeItem: HTMLElement) {
+    // 添加 line
+    hoverTreeItem?.appendChild(dragLine);
+    hasStyleTreeItem = hoverTreeItem;
+
+    if (placement === 'top') {
+      // console.log('鼠标在 TOP');
+      dragLine.style.top = '-1px';
+      dragLine.style.bottom = 'auto';
+      nextTreeItem = hoverTreeItem;
+      prevTreeItem = getPrevSibling(hoverTreeItem) as HTMLElement;
+    } else {
+      // console.log('鼠标在 BOTTOM');
+      dragLine.style.top = 'auto';
+      dragLine.style.bottom = '-1px';
+      prevTreeItem = hoverTreeItem;
+      nextTreeItem = getNextSibling(hoverTreeItem) as HTMLElement;
+    }
+    // 开始处理逻辑
+    const prevId = prevTreeItem?.dataset?.id;
+    const nextId = nextTreeItem?.dataset?.id;
+
+    prevElementNode = prevId ? getTreeNode(prevId) : undefined;
+    nextNode = nextId ? getTreeNode(nextId) : undefined;
+  }
+
+  function sameLevelDragProcess(
+    hoverTreeNode: TreeNode,
+    hoverTreeItem: HTMLElement,
+    positionRatio: number,
+  ) {
+    // 特殊处理，如果 hover 的元素是当前拖拽源数据分类下 的最后一个元素
+
+    if (hoverTreeNode.isLast && hoverTreeNode.isLeaf) {
+      const allDragLevelNode = findTargetLevelParent(
+        hoverTreeNode,
+        sourceNode?.level,
+      );
+      if (allDragLevelNode?.isLast) {
+        placement = 'bottom';
+        dragEffect = true;
+        dragAreaBottom = true;
+
+        updateDragRelateNode(hoverTreeItem);
+
+        const currentLevel = sourceNode?.level ?? 1;
+        targetLevel = currentLevel;
+
+        buildDragLine(currentLevel);
+        return;
+      }
+    }
+    dragAreaBottom = false;
+    if (
+      hoverTreeNode.level !== sourceNode?.level ||
+      hoverTreeNode.parent?.data.id !== sourceNode?.parent?.data.id
+    ) {
+      prevTreeItem = null;
+      nextTreeItem = null;
+      return;
+    }
+
+    if (positionRatio > topPlacement) {
+      placement = 'bottom';
+    } else {
+      placement = 'top';
+    }
+
+    if (placement === 'bottom' && hasExpanded(hoverTreeNode)) {
+      lastHoverTreeItem = null;
+      prevTreeItem = null;
+      nextTreeItem = null;
+      return;
+    }
+
+    // 如果什么都没变，不需要接续判断了
+    if (lastHoverTreeItem !== hoverTreeItem || placement !== lastPlacement) {
       if (
-        mouseX < clientElementRect.left ||
-        mouseX > clientElementRect.right ||
-        mouseY < clientElementRect.top ||
-        mouseY > clientElementRect.bottom
+        lastHoverTreeItem &&
+        !isSiblingElement(lastHoverTreeItem, hoverTreeItem)
       ) {
         // 移除 line
         if (hasStyleTreeItem?.contains(dragLine)) {
           hasStyleTreeItem?.removeChild(dragLine);
         }
-        // 移除 box
-        if (hasStyleTreeItem?.contains(dragBox)) {
-          hasStyleTreeItem?.removeChild(dragBox);
-        }
-        lastHoverTreeItem = null;
-
-        dragEffect = false;
       }
+
+      lastPlacement = placement;
+      lastHoverTreeItem = hoverTreeItem;
+
+      // 在元素上下两边，目前无禁用所以，都dragEffect都为true
+      dragEffect = true;
+      updateDragRelateNode(hoverTreeItem);
+
+      const currentLevel = hoverTreeNode?.level ?? 1;
+      targetLevel = currentLevel;
+      buildDragLine(currentLevel);
     }
+  }
 
-    // 获取hover元素
-    const hoverElement = document.elementFromPoint(mouseX, mouseY);
-    if (!hoverElement) return;
-    hoverTreeItem = findAncestorWithClass(hoverElement, 'virt-tree-item');
-    if (!hoverTreeItem) return;
-    const hoverTreeId = hoverTreeItem?.dataset?.id;
-    if (!hoverTreeId) return;
-    const hoverTreeNode = getTreeNode(hoverTreeId);
-    if (!hoverTreeNode) return;
-    const hoverTreeItemRect = hoverTreeItem?.getBoundingClientRect();
-    if (!hoverTreeItemRect) return;
-
-    const elementTop = hoverTreeItemRect.top;
-    const elementHeight = hoverTreeItemRect.height;
-    // 鼠标相对于元素顶部的距离
-    const relativeY = mouseY - elementTop;
-    // 计算鼠标相对于元素高度的比例
-    const positionRatio = relativeY / elementHeight;
-
-    if (hoverTreeNode.data.disableDragIn) {
-      // 如果禁止拖入，就不需要中间区域判断了
-      topPlacement = 0.5;
-      bottomPlacement = 0.5;
-    } else {
-      topPlacement = 0.33;
-      bottomPlacement = 0.66;
-    }
-
+  function crossLevelDragProcess(
+    hoverTreeItem: HTMLElement,
+    positionRatio: number,
+    hoverTreeItemRect: DOMRect,
+    hoverTreeNode: TreeNode,
+    hoverTreeId: TreeNodeKey,
+  ) {
     if (positionRatio < topPlacement) {
       placement = 'top';
     } else if (positionRatio > bottomPlacement) {
@@ -332,20 +471,9 @@ export const useDrag = ({
           hasStyleTreeItem?.removeChild(dragLine);
         }
 
-        // 待确定的功能
-        // const result = props?.beforeDrag({
-        //   placement,
-        //   node: sourceNode as TreeNode,
-        //   prevNode: prevNode,
-        //   parentNode: parentNode,
-        // });
-        // console.log('result', result);
-        // if (!result) {
-        //   return;
-        // }
-
         // 被禁用
-        if (hoverTreeNode.data?.disableDragIn) return;
+        if (hoverTreeNode.data?.disableDragIn || !props.crossLevelDraggable)
+          return;
 
         // 添加 box
         hoverTreeItem?.appendChild(dragBox);
@@ -416,6 +544,8 @@ export const useDrag = ({
       maxLevel = Math.max(prevElementNode?.level ?? 1, nextNode?.level ?? 1);
       // console.log('minLevel', minLevel, 'maxLevel', maxLevel);
 
+      buildDragLine(maxLevel);
+
       // 清空
       dragLine.innerHTML = '';
       for (let i = 0; i < maxLevel; i++) {
@@ -453,6 +583,70 @@ export const useDrag = ({
     }
   }
 
+  function dragProcess() {
+    // 判断是否在可视区域，不在则移除
+    if (clientElementRect) {
+      if (
+        mouseX < clientElementRect.left ||
+        mouseX > clientElementRect.right ||
+        mouseY < clientElementRect.top ||
+        mouseY > clientElementRect.bottom
+      ) {
+        // 移除 line
+        if (hasStyleTreeItem?.contains(dragLine)) {
+          hasStyleTreeItem?.removeChild(dragLine);
+        }
+        // 移除 box
+        if (hasStyleTreeItem?.contains(dragBox)) {
+          hasStyleTreeItem?.removeChild(dragBox);
+        }
+        lastHoverTreeItem = null;
+
+        dragEffect = false;
+      }
+    }
+
+    // 获取hover元素
+    const hoverElement = document.elementFromPoint(mouseX, mouseY);
+    if (!hoverElement) return;
+    hoverTreeItem = findAncestorWithClass(hoverElement, 'virt-tree-item');
+    if (!hoverTreeItem) return;
+    const hoverTreeId = hoverTreeItem?.dataset?.id;
+    if (!hoverTreeId) return;
+    const hoverTreeNode = getTreeNode(hoverTreeId);
+    if (!hoverTreeNode) return;
+    const hoverTreeItemRect = hoverTreeItem?.getBoundingClientRect();
+    if (!hoverTreeItemRect) return;
+
+    const elementTop = hoverTreeItemRect.top;
+    const elementHeight = hoverTreeItemRect.height;
+    // 鼠标相对于元素顶部的距离
+    const relativeY = mouseY - elementTop;
+    // 计算鼠标相对于元素高度的比例
+    const positionRatio = relativeY / elementHeight;
+
+    if (hoverTreeNode.data.disableDragIn) {
+      // 如果禁止拖入，就不需要中间区域判断了
+      topPlacement = 0.5;
+      bottomPlacement = 0.5;
+    } else {
+      topPlacement = 0.33;
+      bottomPlacement = 0.66;
+    }
+
+    if (!props.crossLevelDraggable) {
+      sameLevelDragProcess(hoverTreeNode, hoverTreeItem, positionRatio);
+      return;
+    }
+    crossLevelDragProcess(
+      hoverTreeItem,
+      positionRatio,
+      hoverTreeItemRect,
+      hoverTreeNode,
+      hoverTreeId,
+    );
+  }
+
   function onMousemove(event: any) {
     if (!cloneTreeItem) {
       dragstart();
@@ -479,11 +673,25 @@ export const useDrag = ({
       setTimeout(() => {
         dragging.value = false;
       }, 0);
+      if (!props.crossLevelDraggable) {
+        if (allowDragArea) {
+          allowDragArea.innerHTML = '';
+          allowDragArea?.remove?.();
+        }
+        dragAreaParentElement = null;
+      }
 
       if (!sourceNode) return;
 
       // 这里先处理平级
-      if (placement !== 'center') {
+      if (dragAreaBottom && !props.crossLevelDraggable) {
+        parentNode = sourceNode?.parent;
+        const hoverTreeId = hoverTreeItem?.dataset?.id;
+        if (!hoverTreeId) return;
+        const hoverTreeNode = getTreeNode(hoverTreeId);
+        if (!hoverTreeNode) return;
+        prevNode = findTargetLevelParent(hoverTreeNode, sourceNode?.level)!;
+      } else if (placement !== 'center') {
         parentNode = undefined;
         if (prevElementNode) {
           if (prevElementNode.level >= targetLevel) {
@@ -508,6 +716,8 @@ export const useDrag = ({
               prevNode = prevElementNode;
             }
           }
+        } else if (!props.crossLevelDraggable) {
+          prevNode = undefined;
         }
       }
 
