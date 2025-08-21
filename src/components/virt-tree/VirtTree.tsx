@@ -58,6 +58,8 @@ export const VirtTree = defineComponent({
       showLine,
       draggable,
       itemClass,
+      customGroup,
+      listClass,
     } = this.$props as TreeProps;
 
     const renderTreeNode = ({
@@ -129,6 +131,8 @@ export const VirtTree = defineComponent({
           buffer,
           itemClass: mergeClasses('virt-tree-item', itemClass as any),
           ...this.$attrs,
+          listClass: `${customGroup} ${listClass}`,
+          listStyle: 'position: relative',
         },
         class: {
           'is-dragging': dragging,

@@ -1,8 +1,11 @@
+.virt-tree-all-drag-area,
 .virt-tree-item {
   /* drag line */
   --virt-tree-color-drag-line: #4c88ff;
   --virt-tree-color-drag-box: rgb(76, 136, 255, 0.1);
   --virt-tree-color-drag-line-disabled: rgb(76, 136, 255, 0.4);
+  --virt-tree-color-allow-drag-area-bg: #3e72ed1a;
+  --virt-tree-color-allow-drag-area-bd: #3e72ed;
 
   /* text */
   --virt-tree-color-text: #1f2329;
@@ -41,6 +44,8 @@ html.dark .virt-tree-item {
   --virt-tree-color-drag-line: #4c88ff;
   --virt-tree-color-drag-box: rgb(76, 136, 255, 0.1);
   --virt-tree-color-drag-line-disabled: rgb(76, 136, 255, 0.4);
+  --virt-tree-color-allow-drag-area-bg: #3e72ed1a;
+  --virt-tree-color-allow-drag-area-bd: #3e72ed;
 
   /* text */
   --virt-tree-color-text: #f9f9f9;
@@ -77,7 +82,9 @@ html.dark .virt-tree-item {
 /* item */
 .virt-tree-item {
   position: relative;
+  z-index: 2;
 }
+.virt-tree-drag-line-same-level,
 .virt-tree-drag-line {
   width: calc(100% - var(--virt-tree-switcher-icon-margin-right));
   height: 2px;
@@ -88,6 +95,8 @@ html.dark .virt-tree-item {
   z-index: 99999;
   /* 图标icon的margin-right，如果样式覆盖了 */
   margin-left: var(--virt-tree-switcher-icon-margin-right);
+}
+.virt-tree-drag-line {
   /* 层级线的分隔距离 */
   gap: var(--virt-tree-drag-line-gap);
 }
@@ -124,6 +133,9 @@ html.dark .virt-tree-item {
 /* 禁用node按钮的箭头 */
 .virt-tree-item--ghost .virt-tree-icon-wrapper.is-expanded .virt-tree-icon {
   transform: rotate(-90deg);
+}
+.virt-tree-item--ghost .virt-tree-node-indent-block-line-vertical {
+  display: none;
 }
 
 /* node */
@@ -196,6 +208,9 @@ html.dark .virt-tree-item {
   box-sizing: border-box;
   height: 1px;
   border-top: 1px solid var(--virt-tree-line-color);
+}
+.virt-tree-node-indent-block-line-horizontal--double::after {
+  width: 100%;
 }
 .virt-tree-node-indent-block-line-vertical--half::before {
   height: calc(50% + 1px);
@@ -290,4 +305,13 @@ html.dark .virt-tree-item {
   cursor: not-allowed;
   background: var(--virt-tree-color-checkbox-bg-disabled);
   border-color: #d9d9d9;
+}
+.virt-tree-all-drag-area {
+  position: absolute;
+  box-sizing: border-box;
+  top: 100%;
+  border: 1px dotted;
+  z-index: 1;
+  background-color: var(--virt-tree-color-allow-drag-area-bg);
+  border-color: var(--virt-tree-color-allow-drag-area-bd);
 }
