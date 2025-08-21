@@ -107,23 +107,23 @@ list.value = [
     ],
   },
   {
-    id: 'scene',
-    title: 'Scene',
+    id: 'origin',
+    title: '原画',
     children: [
       {
-        id: 'scene-1',
+        id: 'origin-1',
         title: '原画',
       },
       {
-        id: 'scene-2',
+        id: 'origin-2',
         title: '3D',
       },
       {
-        id: 'scene-3',
+        id: 'origin-3',
         title: '路人 NPC',
       },
       {
-        id: 'scene-4',
+        id: 'origin-4',
         title: '武器',
       },
     ],
