@@ -22,6 +22,9 @@ export type ReactiveData = {
 
   bufferTop: number;
   bufferBottom: number;
+
+  hasReachedBottom: boolean;
+  hasReachedTop: boolean;
 };
 
 export interface BaseListProps<T extends Record<string, string>> {

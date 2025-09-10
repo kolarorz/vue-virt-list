@@ -88,6 +88,9 @@ function useVirtList<T extends Record<string, any>>(
 
   // 全局需要响应式的数据
   const reactiveData: ShallowReactive<ReactiveData> = shallowReactive({
+    hasReachedBottom: false,
+    hasReachedTop: false,
+
     // 可视区域的个数，不算buffer，只和clientSize和minSize有关
     views: 0,
 
@@ -409,30 +412,34 @@ function useVirtList<T extends Record<string, any>>(
   }
 
   function judgePosition() {
-    // 使用2px作为误差范围
     const threshold = Math.max(props.scrollDistance, 2);
 
     if (direction === 'forward') {
       if (reactiveData.offset - threshold <= 0) {
-        // console.log('[VirtList] 到达顶部');
-        emitFunction?.toTop?.(props.list[0]);
+        if (!reactiveData.hasReachedTop) {
+          emitFunction?.toTop?.(props.list[0]);
+          reactiveData.hasReachedTop = true;
+        }
+      } else {
+        reactiveData.hasReachedTop = false;
       }
     } else if (direction === 'backward') {
-      // 使用一个 Math.round 来解决小数点的误差问题
       const scrollSize = Math.round(reactiveData.offset + slotSize.clientSize);
       const distanceToBottom = Math.round(getTotalSize() - scrollSize);
+
       if (distanceToBottom <= threshold) {
-        // console.log('[VirtList] 到达底部');
-        emitFunction?.toBottom?.(props.list[props.list.length - 1]);
+        if (!reactiveData.hasReachedBottom) {
+          emitFunction?.toBottom?.(props.list[props.list.length - 1]);
+          reactiveData.hasReachedBottom = true;
+        }
+      } else {
+        reactiveData.hasReachedBottom = false;
       }
     }
   }
 
   function onScroll(evt: Event) {
-    // console.log('onscroll');
-
     emitFunction?.scroll?.(evt);
-
     const offset = getOffset();
 
     if (offset === reactiveData.offset) return;
@@ -440,9 +447,10 @@ function useVirtList<T extends Record<string, any>>(
     reactiveData.offset = offset;
 
     calcRange();
-
     judgePosition();
   }
+
+  // const onScroll = throttledOnScroll;
 
   function calcViews() {
     // 不算buffer的个数
