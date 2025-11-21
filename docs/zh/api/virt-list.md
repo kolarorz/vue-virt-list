@@ -53,7 +53,7 @@
 | scrollToTop       | scroll to top                                                              | -                                                  |
 | scrollToBottom    | scroll to bottom                                                           | -                                                  |
 | scrollToIndex     | scroll to index                                                            | index                                              |
-| scrollInToView    | scroll to index if needed（不在可视范围内）                                | index                                              |
+| scrollIntoView    | scroll to index if needed（不在可视范围内）                                | index                                              |
 | scrollToOffset    | scroll to px                                                               | px                                                 |
 | getItemSize       | 获取指定item尺寸                                                           | index                                              |
 | getItemPosByIndex | 获取指定item的位置信息: `{ top: number; current: number; bottom: number;}` | index                                              |
