@@ -2,8 +2,6 @@ import type { Ref, ShallowReactive } from 'vue-demi';
 import type { StyleType, ClassType } from '../../utils';
 
 export type ReactiveData = {
-  views: number;
-
   // 滚动距离
   offset: number;
   // 不包含插槽的高度
@@ -27,7 +25,10 @@ export type ReactiveData = {
 export interface BaseListProps<T extends Record<string, string>> {
   list: T[];
   itemKey: string | number;
-  minSize: number;
+  // 预估高度，可以没有，默认20px。给的值越平均越准，效果越好
+  itemPreSize?: number;
+  // 后续不推荐使用minSize，推荐使用itemPreSize
+  minSize?: number;
   itemGap?: number;
   scrollDistance?: number;
   headerClass: ClassType;

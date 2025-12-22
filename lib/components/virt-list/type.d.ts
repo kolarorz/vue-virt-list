@@ -1,6 +1,6 @@
 import type { Ref, ShallowReactive } from 'vue-demi';
+import type { StyleType, ClassType } from '../../utils';
 export type ReactiveData = {
-    views: number;
     offset: number;
     listTotalSize: number;
     virtualSize: number;
@@ -14,17 +14,18 @@ export type ReactiveData = {
 export interface BaseListProps<T extends Record<string, string>> {
     list: T[];
     itemKey: string | number;
-    minSize: number;
+    itemPreSize?: number;
+    minSize?: number;
     itemGap?: number;
     scrollDistance?: number;
-    headerClass?: string;
-    headerStyle?: string;
-    footerClass?: string;
-    footerStyle?: string;
-    stickyHeaderClass?: string;
-    stickyHeaderStyle?: string;
-    stickyFooterClass?: string;
-    stickyFooterStyle?: string;
+    headerClass: ClassType;
+    headerStyle: StyleType;
+    footerClass: ClassType;
+    footerStyle: StyleType;
+    stickyHeaderClass: ClassType;
+    stickyHeaderStyle: StyleType;
+    stickyFooterClass: ClassType;
+    stickyFooterStyle: StyleType;
 }
 export interface VirtListProps<T extends Record<string, string>> extends BaseListProps<T> {
     renderControl?: (begin: number, end: number) => {
@@ -39,10 +40,10 @@ export interface VirtListProps<T extends Record<string, string>> extends BaseLis
     fixSelection?: boolean;
     start?: number;
     offset?: number;
-    listStyle?: string;
-    listClass?: string;
-    itemStyle?: string;
-    itemClass?: string;
+    listStyle?: StyleType;
+    listClass?: ClassType;
+    itemStyle?: StyleType | ((item: T, index: number) => StyleType);
+    itemClass?: ClassType | ((item: T, index: number) => ClassType);
 }
 export interface EmitFunction<T> {
     scroll?: (e: Event) => void;

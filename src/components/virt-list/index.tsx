@@ -75,6 +75,7 @@ function useVirtList<T extends Record<string, any>>(
   let fixOffset = false;
   let forceFixOffset = false;
   let abortFixOffset = false;
+  let isInit = false;
 
   let fixTaskFn: null | (() => void) = null;
 
@@ -88,9 +89,6 @@ function useVirtList<T extends Record<string, any>>(
 
   // 全局需要响应式的数据
   const reactiveData: ShallowReactive<ReactiveData> = shallowReactive({
-    // 可视区域的个数，不算buffer，只和clientSize和minSize有关
-    views: 0,
-
     // 滚动距离
     offset: 0,
     // 不包含插槽的高度
@@ -132,9 +130,13 @@ function useVirtList<T extends Record<string, any>>(
       slotSize.stickyFooterSize
     );
   }
+  // 兼容旧版本
+  function getDefaultSize() {
+    return props.itemPreSize ?? props.minSize ?? 20;
+  }
   function getItemSize(itemKey: string) {
-    if (props.fixed) return props.minSize + props.itemGap;
-    return sizesMap.get(String(itemKey)) ?? props.minSize + props.itemGap;
+    if (props.fixed) return getDefaultSize() + props.itemGap;
+    return sizesMap.get(String(itemKey)) ?? getDefaultSize() + props.itemGap;
   }
   function setItemSize(itemKey: string, size: number) {
     sizesMap.set(String(itemKey), size);
@@ -146,9 +148,9 @@ function useVirtList<T extends Record<string, any>>(
   function getItemPosByIndex(index: number) {
     if (props.fixed) {
       return {
-        top: (props.minSize + props.itemGap) * index,
-        current: props.minSize + props.itemGap,
-        bottom: (props.minSize + props.itemGap) * (index + 1),
+        top: (getDefaultSize() + props.itemGap) * index,
+        current: getDefaultSize() + props.itemGap,
+        bottom: (getDefaultSize() + props.itemGap) * (index + 1),
       };
     }
 
@@ -318,6 +320,27 @@ function useVirtList<T extends Record<string, any>>(
     }
   }
 
+  // 根据起始位置和clientSize计算可视区域的结束位置
+  function calculateViewEnd(start: number): number {
+    const { itemKey } = props;
+    let currentOffset = 0;
+
+    // 从start开始累加item尺寸，直到超过clientSize
+    for (let i = start; i < props.list.length; i++) {
+      const itemSize = getItemSize(props.list[i]?.[itemKey]);
+      currentOffset += itemSize;
+
+      // 如果累加的尺寸超过了可视区域大小，返回当前索引
+      if (currentOffset > slotSize.clientSize) {
+        // 多给1个座位遮盖
+        return i + 1;
+      }
+    }
+
+    // 如果所有item都放得下，返回最后一个索引
+    return Math.max(0, props.list.length - 1);
+  }
+
   function updateRange(start: number) {
     // 修复vue2-diff的bug
     if (isVue2 && props.fixSelection && direction === 'backward') {
@@ -330,10 +353,8 @@ function useVirtList<T extends Record<string, any>>(
     }
 
     reactiveData.inViewBegin = start;
-    reactiveData.inViewEnd = Math.min(
-      start + reactiveData.views,
-      props.list.length - 1,
-    );
+    // 动态计算可视区域的结束位置
+    reactiveData.inViewEnd = calculateViewEnd(start);
 
     // expose
     emitFunction?.rangeUpdate?.(
@@ -343,7 +364,7 @@ function useVirtList<T extends Record<string, any>>(
   }
 
   function calcRange() {
-    const { views, offset, inViewBegin } = reactiveData;
+    const { offset, inViewBegin } = reactiveData;
     const { itemKey } = props;
 
     const offsetWithNoHeader = offset - slotSize.headerSize;
@@ -444,23 +465,15 @@ function useVirtList<T extends Record<string, any>>(
     judgePosition();
   }
 
-  function calcViews() {
-    // 不算buffer的个数
-    const newViews =
-      Math.ceil(slotSize.clientSize / (props.minSize + props.itemGap)) + 1;
-    reactiveData.views = newViews;
-  }
-
   function onClientResize() {
     // 可视区域尺寸变化 => 1. 更新可视区域个数 2. 可视区域个数变化后需要及时更新记录尺寸
-    calcViews();
     updateRange(reactiveData.inViewBegin);
   }
 
   function calcListTotalSize() {
     if (props.fixed) {
       reactiveData.listTotalSize =
-        (props.minSize + props.itemGap) * props.list.length;
+        (getDefaultSize() + props.itemGap) * props.list.length;
       return;
     }
     const { itemKey } = props;
@@ -579,6 +592,14 @@ function useVirtList<T extends Record<string, any>>(
         // console.log('纠正误差', reactiveData.offset, diff);
       }
       abortFixOffset = false;
+
+      // 首次渲染后，更新范围
+      if (!isInit) {
+        requestAnimationFrame(() => {
+          updateRange(props.start);
+        });
+        isInit = true;
+      }
     });
   }
 
@@ -720,7 +741,6 @@ function useVirtList<T extends Record<string, any>>(
     () => [reactiveData.inViewBegin, reactiveData.inViewEnd, renderKey.value],
     (newVal, oldVal) => {
       if (newVal && oldVal) {
-        // console.log('watch', newVal, oldVal);
         const [_newInViewBegin] = newVal;
 
         // 旧的渲染起始
@@ -855,11 +875,13 @@ const VirtList = defineComponent({
       type: [String, Number],
       required: true,
     },
-    // 最小尺寸
+    // 替换minSize，后续不推荐使用minSize
+    itemPreSize: {
+      type: Number,
+    },
+    // 最小尺寸（即将遗弃）
     minSize: {
       type: Number,
-      default: 20,
-      required: true,
     },
     itemGap: {
       type: Number,
@@ -1085,7 +1107,11 @@ const VirtList = defineComponent({
                   ? itemClass(currentItem, index)
                   : itemClass,
               style: mergeStyles(
-                itemGap > 0 ? `padding: ${itemGap / 2}px 0;` : '',
+                itemGap > 0
+                  ? horizontal
+                    ? `padding: 0 ${itemGap / 2}px;`
+                    : `padding: ${itemGap / 2}px 0;`
+                  : '',
                 typeof itemStyle === 'function'
                   ? itemStyle(currentItem, index)
                   : itemStyle,

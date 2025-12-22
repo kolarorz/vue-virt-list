@@ -12,7 +12,7 @@
     <!-- important: must set a height for Container or VirtList -->
     <!-- important: must set itemKey and keep id is unique -->
     <div class="demo-table" style="width: 100%; height: 500px">
-      <VirtList ref="virtListRef" :list="list" :minSize="40" itemKey="id">
+      <VirtList ref="virtListRef" :list="list" :itemPreSize="40" itemKey="id">
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />
         </template>

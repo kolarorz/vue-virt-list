@@ -1,7 +1,7 @@
 import { type ShallowReactive } from 'vue-demi';
 import type { SlotSize } from '../virt-list/type';
 import type { RealListProps } from './type';
-declare const RealList: import("vue-demi").DefineComponent<{
+declare const RealList: import("vue-demi").DefineComponent<import("vue-demi").ExtractPropTypes<{
     itemKey: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -23,9 +23,11 @@ declare const RealList: import("vue-demi").DefineComponent<{
         };
         default: () => never[];
     };
+    itemPreSize: {
+        type: NumberConstructor;
+    };
     minSize: {
         type: NumberConstructor;
-        default: number;
     };
     pageSize: {
         type: NumberConstructor;
@@ -36,48 +38,48 @@ declare const RealList: import("vue-demi").DefineComponent<{
         default: number;
     };
     headerClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     headerStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     footerClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     footerStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyHeaderClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyHeaderStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyFooterClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyFooterStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
-}, {
+}>, {
     props: Required<RealListProps<any>>;
     resizeObserver: ResizeObserver | undefined;
     sizesMap: Map<any, any>;
     slotSize: ShallowReactive<SlotSize>;
-    clientRefEl: import("vue-demi").Ref<HTMLElement | null>;
-    listRefEl: import("vue-demi").Ref<HTMLElement | null>;
-    headerRefEl: import("vue-demi").Ref<HTMLElement | null>;
-    footerRefEl: import("vue-demi").Ref<HTMLElement | null>;
-    stickyHeaderRefEl: import("vue-demi").Ref<HTMLElement | null>;
-    stickyFooterRefEl: import("vue-demi").Ref<HTMLElement | null>;
+    clientRefEl: import("vue-demi").Ref<HTMLElement | null, HTMLElement | null>;
+    listRefEl: import("vue-demi").Ref<HTMLElement | null, HTMLElement | null>;
+    headerRefEl: import("vue-demi").Ref<HTMLElement | null, HTMLElement | null>;
+    footerRefEl: import("vue-demi").Ref<HTMLElement | null, HTMLElement | null>;
+    stickyHeaderRefEl: import("vue-demi").Ref<HTMLElement | null, HTMLElement | null>;
+    stickyFooterRefEl: import("vue-demi").Ref<HTMLElement | null, HTMLElement | null>;
     scrollIntoView: (index: number) => Promise<unknown>;
     scrollToIndex: (index: number) => Promise<unknown> | undefined;
     reset: () => void;
@@ -85,7 +87,7 @@ declare const RealList: import("vue-demi").DefineComponent<{
     getCurrentFirstItem: () => string;
     getOffsetByIndex: (index: number) => any;
     scrollToOffset: (offset: number) => void;
-}, unknown, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, {
+}, {}, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, {
     scroll: (e: Event) => Event;
     toTop: (firstItem: any) => any;
     toBottom: (lastItem: any) => any;
@@ -113,9 +115,11 @@ declare const RealList: import("vue-demi").DefineComponent<{
         };
         default: () => never[];
     };
+    itemPreSize: {
+        type: NumberConstructor;
+    };
     minSize: {
         type: NumberConstructor;
-        default: number;
     };
     pageSize: {
         type: NumberConstructor;
@@ -126,56 +130,55 @@ declare const RealList: import("vue-demi").DefineComponent<{
         default: number;
     };
     headerClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     headerStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     footerClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     footerStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyHeaderClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyHeaderStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyFooterClass: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
     stickyFooterStyle: {
-        type: StringConstructor;
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
         default: string;
     };
-}>> & {
+}>> & Readonly<{
     onScroll?: ((e: Event) => any) | undefined;
-    onToBottom?: ((lastItem: any) => any) | undefined;
     onToTop?: ((firstItem: any) => any) | undefined;
+    onToBottom?: ((lastItem: any) => any) | undefined;
     onItemResize?: ((id: string, newSize: number) => any) | undefined;
     onUpdateCurrent?: ((key: string | number) => any) | undefined;
-}, {
+}>, {
     list: any[];
     itemKey: string | number;
-    minSize: number;
     scrollDistance: number;
-    headerClass: string;
-    headerStyle: string;
-    footerClass: string;
-    footerStyle: string;
-    stickyHeaderClass: string;
-    stickyHeaderStyle: string;
-    stickyFooterClass: string;
-    stickyFooterStyle: string;
+    headerClass: string | Record<string, any> | unknown[];
+    headerStyle: string | Record<string, any> | unknown[];
+    footerClass: string | Record<string, any> | unknown[];
+    footerStyle: string | Record<string, any> | unknown[];
+    stickyHeaderClass: string | Record<string, any> | unknown[];
+    stickyHeaderStyle: string | Record<string, any> | unknown[];
+    stickyFooterClass: string | Record<string, any> | unknown[];
+    stickyFooterStyle: string | Record<string, any> | unknown[];
     pageSize: number;
-}, {}>;
+}, {}, {}, {}, string, import("vue-demi").ComponentProvideOptions, true, {}, any>;
 export { RealList };

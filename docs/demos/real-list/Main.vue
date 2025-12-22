@@ -18,7 +18,7 @@
       <!-- 触头触底 -->
       <RealList
         ref="realListRef"
-        :minSize="44"
+        :itemPreSize="44"
         :list="list"
         :pageSize="pageSize"
         @toTop="onToTop"

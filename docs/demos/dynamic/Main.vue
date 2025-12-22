@@ -17,7 +17,7 @@
         ref="virtListRef"
         :list="list"
         itemKey="id"
-        :minSize="20"
+        :itemPreSize="20"
       >
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />

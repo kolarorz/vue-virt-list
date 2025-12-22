@@ -14,7 +14,7 @@
         :buffer="2"
         :list="list"
         itemKey="id"
-        :minSize="40"
+        :itemPreSize="40"
       >
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />

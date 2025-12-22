@@ -116,9 +116,13 @@ export const customFieldNames = {
     required: true,
     default: () => [],
   },
+  // 预估高度，可以没有，默认32px。给的值越平均越准，效果越好
+  itemPreSize: {
+    type: Number,
+  },
+  // 即将遗弃，后续不推荐使用
   minSize: {
     type: Number,
-    default: 32,
   },
   // 是否为固定高
   fixed: {

@@ -17,7 +17,7 @@
         :list="list"
         ref="virtListRef"
         itemKey="id"
-        :minSize="40"
+        :itemPreSize="40"
         fixed
         @rangeUpdate="rangeUpdate"
       >

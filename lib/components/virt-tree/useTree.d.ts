@@ -80,9 +80,11 @@ export declare const customFieldNames: {
         required: boolean;
         default: () => never[];
     };
+    itemPreSize: {
+        type: NumberConstructor;
+    };
     minSize: {
         type: NumberConstructor;
-        default: number;
     };
     fixed: {
         type: BooleanConstructor;
@@ -103,6 +105,10 @@ export declare const customFieldNames: {
     buffer: {
         type: NumberConstructor;
         default: number;
+    };
+    itemClass: {
+        type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+        default: string;
     };
     showLine: {
         type: BooleanConstructor;
@@ -168,6 +174,22 @@ export declare const customFieldNames: {
         type: StringConstructor;
         default: string;
     };
+    dragoverPlacement: {
+        type: PropType<number[]>;
+        default: () => number[];
+    };
+    crossLevelDraggable: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    customGroup: {
+        type: StringConstructor;
+        default: string;
+    };
+    listClass: {
+        type: StringConstructor;
+        default: string;
+    };
 };
 export declare const TreeNodeEmits: {
     click: (node: TreeNode, e: MouseEvent) => MouseEvent;
@@ -175,7 +197,7 @@ export declare const TreeNodeEmits: {
 };
 export type TreeProps = ExtractPropTypes<typeof customFieldNames>;
 export declare const useTree: (props: TreeProps, emits: SetupContext<typeof TreeEmits>['emit']) => {
-    virtListRef: import("vue-demi").Ref<import("vue-demi").DefineComponent<{
+    virtListRef: import("vue-demi").Ref<import("vue-demi").DefineComponent<ExtractPropTypes<{
         list: {
             type: {
                 (arrayLength: number): any[];
@@ -197,10 +219,11 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
             type: (StringConstructor | NumberConstructor)[];
             required: true;
         };
+        itemPreSize: {
+            type: NumberConstructor;
+        };
         minSize: {
             type: NumberConstructor;
-            default: number;
-            required: true;
         };
         itemGap: {
             type: NumberConstructor;
@@ -243,54 +266,54 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
             default: number;
         };
         listStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         listClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         itemStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
             default: string;
         };
         itemClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
             default: string;
         };
         headerClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         headerStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         footerClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         footerStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyHeaderClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyHeaderStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyFooterClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyFooterStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
-    }, import("../..").VirtListReturn<any>, unknown, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, import("vue-demi").EmitsOptions, string, import("vue-demi").PublicProps, Readonly<ExtractPropTypes<{
+    }>, import("../..").VirtListReturn<any>, {}, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, {}, string, import("vue-demi").PublicProps, Readonly<ExtractPropTypes<{
         list: {
             type: {
                 (arrayLength: number): any[];
@@ -312,10 +335,11 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
             type: (StringConstructor | NumberConstructor)[];
             required: true;
         };
+        itemPreSize: {
+            type: NumberConstructor;
+        };
         minSize: {
             type: NumberConstructor;
-            default: number;
-            required: true;
         };
         itemGap: {
             type: NumberConstructor;
@@ -358,54 +382,54 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
             default: number;
         };
         listStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         listClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         itemStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
             default: string;
         };
         itemClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
             default: string;
         };
         headerClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         headerStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         footerClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         footerStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyHeaderClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyHeaderStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyFooterClass: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
         stickyFooterStyle: {
-            type: StringConstructor;
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
             default: string;
         };
-    }>>, {
+    }>> & Readonly<{}>, {
         fixed: boolean;
         renderControl: Function;
         buffer: number;
@@ -414,25 +438,280 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
         horizontal: boolean;
         start: number;
         offset: number;
-        listStyle: string;
-        listClass: string;
-        itemStyle: string;
-        itemClass: string;
+        listStyle: string | Record<string, any> | unknown[];
+        listClass: string | Record<string, any> | unknown[];
+        itemStyle: string | Function | Record<string, any> | unknown[];
+        itemClass: string | Function | Record<string, any> | unknown[];
         list: any[];
-        minSize: number;
         itemGap: number;
         scrollDistance: number;
-        headerClass: string;
-        headerStyle: string;
-        footerClass: string;
-        footerStyle: string;
-        stickyHeaderClass: string;
-        stickyHeaderStyle: string;
-        stickyFooterClass: string;
-        stickyFooterStyle: string;
-    }, {}> | null>;
+        headerClass: string | Record<string, any> | unknown[];
+        headerStyle: string | Record<string, any> | unknown[];
+        footerClass: string | Record<string, any> | unknown[];
+        footerStyle: string | Record<string, any> | unknown[];
+        stickyHeaderClass: string | Record<string, any> | unknown[];
+        stickyHeaderStyle: string | Record<string, any> | unknown[];
+        stickyFooterClass: string | Record<string, any> | unknown[];
+        stickyFooterStyle: string | Record<string, any> | unknown[];
+    }, {}, {}, {}, string, import("vue-demi").ComponentProvideOptions, true, {}, any> | null, import("vue-demi").DefineComponent<ExtractPropTypes<{
+        list: {
+            type: {
+                (arrayLength: number): any[];
+                (...items: any[]): any[];
+                new (arrayLength: number): any[];
+                new (...items: any[]): any[];
+                isArray(arg: any): arg is any[];
+                readonly prototype: any[];
+                from<T>(arrayLike: ArrayLike<T>): T[];
+                from<T_1, U>(arrayLike: ArrayLike<T_1>, mapfn: (v: T_1, k: number) => U, thisArg?: any): U[];
+                from<T_2>(iterable: Iterable<T_2> | ArrayLike<T_2>): T_2[];
+                from<T_3, U_1>(iterable: Iterable<T_3> | ArrayLike<T_3>, mapfn: (v: T_3, k: number) => U_1, thisArg?: any): U_1[];
+                of<T_4>(...items: T_4[]): T_4[];
+                readonly [Symbol.species]: ArrayConstructor;
+            };
+            default: () => never[];
+        };
+        itemKey: {
+            type: (StringConstructor | NumberConstructor)[];
+            required: true;
+        };
+        itemPreSize: {
+            type: NumberConstructor;
+        };
+        minSize: {
+            type: NumberConstructor;
+        };
+        itemGap: {
+            type: NumberConstructor;
+            default: number;
+        };
+        renderControl: {
+            type: FunctionConstructor;
+            default: undefined;
+        };
+        fixed: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        buffer: {
+            type: NumberConstructor;
+            default: number;
+        };
+        bufferTop: {
+            type: NumberConstructor;
+            default: number;
+        };
+        bufferBottom: {
+            type: NumberConstructor;
+            default: number;
+        };
+        scrollDistance: {
+            type: NumberConstructor;
+            default: number;
+        };
+        horizontal: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        start: {
+            type: NumberConstructor;
+            default: number;
+        };
+        offset: {
+            type: NumberConstructor;
+            default: number;
+        };
+        listStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        listClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        itemStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
+            default: string;
+        };
+        itemClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
+            default: string;
+        };
+        headerClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        headerStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        footerClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        footerStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyHeaderClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyHeaderStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyFooterClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyFooterStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+    }>, import("../..").VirtListReturn<any>, {}, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, {}, string, import("vue-demi").PublicProps, Readonly<ExtractPropTypes<{
+        list: {
+            type: {
+                (arrayLength: number): any[];
+                (...items: any[]): any[];
+                new (arrayLength: number): any[];
+                new (...items: any[]): any[];
+                isArray(arg: any): arg is any[];
+                readonly prototype: any[];
+                from<T>(arrayLike: ArrayLike<T>): T[];
+                from<T_1, U>(arrayLike: ArrayLike<T_1>, mapfn: (v: T_1, k: number) => U, thisArg?: any): U[];
+                from<T_2>(iterable: Iterable<T_2> | ArrayLike<T_2>): T_2[];
+                from<T_3, U_1>(iterable: Iterable<T_3> | ArrayLike<T_3>, mapfn: (v: T_3, k: number) => U_1, thisArg?: any): U_1[];
+                of<T_4>(...items: T_4[]): T_4[];
+                readonly [Symbol.species]: ArrayConstructor;
+            };
+            default: () => never[];
+        };
+        itemKey: {
+            type: (StringConstructor | NumberConstructor)[];
+            required: true;
+        };
+        itemPreSize: {
+            type: NumberConstructor;
+        };
+        minSize: {
+            type: NumberConstructor;
+        };
+        itemGap: {
+            type: NumberConstructor;
+            default: number;
+        };
+        renderControl: {
+            type: FunctionConstructor;
+            default: undefined;
+        };
+        fixed: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        buffer: {
+            type: NumberConstructor;
+            default: number;
+        };
+        bufferTop: {
+            type: NumberConstructor;
+            default: number;
+        };
+        bufferBottom: {
+            type: NumberConstructor;
+            default: number;
+        };
+        scrollDistance: {
+            type: NumberConstructor;
+            default: number;
+        };
+        horizontal: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        start: {
+            type: NumberConstructor;
+            default: number;
+        };
+        offset: {
+            type: NumberConstructor;
+            default: number;
+        };
+        listStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        listClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        itemStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
+            default: string;
+        };
+        itemClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor | FunctionConstructor)[];
+            default: string;
+        };
+        headerClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        headerStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        footerClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        footerStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyHeaderClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyHeaderStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyFooterClass: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+        stickyFooterStyle: {
+            type: (ObjectConstructor | ArrayConstructor | StringConstructor)[];
+            default: string;
+        };
+    }>> & Readonly<{}>, {
+        fixed: boolean;
+        renderControl: Function;
+        buffer: number;
+        bufferTop: number;
+        bufferBottom: number;
+        horizontal: boolean;
+        start: number;
+        offset: number;
+        listStyle: string | Record<string, any> | unknown[];
+        listClass: string | Record<string, any> | unknown[];
+        itemStyle: string | Function | Record<string, any> | unknown[];
+        itemClass: string | Function | Record<string, any> | unknown[];
+        list: any[];
+        itemGap: number;
+        scrollDistance: number;
+        headerClass: string | Record<string, any> | unknown[];
+        headerStyle: string | Record<string, any> | unknown[];
+        footerClass: string | Record<string, any> | unknown[];
+        footerStyle: string | Record<string, any> | unknown[];
+        stickyHeaderClass: string | Record<string, any> | unknown[];
+        stickyHeaderStyle: string | Record<string, any> | unknown[];
+        stickyFooterClass: string | Record<string, any> | unknown[];
+        stickyFooterStyle: string | Record<string, any> | unknown[];
+    }, {}, {}, {}, string, import("vue-demi").ComponentProvideOptions, true, {}, any> | null>;
     treeInfo: import("vue-demi").ShallowReactive<TreeInfo>;
-    dragging: import("vue-demi").Ref<boolean>;
+    dragging: import("vue-demi").Ref<boolean, boolean>;
     renderList: import("vue-demi").ComputedRef<TreeNode<TreeNodeData>[]>;
     filter: (query: string) => void;
     isForceHiddenExpandIcon: (node: TreeNode<TreeNodeData>) => boolean;
@@ -446,7 +725,7 @@ export declare const useTree: (props: TreeProps, emits: SetupContext<typeof Tree
     hasExpanded: (node: TreeNode<TreeNodeData>) => boolean;
     toggleExpand: (node: TreeNode<TreeNodeData>) => void;
     expandAll: (expanded: boolean) => void;
-    expandNode: (key: TreeNodeKey | TreeNodeKey[], expanded: boolean) => void;
+    expandNode: (key: TreeNodeKey | TreeNodeKey[], expanded: boolean, foldAllNodes?: boolean | undefined) => void;
     hasSelected: (node: TreeNode<TreeNodeData>) => boolean;
     selectNode: (key: TreeNodeKey | TreeNodeKey[], selected: boolean) => void;
     selectAll: (selected: boolean) => void;

@@ -1,12 +1,16 @@
 # VirtList API
 
+1. `list.item.id` <font color="#f00">必须唯一!!!</font>
+2. item元素之间不能使用 <font color="#f00">margin!!!</font>
+
 ## Attributes
 
 | Attribute      | Description                                                                                                                              | Type                                                                          | Default | Required                      |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------- | ----------------------------- |
 | list           | list data                                                                                                                                | `Array`                                                                       | -       | <font color="#f00">Yes</font> |
 | itemKey        | The Id of Item，<font color="#f00">unique key!!!</font>（if not, scroll fail）                                                           | `String\|Number`                                                              | -       | <font color="#f00">Yes</font> |
-| minSize        | **The Min Size of Item**                                                                                                                 | `Number`                                                                      | `20`    | <font color="#f00">Yes</font> |
+| itemPreSize    | Estimated item size                                                                                                                      | `Number`                                                                      | `20`    | -                             |
+| minSize        | >= v1.7.0 deprecated                                                                                                                     | `Number`                                                                      | `20`    | -                             |
 | itemGap        | the gap between item (item size include itemGap)                                                                                         | `Number`                                                                      | 0       | -                             |
 | fixed          | fixed height of item use it                                                                                                              | `Number`                                                                      | `false` | -                             |
 | buffer         | When the rendering amount is large and the scrolling white screen is serious, you can give a value<br/>bufferTop = bufferBottom = buffer | `Number`                                                                      | `0`     | -                             |
@@ -53,7 +57,7 @@
 | scrollToTop       | scroll to top                                                            | -                                                  |
 | scrollToBottom    | scroll to bottom                                                         | -                                                  |
 | scrollToIndex     | scroll to index                                                          | index                                              |
-| scrollInToView    | scroll to index if needed（if item is not in view）                      | index                                              |
+| scrollIntoView    | scroll to index if needed（if item is not in view）                      | index                                              |
 | scrollToOffset    | scroll to px                                                             | px                                                 |
 | getItemSize       | get size of item                                                         | index                                              |
 | getItemPosByIndex | get position of item: `{ top: number; current: number; bottom: number;}` | index                                              |

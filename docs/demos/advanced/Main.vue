@@ -170,7 +170,7 @@ const {
   clientRefEl,
   stickyHeaderRefEl,
 } = useVirtList(
-  { list: list, minSize: 100, itemKey: 'id', renderControl },
+  { list: list, itemPreSize: 100, itemKey: 'id', renderControl },
   emitFunction,
 );
 console.log('reactiveData', reactiveData);
