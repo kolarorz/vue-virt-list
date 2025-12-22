@@ -81,8 +81,13 @@ const useRealList = <T extends Record<string, any>>(
     reactiveData.listTotalSize = re;
   };
 
+  // 兼容旧版本
+  function getDefaultSize() {
+    return props.itemPreSize ?? props.minSize ?? 20;
+  }
+
   const getItemSize = (itemKey: string) =>
-    sizesMap.get(String(itemKey)) ?? props.minSize;
+    sizesMap.get(String(itemKey)) ?? getDefaultSize();
 
   const setItemSize = (itemKey: string, size: number) => {
     sizesMap.set(String(itemKey), size);
@@ -510,9 +515,13 @@ const RealList = defineComponent({
       type: Array<any>,
       default: () => [],
     },
+    // 预估高度，可以没有，默认20px。给的值越平均越准，效果越好
+    itemPreSize: {
+      type: Number,
+    },
+    // 即将遗弃，后续不推荐使用
     minSize: {
       type: Number,
-      default: 40,
     },
     pageSize: {
       type: Number,

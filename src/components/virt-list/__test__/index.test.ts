@@ -15,7 +15,7 @@ describe('virt-list', () => {
       props: {
         list,
         itemKey: 'id',
-        minSize: 20,
+        itemPreSize: 20,
       },
       slots: {
         default: ({ itemData, index }) => {
@@ -37,7 +37,7 @@ describe('props itemClass', () => {
         itemClass: (item: { id: number }, index: number) =>
           `item-${item.id}-${index}`,
         itemKey: 'id',
-        minSize: 20,
+        itemPreSize: 20,
       },
       slots: {
         default: ({ itemData, index }) => {
@@ -57,7 +57,7 @@ describe('props itemClass', () => {
         list,
         itemClass: (item: { id: number }, index: number) => ['foo', 'bar'],
         itemKey: 'id',
-        minSize: 20,
+        itemPreSize: 20,
       },
       slots: {
         default: ({ itemData, index }) => {
@@ -78,7 +78,7 @@ describe('props itemClass', () => {
         list,
         itemClass: ['foo', 'bar'],
         itemKey: 'id',
-        minSize: 20,
+        itemPreSize: 20,
       },
       slots: {
         default: ({ itemData, index }) => {
@@ -101,7 +101,7 @@ describe('props itemClass', () => {
           bar: false,
         },
         itemKey: 'id',
-        minSize: 20,
+        itemPreSize: 20,
       },
       slots: {
         default: ({ itemData, index }) => {

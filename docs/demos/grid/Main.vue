@@ -49,7 +49,7 @@
       <VirtGrid
         ref="virtGridRef"
         :list="list"
-        :minSize="70"
+        :itemPreSize="70"
         :gridItems="gridItems"
         stickyHeaderStyle="text-align: center; height: 40px; background: #42b983;"
         @toTop="toTop"

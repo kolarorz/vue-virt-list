@@ -37,7 +37,7 @@
 ```html
 <template>
   <div style="width: 500px; height: 400px">
-    <VirtList itemKey="id" :list="list" :minSize="20">
+    <VirtList itemKey="id" :list="list" :itemPreSize="20">
       <template #default="{ itemData, index }">
         <div>{{ index }} - {{ itemData.id }} - {{ itemData.text }}</div>
       </template>

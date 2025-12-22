@@ -1,12 +1,16 @@
 # VirtList API
 
+1. `list.item.id` <font color="#f00">必须唯一!!!</font>
+2. item元素之间不能使用 <font color="#f00">margin!!!</font>
+
 ## 属性
 
 | 参数           | 说明                                                                              | 类型                                                                          | 默认值  | 是否必须                     |
 | -------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------- | ---------------------------- |
 | list           | 数据                                                                              | `Array`                                                                       | -       | <font color="#f00">是</font> |
 | itemKey        | 项的 id，<font color="#f00">必须唯一!!!</font>（否则会无法正常滚动）              | `String\|Number`                                                              | -       | <font color="#f00">是</font> |
-| minSize        | **最小尺寸**，会根据这个尺寸来计算可视区域内个数                                  | `Number`                                                                      | `20`    | <font color="#f00">是</font> |
+| itemPreSize    | 预估尺寸                                                                          | `Number`                                                                      | `20`    | -                            |
+| minSize        | >= v1.7.0 后遗弃，使用itemPreSize替代                                             | `Number`                                                                      | `20`    | -                            |
 | itemGap        | 元素之间的间距 (元素尺寸包含itemGap)                                              | `Number`                                                                      | 0       | -                            |
 | fixed          | 是否为固定高度，可以提升性能<br />**注意：动态高度模式下，请勿使用**              | `Number`                                                                      | `false` | -                            |
 | buffer         | 当渲染量大，滚动白屏严重时，可以给定数值，bufferTop 和 bufferBottom 会等于 buffer | `Number`                                                                      | `0`     | -                            |
@@ -65,18 +69,18 @@
 
 ## reactiveData:ReactiveData
 
-| 属性          | 类型   | 说明                                   |
-| ------------- | ------ | -------------------------------------- |
-| views         | number | 可视区域渲染个数                       |
-| offset        | number | 滚动距离                               |
-| listTotalSize | number | 不包含插槽的高度                       |
-| virtualSize   | number | 虚拟占位尺寸，是从0到renderBegin的尺寸 |
-| inViewBegin   | number | 可视区的起始下标                       |
-| inViewEnd     | number | 可视区的结束下标                       |
-| renderBegin   | number | 实际渲染的起始下标                     |
-| renderEnd     | number | 实际渲染的结束下标                     |
-| bufferTop     | number | 顶部buffer个数                         |
-| bufferBottom  | number | 底部buffer个数                         |
+| 属性          | 类型   | 说明                                                                          |
+| ------------- | ------ | ----------------------------------------------------------------------------- |
+| views         | number | 可视区域渲染个数 <font color="#f00">v1.7.0改为动态个数，该参数已被丢弃</font> |
+| offset        | number | 滚动距离                                                                      |
+| listTotalSize | number | 不包含插槽的高度                                                              |
+| virtualSize   | number | 虚拟占位尺寸，是从0到renderBegin的尺寸                                        |
+| inViewBegin   | number | 可视区的起始下标                                                              |
+| inViewEnd     | number | 可视区的结束下标                                                              |
+| renderBegin   | number | 实际渲染的起始下标                                                            |
+| renderEnd     | number | 实际渲染的结束下标                                                            |
+| bufferTop     | number | 顶部buffer个数                                                                |
+| bufferBottom  | number | 底部buffer个数                                                                |
 
 ### slotSize:SlotSize
 

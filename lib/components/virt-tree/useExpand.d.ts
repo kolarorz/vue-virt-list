@@ -12,6 +12,6 @@ export declare const useExpand: ({ props, virtListRef, parentNodeKeys, getTreeNo
     hasExpanded: (node: TreeNode) => boolean;
     setExpandedKeys: () => void;
     toggleExpand: (node: TreeNode) => void;
-    expandNode: (key: TreeNodeKey | TreeNodeKey[], expanded: boolean) => void;
+    expandNode: (key: TreeNodeKey | TreeNodeKey[], expanded: boolean, foldAllNodes?: boolean) => void;
     expandAll: (expanded: boolean) => void;
 };

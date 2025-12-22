@@ -25,7 +25,7 @@
       <VirtList
         :list="list"
         ref="virtListRef"
-        :minSize="60"
+        :itemPreSize="60"
         horizontal
         itemKey="id"
         :buffer="2"

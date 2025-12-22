@@ -23,7 +23,7 @@
       style="width: 100%; height: 500px"
       v-show="visible"
     >
-      <VirtList ref="virtListRef" :list="list" itemKey="id" :minSize="40">
+      <VirtList ref="virtListRef" :list="list" itemKey="id" :itemPreSize="40">
         <template #default="{ itemData, index }">
           <Item :itemData="itemData" :index="index" />
         </template>

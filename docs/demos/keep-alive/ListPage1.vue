@@ -48,7 +48,7 @@
         :buffer="5"
         :list="userList"
         itemKey="id"
-        :minSize="80"
+        :itemPreSize="80"
       >
         <template #default="{ itemData, index }">
           <UserItem

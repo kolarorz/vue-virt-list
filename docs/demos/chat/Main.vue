@@ -22,7 +22,7 @@
         ref="virtListRef"
         :list="list"
         itemKey="index"
-        :minSize="60"
+        :itemPreSize="60"
         @toTop="toTop"
         @itemResize="itemResize"
       >

@@ -12,7 +12,7 @@ export const treeNodeProps = {
     default: () => ({}),
     required: true,
   },
-  minSize: {
+  itemPreSize: {
     type: Number,
     default: 32,
   },
@@ -127,7 +127,7 @@ export default defineComponent({
       onClickExpandIcon,
     } = this;
     const {
-      minSize,
+      itemPreSize,
       fixed,
       indent,
       iconSize,
@@ -305,8 +305,8 @@ export default defineComponent({
               draggable: draggable,
             },
             style: {
-              'min-height': `${minSize}px`,
-              height: fixed ? `${minSize}px` : 'auto',
+              'min-height': `${itemPreSize}px`,
+              height: fixed ? `${itemPreSize}px` : 'auto',
             },
             on: {
               dragstart: handleDragstart,

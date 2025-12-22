@@ -13,7 +13,7 @@
     <div class="demo-slot" style="width: 100%; height: 500px" v-show="visible">
       <VirtList
         ref="virtListRef"
-        :minSize="40"
+        :itemPreSize="40"
         :list="list"
         itemKey="id"
         :buffer="2"

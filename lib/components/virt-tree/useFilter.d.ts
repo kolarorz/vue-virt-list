@@ -1,12 +1,14 @@
-import { type ShallowReactive } from 'vue-demi';
+import { type ShallowReactive, type ShallowRef } from 'vue-demi';
 import type { TreeInfo, TreeNode, TreeNodeKey } from './type';
 import type { TreeProps } from './useTree';
-export declare const useFilter: ({ props, treeInfo, }: {
+import type { VirtList } from '../virt-list';
+export declare const useFilter: ({ props, treeInfo, virtListRef, }: {
     props: TreeProps;
     treeInfo: ShallowReactive<TreeInfo | undefined>;
+    virtListRef: ShallowRef<typeof VirtList | null>;
 }) => {
-    hiddenExpandIconKeySet: import("vue-demi").ShallowRef<Set<TreeNodeKey>>;
-    hiddenNodeKeySet: import("vue-demi").ShallowRef<Set<TreeNodeKey>>;
+    hiddenExpandIconKeySet: ShallowRef<Set<TreeNodeKey>, Set<TreeNodeKey>>;
+    hiddenNodeKeySet: ShallowRef<Set<TreeNodeKey>, Set<TreeNodeKey>>;
     doFilter: (query: string) => Set<TreeNodeKey> | undefined;
     isForceHiddenExpandIcon: (node: TreeNode) => boolean;
 };

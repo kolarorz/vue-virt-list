@@ -47,6 +47,7 @@ export const VirtTree = defineComponent({
     } = this;
 
     const {
+      itemPreSize,
       minSize,
       fixed,
       itemGap,
@@ -62,6 +63,9 @@ export const VirtTree = defineComponent({
       listClass,
     } = this.$props as TreeProps;
 
+    // 兼容旧版本
+    const defaultSize = itemPreSize ?? minSize ?? 32;
+
     const renderTreeNode = ({
       itemData,
     }: {
@@ -73,7 +77,7 @@ export const VirtTree = defineComponent({
         {
           attrs: {
             node: itemData,
-            minSize,
+            itemPreSize: defaultSize,
             fixed,
             indent,
             iconSize,
@@ -124,7 +128,7 @@ export const VirtTree = defineComponent({
         ref: 'virtListRef',
         attrs: {
           list: renderList,
-          minSize,
+          itemPreSize: defaultSize,
           fixed,
           itemKey: 'key',
           itemGap,
