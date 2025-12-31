@@ -43,8 +43,10 @@ jobs:
       - name: publish to npm
         run: |
           echo "Publishing version: $GITHUB_REF_NAME"
-          if [[ $GITHUB_REF_NAME == *beta* ]]; then
-            npm publish --tag beta --provenance --access public
+          if echo "$GITHUB_REF_NAME" | grep -q "beta"; then
+            echo "Publishing beta version..."
+            npm publish --tag beta
           else
-            npm publish --provenance --access public
+            echo "Publishing stable version..."
+            npm publish
           fi
