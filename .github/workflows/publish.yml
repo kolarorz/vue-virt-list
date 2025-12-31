@@ -21,15 +21,15 @@ jobs:
       id-token: write
     steps:
       # 检查仓库以便作业能正常访问
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # pnpm
       - uses: pnpm/action-setup@v3
         with:
           version: 8
       # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       # npm ci命令类似于 npm install 但它旨在用于自动化环境，如测试平台，持续集成和部署
@@ -45,8 +45,8 @@ jobs:
           echo "Publishing version: $GITHUB_REF_NAME"
           if echo "$GITHUB_REF_NAME" | grep -q "beta"; then
             echo "Publishing beta version..."
-            npm publish --tag beta
+            npm publish --provenance --access public --tag beta
           else
             echo "Publishing stable version..."
-            npm publish
+            npm publish --provenance --access public
           fi
