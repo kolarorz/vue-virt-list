@@ -10,9 +10,12 @@ on:
 
 # 一个 workflow 可以有多个 job
 jobs:
-  build:
+  publish:
     # 指定操作系统为'ubuntu-latest'
     runs-on: ubuntu-latest
+    # 指定GitHub侧创建的环境名
+    environment: npm-publish
+    # 开启OIDC身份验证必需的权限
     permissions:
       contents: read
       id-token: write
@@ -37,10 +40,11 @@ jobs:
       - run: npm run build
 
       # 发布命令 (使用 Trusted Publishers)
-      - name: Publish to npm
+      - name: publish to npm
         run: |
+          echo "Publishing version: $GITHUB_REF_NAME"
           if [[ $GITHUB_REF_NAME == *beta* ]]; then
-            npm publish --tag beta
+            npm publish --tag beta --provenance --access public
           else
-            npm publish
+            npm publish --provenance --access public
           fi
