@@ -12,6 +12,9 @@ jobs:
   build:
     # 指定操作系统为'ubuntu-latest'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       # 检查仓库以便作业能正常访问
       - uses: actions/checkout@v3
@@ -32,5 +35,5 @@ jobs:
       # 打包
       - run: npm run build
 
-      # 发布命令
+      # 发布命令 (使用 Trusted Publishers)
       - run: npm publish
