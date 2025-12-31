@@ -34,6 +34,3 @@ jobs:
 
       # 发布命令
       - run: npm publish
-        env:
-          # npm_token 就是刚刚填写 token 时取的名字
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
