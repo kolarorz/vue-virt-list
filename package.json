@@ -4,6 +4,7 @@
   "description": "Tiny & Virtual scroll list & Huge amount data & High performance (support vue2.x&vue3.x)",
   "author": "kolarorz",
   "license": "MIT",
+  "private": false,
   "type": "module",
   "main": "lib/index.js",
   "module": "lib/index.js",
