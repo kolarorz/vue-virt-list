@@ -6,23 +6,30 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
 
 # 一个 workflow 可以有多个 job
 jobs:
-  build:
+  publish:
     # 指定操作系统为'ubuntu-latest'
     runs-on: ubuntu-latest
+    # 指定GitHub侧创建的环境名
+    environment: npm-publish
+    # 开启OIDC身份验证必需的权限
+    permissions:
+      contents: read
+      id-token: write
     steps:
       # 检查仓库以便作业能正常访问
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # pnpm
       - uses: pnpm/action-setup@v3
         with:
           version: 8
       # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       # npm ci命令类似于 npm install 但它旨在用于自动化环境，如测试平台，持续集成和部署
@@ -32,8 +39,14 @@ jobs:
       # 打包
       - run: npm run build
 
-      # 发布命令
-      - run: npm publish
-        env:
-          # npm_token 就是刚刚填写 token 时取的名字
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # 发布命令 (使用 Trusted Publishers)
+      - name: publish to npm
+        run: |
+          echo "Publishing version: $GITHUB_REF_NAME"
+          if echo "$GITHUB_REF_NAME" | grep -q "beta"; then
+            echo "Publishing beta version..."
+            npm publish --provenance --access public --tag beta
+          else
+            echo "Publishing stable version..."
+            npm publish --provenance --access public
+          fi
