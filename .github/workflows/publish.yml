@@ -38,3 +38,5 @@ jobs:
 
       # 发布命令
       - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
