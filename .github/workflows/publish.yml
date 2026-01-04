@@ -5,22 +5,19 @@ on:
   # 选择在 push 到 github 时触发工作流
   push:
     branches: ['feat/views']
-    
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 # 一个 workflow 可以有多个 job
 jobs:
-  build:
+  publish:
     # 指定操作系统为'ubuntu-latest'
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write # Required for OIDC
-      contents: read
     steps:
       # 检查仓库以便作业能正常访问
-      - uses: actions/checkout@v3
-      # pnpm
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - uses: actions/checkout@v4
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
@@ -30,10 +27,10 @@ jobs:
 
       # npm ci命令类似于 npm install 但它旨在用于自动化环境，如测试平台，持续集成和部署
       # 可以帮助捕获由大多数 npm 用户的增量安装的本地环境引起的错误或不一致
-      - run: pnpm install
+      - run: npm ci
 
       # 打包
       - run: npm run build
 
       # 发布命令
-      - run: npm publish --provenance --access public --tag beta
+      - run: npm publish
