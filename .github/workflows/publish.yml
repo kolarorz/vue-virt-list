@@ -5,7 +5,7 @@ on:
   # 选择在 push 到 github 时触发工作流
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
+      - feat/views
 
 # 一个 workflow 可以有多个 job
 jobs:
@@ -24,10 +24,10 @@ jobs:
           token: "" # ✅ 核心！强制清空自动注入的NODE_AUTH_TOKEN，禁用令牌认证
 
       # install
-      - run: pnpm install
+      - run: npm install
 
       # build
-      - run: pnpm run build
+      - run: npm run build
 
       # publish
-      - run: pnpm publish --provenance --access public --tag beta
+      - run: npm publish --provenance --access public --tag beta
