@@ -16,8 +16,12 @@ jobs:
       id-token: write # Required for OIDC
       contents: read
     steps:
-      # 检查仓库以便作业能正常访问
-      - uses: actions/checkout@v3
+      # 升级v4，兼容性更好
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+          token: "" # ✅ 核心！强制清空自动注入的NODE_AUTH_TOKEN，禁用令牌认证
       # pnpm
       - uses: pnpm/action-setup@v3
         with:
@@ -35,5 +39,5 @@ jobs:
       # 打包
       - run: npm run build
 
-      # 发布命令 (使用 Trusted Publishers)
-      - run: npm publish --tag beta
+      # 发布命令
+      - run: npm publish --provenance --access public --tag beta
