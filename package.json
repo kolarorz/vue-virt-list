@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": false,
   "publishConfig": {
-    "access": "public"
+    "provenance": false
   },
   "type": "module",
   "main": "lib/index.js",
