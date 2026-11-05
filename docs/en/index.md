@@ -1,10 +1,26 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+title: Virtual Lists and Trees for Vue 2 and Vue 3
+description: Virtual lists and trees for Vue 2 and Vue 3 with native scrolling, dynamic item heights, infinite loading and chat examples.
 
 hero:
   name: 'vue-virt-list'
   tagline: A high-performance virtual (scrolling) list component support Vue 2 & Vue 3.
+
+  actions:
+    - theme: brand
+      text: Get started
+      link: /en/guide/started
+    - theme: alt
+      text: Choose a project
+      link: /en/guide/project-selection
+    - theme: alt
+      text: Explore virt-list
+      link: https://kolarorz.github.io/virt-list/
+    - theme: alt
+      text: Explore virt-table
+      link: https://kolarorz.github.io/virt-table/
 
 features:
   - title: Lightweight

@@ -4,11 +4,12 @@ import pkg from '../../../package.json';
 
 export const en = defineConfig({
   lang: 'en-US',
-  description: 'vue-virt-list',
+  description: 'Virtual lists and trees for Vue 2 and Vue 3 with native scrolling, dynamic item heights, infinite loading and chat examples.',
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
+      { text: 'Choose a project', link: '/en/guide/project-selection' },
       { text: 'Guide', link: '/en/guide/started' },
       { text: 'Examples', link: '/en/examples/basic' },
       { text: 'API', link: '/en/api/virt-list' },
@@ -61,6 +62,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       text: 'Guide',
       items: [
         { text: 'Getting Started', link: 'started' },
+        { text: 'Choose a project', link: 'project-selection' },
         { text: 'Special Instructions', link: 'instructions' },
       ],
     },
