@@ -1,20 +1,24 @@
-# vue-virt-list — Vue 2 / Vue 3 虚拟列表与虚拟树
+<h1 align="center">vue-virt-list — Vue 2 / Vue 3 虚拟列表与虚拟树</h1>
 
-支持 Vue 2 与 Vue 3 的原生滚动虚拟列表，适用于动态行高、无限加载与聊天列表。
-
-Virtual lists and trees for Vue 2 and Vue 3, with native scrolling and dynamic item heights.
-
-[中文文档](https://kolarorz.github.io/vue-virt-list/) · [English docs](https://kolarorz.github.io/vue-virt-list/en/) · [在线示例](https://kolarorz.github.io/vue-virt-list/examples/basic)
+<p align="center">原生滚动 · 动态行高 · 无限加载<br>Virtual lists and trees for Vue 2 and Vue 3, with native scrolling.</p>
 
 <p align="center">
-<img src="https://img.picgo.net/2024/10/18/banner0cf18d1d1663f5d2.png" width="600" alt="vue-virt-list：Vue 2 / Vue 3 虚拟列表"/>
+  <a href="https://www.npmjs.com/package/vue-virt-list"><img src="https://img.shields.io/npm/v/vue-virt-list?style=flat-square&amp;label=npm" alt="vue-virt-list npm version"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT license"></a>
+  <a href="https://github.com/kolarorz/vue-virt-list"><img src="https://img.shields.io/badge/TypeScript-supported-3178c6?style=flat-square" alt="TypeScript supported"></a>
 </p>
 
-<p align="center">
-  <a href="https://npmcharts.com/compare/vue-virt-list?minimal=true"><img src="https://img.shields.io/npm/dm/vue-virt-list.svg?sanitize=true" alt="Downloads"></a>
-  <a href="https://www.npmjs.com/package/vue-virt-list"><img src="https://img.shields.io/npm/v/vue-virt-list.svg?sanitize=true" alt="Version"></a>
-  <a href="https://www.npmjs.com/package/vue-virt-list"><img src="https://img.shields.io/npm/l/vue-virt-list.svg?sanitize=true" alt="License"></a>
-</p>
+<p align="center"><a href="https://kolarorz.github.io/vue-virt-list/">中文文档</a> · <a href="https://kolarorz.github.io/vue-virt-list/en/">English docs</a></p>
+<p align="center"><strong><a href="https://kolarorz.github.io/vue-virt-list/">文档</a> · <a href="https://kolarorz.github.io/vue-virt-list/examples/basic">在线演示</a> · <a href="#quick-start">快速开始</a> · <a href="https://kolarorz.github.io/vue-virt-list/guide/project-selection">项目选型</a></strong></p>
+
+---
+
+## 保留熟悉的 Vue 与浏览器体验
+
+| 原生滚动 | 动态内容 | Vue 2 / Vue 3 |
+| --- | --- | --- |
+| 保留浏览器滚动行为 | 不定高消息、聊天与无限加载 | 通过 vue-demi 支持两代 Vue |
+| [基础示例](https://kolarorz.github.io/vue-virt-list/examples/basic) | [动态行高](https://kolarorz.github.io/vue-virt-list/examples/dynamic) · [聊天列表](https://kolarorz.github.io/vue-virt-list/examples/chat) | [快速接入](https://kolarorz.github.io/vue-virt-list/guide/started) |
 
 ## 三个项目如何选择 / Choose a project
 
@@ -33,42 +37,10 @@ Virtual lists and trees for Vue 2 and Vue 3, with native scrolling and dynamic i
 [体验新版流式聊天](https://kolarorz.github.io/virt-list/vue/ai/streaming) · [体验虚拟表格与合并单元格](https://kolarorz.github.io/virt-table/)
 
 
-## Documentation
-
-To check out docs, visit <a href="https://kolarorz.github.io/vue-virt-list/" target="_blank">vue-virt-list</a>
-
-👉 <a href="https://d8diegi800.feishu.cn/wiki/MX2Vwn1RWiwUsokjhshcr6sVnNb?from=from_copylink" target="_blank">Advantages</a>
-
 ## Quick Start
 
 ```shell
 npm install vue-virt-list -S
-```
-
-### Options API
-
-```html
-<template>
-  <div style="width: 500px; height: 400px">
-    <VirtList itemKey="id" :list="list" :itemPreSize="20">
-      <template #default="{ itemData, index }">
-        <div>{{ index }} - {{ itemData.id }} - {{ itemData.text }}</div>
-      </template>
-    </VirtList>
-  </div>
-</template>
-
-<script>
-  import { VirtList } from 'vue-virt-list';
-  export default {
-    components: { VirtList },
-    data() {
-      return {
-        list: [{ id: 0, text: 'text' }],
-      };
-    },
-  };
-</script>
 ```
 
 ### Composition API
@@ -94,13 +66,52 @@ npm install vue-virt-list -S
 </script>
 ```
 
-## WeChat
+<details>
+<summary>Options API 示例</summary>
+
+```html
+<template>
+  <div style="width: 500px; height: 400px">
+    <VirtList itemKey="id" :list="list" :itemPreSize="20">
+      <template #default="{ itemData, index }">
+        <div>{{ index }} - {{ itemData.id }} - {{ itemData.text }}</div>
+      </template>
+    </VirtList>
+  </div>
+</template>
+
+<script>
+  import { VirtList } from 'vue-virt-list';
+  export default {
+    components: { VirtList },
+    data() {
+      return {
+        list: [{ id: 0, text: 'text' }],
+      };
+    },
+  };
+</script>
+```
+
+</details>
+
+## 社区与支持
+
+[提交 Issue](https://github.com/kolarorz/vue-virt-list/issues) · [讨论](https://github.com/kolarorz/vue-virt-list/discussions) · [贡献指南](./CONTRIBUTING.md) · [设计与优势说明](https://d8diegi800.feishu.cn/wiki/MX2Vwn1RWiwUsokjhshcr6sVnNb?from=from_copylink)
+
+<details>
+<summary>微信交流群</summary>
+
 
 有问题可扫码加好友进入技术交流群（备注github账号名&vue-virt-list）
 
 <img src="https://cdn.jsdelivr.net/gh/kolarorz/images@master/wechat.jpg" width=200 />
 
-## Sponsor
+</details>
+
+<details>
+<summary>赞助与致谢</summary>
+
 
 开源不易，如果帮助到你，请作者喝杯咖啡吧~
 
@@ -119,3 +130,9 @@ npm install vue-virt-list -S
 - WechatPay
 
   - 甜言蜜语说给左耳听
+
+</details>
+
+## License
+
+[MIT](./LICENSE) © kolarorz
