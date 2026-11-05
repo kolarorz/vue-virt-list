@@ -4,11 +4,12 @@ import pkg from '../../../package.json';
 
 export const zh = defineConfig({
   lang: 'zh-Hans',
-  description: 'vue-virt-list',
+  description: '适用于 Vue 2 和 Vue 3 的虚拟列表与虚拟树组件，支持原生滚动、动态行高、无限加载和聊天列表。',
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
+      { text: '项目选型', link: '/guide/project-selection' },
       { text: '指南', link: '/guide/started' },
       { text: '示例', link: '/examples/basic' },
       { text: 'API', link: '/api/virt-list' },
@@ -61,6 +62,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       text: '指南',
       items: [
         { text: '快速开始', link: 'started' },
+        { text: '项目选型', link: 'project-selection' },
         { text: '特殊说明', link: 'instructions' },
       ],
     },
