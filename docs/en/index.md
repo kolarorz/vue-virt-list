@@ -36,3 +36,10 @@ features:
   - title: High Extensibility
     details: 4 slots available - supports tables, infinite scrolling, chat rooms, merged cells, etc.
 ---
+
+## Related projects
+
+- **[VirtList on GitHub](https://github.com/kolarorz/virt-list)**: Virtual lists, trees, grids and streaming chat for React, Vue and vanilla JavaScript. [Documentation and examples](https://kolarorz.github.io/virt-list/).
+- **[VirtTable on GitHub](https://github.com/kolarorz/virt-table)**: A virtual table / data grid for React, Vue and vanilla JavaScript, with merged cells, pinned rows and columns, and editing. [Documentation and examples](https://kolarorz.github.io/virt-table/).
+
+Keep vue-virt-list for Vue projects that need native scrolling. The newer libraries are not drop-in replacements. [Compare projects and migration considerations](/en/guide/project-selection).
