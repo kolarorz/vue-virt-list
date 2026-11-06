@@ -36,3 +36,10 @@ features:
   - title: 高扩展
     details: 4个插槽供选择 - 支持表格、无限滚动、聊天室、合并单元格等
 ---
+
+## 相关项目
+
+- **[VirtList GitHub 仓库](https://github.com/kolarorz/virt-list)**：适用于 React、Vue 和原生JS的虚拟列表、树、网格与流式聊天。[文档与示例](https://kolarorz.github.io/virt-list/)。
+- **[VirtTable GitHub 仓库](https://github.com/kolarorz/virt-table)**：适用于 React、Vue 和原生JS的虚拟表格与 Data Grid，支持合并单元格、固定行列与编辑。[文档与示例](https://kolarorz.github.io/virt-table/)。
+
+需要原生滚动行为的 Vue 项目可继续使用 vue-virt-list；新项目并非直接替换升级。[查看选型与迁移说明](/guide/project-selection)。
